@@ -385,6 +385,21 @@ body{background-color:var(--bg);background-size:cover;background-position:center
 .gres{text-align:center;padding:16px 0}
 .gres .big{font-size:34px;font-weight:800;color:var(--green);line-height:1}
 .gres .sub{font-size:12px;color:var(--mute);margin-top:6px}
+.scratchgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
+.scratchcell{aspect-ratio:1/1;border-radius:8px;background:var(--el);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--mute);user-select:none}
+.scratchcell.open{background:rgba(var(--acc),.2);color:var(--green)}
+.gtag{font-size:9.5px;color:var(--mute);margin-bottom:2px}
+.mixbar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:8px 0 6px}
+.mixbar i{display:block;height:100%}
+.mixlg{display:flex;flex-wrap:wrap;gap:10px;font-size:10.5px;color:var(--mute)}
+.mixlg b{font-weight:600;color:var(--ink2)}
+.topfood{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:12.5px;border-bottom:1px solid var(--line)}
+.topfood:last-child{border-bottom:none}
+.topfood .rk{width:18px;height:18px;border-radius:5px;background:var(--el2);color:var(--mute);font-size:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.topfood .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topfood .ct{color:var(--mute);font-size:11px;flex:0 0 auto}
+.streak{display:flex;align-items:baseline;gap:6px}
+.streak b{font-size:26px;font-weight:800;color:var(--green);line-height:1}
 
 /* 商店 */
 .shopitem{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
@@ -829,7 +844,7 @@ const DEFAULT_PROFILE = {
   activity: 'moderate', goal: 'maintain', targetWeight: 68
 };
 
-const BUILD = '2026-10-20.3';
+const BUILD = '2026-10-20.4';
 const CAN_SCAN = (typeof window !== 'undefined') && ('BarcodeDetector' in window) && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain' };
 
@@ -883,26 +898,31 @@ const TRAIN = [
     { t: '肩部热身与圆肩改善', q: '肩部 热身 圆肩 改善' }
   ] },
   { key: 'arm', name: '手臂', tag: '臂', items: [
+    { bv: 'BV1anmCYNEbK', t: '哑铃弯举这么做更有效（手臂训练技巧）', up: '健身教学', dur: 495, v: 0 },
     { t: '二头弯举的三种握法', q: '二头弯举 教学' },
     { t: '三头下压与窄距卧推', q: '三头 下压 窄距卧推' },
     { t: '手臂超级组训练', q: '手臂 超级组 训练' }
   ] },
   { key: 'glute', name: '臀腿', tag: '腿', items: [
+    { bv: 'BV1SMoxBwET4', t: '臀腿跟练：臀推 / 保加利亚蹲 / 硬拉（含热身拉伸）', up: '陪练跟练', dur: 5232, v: 0 },
     { t: '深蹲标准动作拆解', q: '深蹲 标准 动作 教学' },
     { t: '臀桥与臀中肌激活', q: '臀桥 臀中肌 激活' },
     { t: '硬拉新手入门', q: '硬拉 新手 教学' }
   ] },
   { key: 'cardio', name: '减脂有氧', tag: '氧', items: [
+    { bv: 'BV1BgooBwELm', t: '20分钟高效 HIIT 跟练（无重复全身燃脂）', up: 'Juice & Toya', dur: 1743, v: 0 },
     { t: '居家 HIIT 20 分钟跟练', q: 'HIIT 20分钟 居家 跟练' },
     { t: '爬楼 / 快走 / 跳绳怎么选', q: '有氧 燃脂 怎么选' },
     { t: '不伤膝的低冲击有氧', q: '低强度有氧 不伤膝' }
   ] },
   { key: 'beginner', name: '新手入门', tag: '新', items: [
+    { bv: 'BV1UuJC69EkR', t: '40分钟全身力量训练（不重复 / 无蹦跳）', up: '全身训练', dur: 2616, v: 0 },
     { t: '健身房第一课：器械认知', q: '健身房 新手 第一课 器械' },
     { t: '新手一周几练、怎么排计划', q: '新手 训练计划 一周几练' },
     { t: '增肌的吃与练基础', q: '增肌 饮食 训练 基础' }
   ] },
   { key: 'stretch', name: '拉伸放松', tag: '伸', items: [
+    { bv: 'BV1upZPBTExR', t: '20分钟全身拉伸跟练合集', up: '沉浸跟练', dur: 1147, v: 0 },
     { t: '训练后全身拉伸 10 分钟', q: '全身拉伸 10分钟' },
     { t: '久坐族的髋与腘绳肌放松', q: '久坐 髋 放松 拉伸' },
     { t: '泡沫轴放松教学', q: '泡沫轴 放松 教学' }
@@ -1010,7 +1030,8 @@ function defaultData() {
     profile: Object.assign({}, DEFAULT_PROFILE),
     logs: {}, water: {}, custom: [], weights: [],
     fav: [], videos: {}, barcodes: {}, settings: Object.assign({}, DEFAULT_SETTINGS),
-    plan: { split: 'ppl3', days: {}, cycle: 0, checkins: {}, coins: 0, weekPaid: {}, buffs: {} }
+    plan: { split: 'ppl3_a', days: {}, cycle: 0, checkins: {}, coins: 0, weekPaid: {}, buffs: {} },
+    quizDone: { poem: [], word: [] }
   };
 }
 
@@ -1040,8 +1061,9 @@ const store = {
         fav: Array.isArray(d.fav) ? d.fav.filter(function (x) { return typeof x === 'string'; }) : [],
         videos: (d.videos && typeof d.videos === 'object' && !Array.isArray(d.videos)) ? d.videos : {},
         barcodes: (d.barcodes && typeof d.barcodes === 'object' && !Array.isArray(d.barcodes)) ? d.barcodes : {},
-        plan: Object.assign({ split: 'ppl3', days: {}, cycle: 0, checkins: {}, coins: 0, weekPaid: {}, buffs: {} },
+        plan: Object.assign({ split: 'ppl3_a', days: {}, cycle: 0, checkins: {}, coins: 0, weekPaid: {}, buffs: {} },
           (d.plan && typeof d.plan === 'object') ? d.plan : {}),
+        quizDone: Object.assign({ poem: [], word: [] }, (d.quizDone && typeof d.quizDone === 'object') ? d.quizDone : {}),
         settings: Object.assign({}, DEFAULT_SETTINGS,
           (d.settings && typeof d.settings === 'object') ? d.settings : {})
       };
@@ -1086,42 +1108,1654 @@ const KB = [
 
 
 const SPLITS = {
-  ppl3: { name: '三分化', desc: '推 / 拉 / 腿', days: [
+  ppl3_a: { name: '三分化·推拉腿', tag: '推/拉/腿', days: [
     { n: '推（胸肩三头）', g: ['chest', 'shoulder', 'arm'] },
     { n: '拉（背二头）', g: ['back', 'arm'] },
     { n: '腿（臀腿核心）', g: ['glute', 'core'] },
     { n: '休息', g: [] }
   ] },
-  ppl5: { name: '五分化', desc: '胸背腿肩臂有氧', days: [
+  ppl3_b: { name: '三分化·背胸腿', tag: '背/胸/腿', days: [
+    { n: '背 + 二头', g: ['back', 'arm'] },
+    { n: '胸 + 肩 + 三头', g: ['chest', 'shoulder', 'arm'] },
+    { n: '腿 + 核心', g: ['glute', 'core'] },
+    { n: '休息', g: [] }
+  ] },
+  ppl5_a: { name: '五分化·经典', tag: '胸背腿肩臂', days: [
     { n: '胸', g: ['chest'] },
     { n: '背', g: ['back'] },
     { n: '腿', g: ['glute'] },
-    { n: '肩臂', g: ['shoulder', 'arm'] },
-    { n: '有氧核心', g: ['cardio', 'core'] }
+    { n: '肩 + 臂', g: ['shoulder', 'arm'] },
+    { n: '有氧 + 核心', g: ['cardio', 'core'] }
+  ] },
+  ppl5_b: { name: '五分化·分化版', tag: '肩臂腹腿', days: [
+    { n: '肩', g: ['shoulder'] },
+    { n: '手臂', g: ['arm'] },
+    { n: '腹核心', g: ['core'] },
+    { n: '腿 + 臀', g: ['glute'] },
+    { n: '拉伸 + 有氧', g: ['stretch', 'cardio'] }
   ] }
 };
 
 const BUFFS = [
-  { id: 'pong_paddle', game: 'pong', name: '加长球拍', desc: '每级球拍 +14px，最多 3 级', max: 3, cost: 60 },
-  { id: 'pong_life', game: 'pong', name: '多一条命', desc: '每级 +1 命，最多 2 级', max: 2, cost: 80 },
-  { id: 'whack_time', game: 'whack', name: '时间延长', desc: '每级 +8 秒，最多 3 级', max: 3, cost: 50 },
-  { id: 'whack_slow', game: 'whack', name: '地鼠慢一点', desc: '每级停留 +0.18 秒，最多 2 级', max: 2, cost: 60 },
-  { id: 'poem_time', game: 'poem', name: '读题时间', desc: '每级 +15 秒，最多 2 级', max: 2, cost: 40 },
-  { id: 'poem_hint', game: 'poem', name: '排除一项', desc: '每级多排除一个错误项，最多 2 级', max: 2, cost: 70 }
+  { id: 'pong_paddle', game: 'pong', name: '加长球拍', desc: '每级球拍 +14px（最多 3 级）', max: 3, cost: 60 },
+  { id: 'pong_life', game: 'pong', name: '多一条命', desc: '每级 +1 条命（最多 2 级）', max: 2, cost: 80 },
+  { id: 'pong_edge', game: 'pong', name: '边线缓冲', desc: '球撞左右墙时减速 6%，给你多一次反应（最多 2 级）', max: 2, cost: 90 },
+  { id: 'whack_time', game: 'whack', name: '加时赛', desc: '每级 +8 秒（最多 3 级）', max: 3, cost: 50 },
+  { id: 'whack_gold', game: 'whack', name: '金色地鼠', desc: '连中 3 只后下一只是金色，+2 分（最多 1 级）', max: 1, cost: 120 },
+  { id: 'poem_hint', game: 'poem', name: '文曲星', desc: '每级多排除一个错误选项（最多 2 级）', max: 2, cost: 70 },
+  { id: 'word_reveal', game: 'word', name: '首字母提示', desc: '每级多显示 1 个字母（最多 2 级）', max: 2, cost: 70 },
+  { id: 'scratch_luck', game: 'scratch', name: '不空手', desc: '刮刮乐抽到「空」时改判为 4 币（最多 1 级）', max: 1, cost: 150 }
 ];
 
-const POEMS = [
-  { q: '床前明月光，＿＿＿＿＿。', a: '疑是地上霜', w: ['疑是地上霜', '疑是银河落九天', '低头思故乡', '举杯邀明月'], src: '李白《静夜思》' },
-  { q: '海内存知己，＿＿＿＿＿。', a: '天涯若比邻', w: ['天涯若比邻', '天涯共此时', '海角亦相邻', '千里共婵娟'], src: '王勃《送杜少府之任蜀州》' },
-  { q: '会当凌绝顶，＿＿＿＿＿。', a: '一览众山小', w: ['一览众山小', '孤帆远影碧空尽', '一览无余皆小丘', '更上一层楼'], src: '杜甫《望岳》' },
-  { q: '春眠不觉晓，＿＿＿＿＿。', a: '处处闻啼鸟', w: ['处处闻啼鸟', '夜来风雨声', '花落知多少', '梦里花落知多少'], src: '孟浩然《春晓》' },
-  { q: '长风破浪会有时，＿＿＿＿＿。', a: '直挂云帆济沧海', w: ['直挂云帆济沧海', '扶摇直上九万里', '乘风破浪会有时', '直上云霄九万里'], src: '李白《行路难》' },
-  { q: '大漠孤烟直，＿＿＿＿＿。', a: '长河落日圆', w: ['长河落日圆', '长空落日圆', '孤城落日圆', '长河明月圆'], src: '王维《使至塞上》' },
-  { q: '山重水复疑无路，＿＿＿＿＿。', a: '柳暗花明又一村', w: ['柳暗花明又一村', '逢山开路又一篇', '峰回路转不见君', '柳暗花明又一春'], src: '陆游《游山西村》' },
-  { q: '人生自古谁无死，＿＿＿＿＿。', a: '留取丹心照汗青', w: ['留取丹心照汗青', '留取丹心照古今', '但愿丹心照汗青', '留取声名照汗青'], src: '文天祥《过零丁洋》' },
-  { q: '问渠那得清如许，＿＿＿＿＿。', a: '为有源头活水来', w: ['为有源头活水来', '为有新渠活水来', '缘有源头活水来', '为有清泉活水来'], src: '朱熹《观书有感》' },
-  { q: '沉舟侧畔千帆过，＿＿＿＿＿。', a: '病树前头万木春', w: ['病树前头万木春', '枯树前头万木春', '病树前头又一春', '病木前头万木春'], src: '刘禹锡《酬乐天扬州初逢席上见赠》' }
-];
+const POEMS_RAW = `床前明月光，|疑是地上霜|疑是银河落九天|低头思故乡|举杯邀明月|李白《静夜思》
+海内存知己，|天涯若比邻|天涯共此时|海角亦相邻|千里共婵娟|王勃《送杜少府之任蜀州》
+会当凌绝顶，|一览众山小|孤帆远影碧空尽|一览无余皆小丘|更上一层楼|杜甫《望岳》
+春眠不觉晓，|处处闻啼鸟|夜来风雨声|花落知多少|梦里花落知多少|孟浩然《春晓》
+长风破浪会有时，|直挂云帆济沧海|扶摇直上九万里|乘风破浪会有时|直上云霄九万里|李白《行路难》
+大漠孤烟直，|长河落日圆|长空落日圆|孤城落日圆|长河明月圆|王维《使至塞上》
+山重水复疑无路，|柳暗花明又一村|逢山开路又一篇|峰回路转不见君|柳暗花明又一春|陆游《游山西村》
+人生自古谁无死，|留取丹心照汗青|留取丹心照古今|但愿丹心照汗青|留取声名照汗青|文天祥《过零丁洋》
+问渠那得清如许，|为有源头活水来|为有新渠活水来|缘有源头活水来|为有清泉活水来|朱熹《观书有感》
+沉舟侧畔千帆过，|病树前头万木春|枯树前头万木春|病树前头又一春|病木前头万木春|刘禹锡《酬乐天扬州初逢席上见赠》
+欲穷千里目，|更上一层楼|一览众山小|千里共婵娟|独钓寒江雪|王之涣《登鹳雀楼》
+白日依山尽，|黄河入海流|长江天际流|大江东去浪|星河落九天|王之涣《登鹳雀楼》
+两个黄鹂鸣翠柳，|一行白鹭上青天|一行白鹤上青天|数只白鹭落沙洲|一行白鹭过前川|杜甫《绝句》
+停车坐爱枫林晚，|霜叶红于二月花|霜叶红似三月花|林叶红于二月花|霜叶赤于二月花|杜牧《山行》
+人生得意须尽欢，|莫使金樽空对月|莫使金杯空对月|莫待金樽空对月|莫使金樽空对日|李白《将进酒》
+天生我材必有用，|千金散尽还复来|千金散去还复来|千金散尽终复来|万金散尽还复来|李白《将进酒》
+无边落木萧萧下，|不尽长江滚滚来|不尽黄河滚滚来|无边落叶萧萧下|不尽长江汩汩来|杜甫《登高》
+身无彩凤双飞翼，|心有灵犀一点通|心有灵犀一线通|心有情丝一点通|心有灵犀一点同|李商隐《无题》
+春蚕到死丝方尽，|蜡炬成灰泪始干|蜡炬成灰泪始流|烛炬成灰泪始干|蜡炬成灰恨始干|李商隐《无题》
+但愿人长久，|千里共婵娟|天涯若比邻|何日复归来|共看明月升|苏轼《水调歌头》
+明月几时有，|把酒问青天|举杯邀明月|把酒问明月|对酒问青天|苏轼《水调歌头》
+今宵酒醒何处，|杨柳岸晓风残月|柳岸边晨风残月|杨树下晓风明月|杨柳岸晚风新月|柳永《雨霖铃》
+衣带渐宽终不悔，|为伊消得人憔悴|为伊瘦得人憔悴|为君消得人憔悴|为伊消尽人憔悴|柳永《蝶恋花》
+落红不是无情物，|化作春泥更护花|化作春泥更养花|化做春泥更护花|化作秋泥更护花|龚自珍《己亥杂诗》
+千磨万击还坚劲，|任尔东西南北风|任尔东西南北吹|任凭东西南北风|任尔四方八方风|郑燮《竹石》
+粉身碎骨浑不怕，|要留清白在人间|只留清白在人间|要留青白在人间|要留清名在人间|于谦《石灰吟》
+莫等闲，白了少年头，|空悲切|空悲戚|徒伤悲|空叹息|岳飞《满江红》
+长风万里送秋雁，|对此可以酣高楼|对月可以饮高楼|对此可以醉高楼|对酒方能醉高楼|李白《宣州谢朓楼饯别校书叔云》
+天生丽质难自弃，|一朝选在君王侧|一朝选入君王侧|一日选在君王侧|一朝得在君王侧|白居易《长恨歌》
+回眸一笑百媚生，|六宫粉黛无颜色|六宫佳丽无颜色|三千粉黛无颜色|六宫粉黛皆失色|白居易《长恨歌》
+同是天涯沦落人，|相逢何必曾相识|相识何必曾相逢|相逢何必要相识|相遇何必曾相识|白居易《琵琶行》
+大弦嘈嘈如急雨，|小弦切切如私语|小弦细细如私语|小弦切切似私语|细弦切切如私语|白居易《琵琶行》
+日出江花红胜火，|春来江水绿如蓝|春来江水碧如蓝|春来流水绿如蓝|春来江水青如蓝|白居易《忆江南》
+独在异乡为异客，|每逢佳节倍思亲|每遇佳节倍思亲|每逢佳日倍思亲|每逢佳节更思亲|王维《九月九日忆山东兄弟》
+遥知兄弟登高处，|遍插茱萸少一人|遍插茱萸少二亲|遍插茱萸少一亲|共插茱萸少一人|王维《九月九日忆山东兄弟》
+劝君更尽一杯酒，|西出阳关无故人|西出阳关无旧人|西去阳关无故人|东出阳关无故人|王维《送元二使安西》
+桃花潭水深千尺，|不及汪伦送我情|不及汪伦赠我情|难及汪伦送我情|不及汪沦送我情|李白《赠汪伦》
+孤帆远影碧空尽，|唯见长江天际流|惟见长江天际流|唯见黄河天际流|唯见长江天外流|李白《送孟浩然之广陵》
+举头望明月，|低头思故乡|低头思故人|低头念故乡|抬头思故乡|李白《静夜思》
+飞流直下三千尺，|疑是银河落九天|疑似银河落九天|疑是星河落九天|宛是银河落九天|李白《望庐山瀑布》
+两岸猿声啼不住，|轻舟已过万重山|一叶轻舟过万山|轻舟已渡万重山|扁舟已过万重山|李白《早发白帝城》
+不知细叶谁裁出，|二月春风似剪刀|三月春风似剪刀|二月春风像剪刀|二月东风似剪刀|贺知章《咏柳》
+野火烧不尽，|春风吹又生|春风又复生|春风复又生|东风又吹生|白居易《赋得古原草送别》
+天苍苍，野茫茫，|风吹草低见牛羊|风吹草动见牛羊|风吹草低现牛羊|风过草低见牛羊|《敕勒歌》
+独怜幽草涧边生，|上有黄鹂深树鸣|上有黄莺深树鸣|上有黄鹂高树鸣|下有黄鹂深树鸣|韦应物《滁州西涧》
+日出而作，|日落而息|日入而息|日落而归|日落而眠|《击壤歌》
+结庐在人境，|而无车马喧|而无车马声|而无喧哗声|却无车马喧|陶渊明《饮酒》
+采菊东篱下，|悠然见南山|悠然望南山|悠悠见南山|闲然见南山|陶渊明《饮酒》
+羁鸟恋旧林，|池鱼思故渊|池鱼思旧渊|飞鸟思旧林|池鱼忆故渊|陶渊明《归园田居》
+晨兴理荒秽，|带月荷锄归|带月扛锄归|披月荷锄归|带月带锄归|陶渊明《归园田居》
+少壮不努力，|老大徒伤悲|老来徒伤悲|白首徒伤悲|老去徒伤悲|《长歌行》
+百川东到海，|何时复西归|何日复西归|何时再西归|几时复西归|《长歌行》
+山不在高，|有仙则名|有龙则灵|有人则名|有神则名|刘禹锡《陋室铭》
+水不在深，|有龙则灵|有仙则名|有鱼则灵|有神则灵|刘禹锡《陋室铭》
+先天下之忧而忧，|后天下之乐而乐|后天下之乐而欢|而后天下之乐|后天下人乐而乐|范仲淹《岳阳楼记》
+不以物喜，|不以己悲|不以己忧|不为己悲|不因己悲|范仲淹《岳阳楼记》
+醉翁之意不在酒，|在乎山水之间也|在乎山水之中也|在于山水之间也|在乎林泉之间也|欧阳修《醉翁亭记》
+野芳发而幽香，|佳木秀而繁阴|佳木秀而浓阴|好木秀而繁阴|佳木荣而繁阴|欧阳修《醉翁亭记》
+业精于勤，|荒于嬉|废于嬉|毁于嬉|疏于嬉|韩愈《进学解》
+千里之行，|始于足下|起于足下|始于是下|始于脚下|《老子》`;
+const WORDS_RAW = `ability|能力
+absorb|吸收
+abstract|抽象的
+accept|接受
+access|入口；获取
+accident|事故
+according|根据
+account|账户；解释
+achieve|实现
+across|横过
+active|积极的
+activity|活动
+actual|实际的
+adapt|适应
+addition|增加
+address|地址
+admire|钦佩
+admit|承认
+advance|前进
+advantage|优势
+adventure|冒险
+advertise|广告
+advice|建议
+affect|影响
+afford|负担得起
+afraid|害怕的
+afternoon|下午
+against|反对
+agency|机构
+ago|以前
+agree|同意
+agriculture|农业
+ahead|向前
+aim|目标
+air|空气
+airport|机场
+alarm|警报
+album|相册
+alcohol|酒精
+alive|活着的
+allow|允许
+almost|几乎
+alone|独自
+along|沿着
+already|已经
+also|也
+although|虽然
+always|总是
+amazing|惊人的
+ambition|雄心
+amount|数量
+ancient|古代的
+anger|愤怒
+angle|角度
+animal|动物
+announce|宣布
+annual|每年的
+answer|回答
+anxiety|焦虑
+apart|分开
+apology|道歉
+appear|出现
+apple|苹果
+apply|申请
+appoint|任命
+approach|接近；方法
+approve|批准
+argue|争论
+arm|手臂
+army|军队
+around|周围
+arrange|安排
+arrest|逮捕
+arrive|到达
+art|艺术
+article|文章
+artist|艺术家
+ask|问
+asleep|睡着的
+aspect|方面
+assist|帮助
+assume|假设
+athlete|运动员
+attach|附上
+attack|攻击
+attempt|尝试
+attend|参加
+attention|注意
+attitude|态度
+attract|吸引
+audience|观众
+author|作者
+autumn|秋天
+available|可用的
+average|平均
+avoid|避免
+awake|醒着的
+award|奖项
+aware|意识到的
+away|离开
+balance|平衡
+band|乐队
+bank|银行
+bar|酒吧；条
+bare|赤裸的
+base|基础
+basic|基本的
+basket|篮子
+bath|洗澡
+battle|战斗
+beach|海滩
+bear|熊；承受
+beat|打
+beauty|美丽
+because|因为
+become|成为
+bed|床
+before|之前
+begin|开始
+behave|表现
+behind|在后面
+believe|相信
+belong|属于
+below|在下面
+bend|弯曲
+benefit|好处
+beside|在旁边
+best|最好的
+better|更好的
+between|在之间
+beyond|超过
+bicycle|自行车
+big|大的
+bind|捆绑
+biology|生物学
+bird|鸟
+birth|出生
+bit|一点
+bite|咬
+black|黑色的
+blame|责备
+blank|空白
+blind|瞎的
+block|阻挡
+blood|血
+blow|吹
+blue|蓝色的
+board|板；上船
+boat|船
+body|身体
+bold|大胆的
+bone|骨头
+book|书
+boost|促进
+boot|靴子
+border|边界
+boring|无聊的
+borrow|借
+boss|老板
+both|两者
+bottle|瓶子
+bottom|底部
+bounce|弹起
+bound|界限
+bowl|碗
+box|盒子
+boy|男孩
+brain|大脑
+branch|分支
+brave|勇敢的
+bread|面包
+break|打破
+breakfast|早餐
+breath|呼吸
+brick|砖
+bridge|桥
+brief|简短的
+bright|明亮的
+bring|带来
+broad|宽的
+brother|兄弟
+brown|棕色的
+brush|刷
+build|建造
+burn|燃烧
+burst|爆发
+bury|埋葬
+bus|公共汽车
+bush|灌木
+business|生意
+busy|忙的
+but|但是
+butter|黄油
+button|按钮
+buy|买
+cabin|小屋
+cable|电缆
+cake|蛋糕
+calm|平静的
+camera|相机
+camp|营地
+can|能
+cancel|取消
+candle|蜡烛
+cap|帽子
+capital|首都
+captain|船长
+capture|捕获
+car|汽车
+carbon|碳
+card|卡片
+care|关心
+career|职业
+careful|小心的
+carry|携带
+case|情况
+cash|现金
+cast|投掷
+castle|城堡
+cat|猫
+catch|抓住
+cause|原因
+cease|停止
+ceiling|天花板
+celebrate|庆祝
+cell|细胞
+center|中心
+century|世纪
+certain|确定的
+chain|链条
+chair|椅子
+challenge|挑战
+chance|机会
+change|改变
+channel|频道
+chapter|章节
+character|角色
+charge|收费
+chart|图表
+chase|追逐
+cheap|便宜的
+check|检查
+cheek|脸颊
+cheer|欢呼
+cheese|奶酪
+chemical|化学的
+chest|胸部
+chicken|鸡
+chief|主要的
+child|孩子
+choice|选择
+choose|选择
+church|教堂
+circle|圆圈
+citizen|公民
+city|城市
+civil|民用的
+claim|声称
+class|班级
+clean|干净的
+clear|清楚的
+clever|聪明的
+climb|爬
+clock|时钟
+close|关闭
+cloth|布
+cloud|云
+club|俱乐部
+clue|线索
+coach|教练
+coast|海岸
+coat|外套
+code|代码
+coffee|咖啡
+cold|冷的
+collect|收集
+college|大学
+color|颜色
+combine|结合
+come|来
+comfort|舒适
+command|命令
+comment|评论
+common|常见的
+company|公司
+compare|比较
+compete|竞争
+complain|抱怨
+complete|完成
+complex|复杂的
+concept|概念
+concern|关心
+conclude|得出结论
+condition|条件
+conduct|进行
+confidence|信心
+confirm|确认
+conflict|冲突
+confuse|使困惑
+connect|连接
+consider|考虑
+consist|组成
+contact|联系
+contain|包含
+content|内容
+contest|比赛
+continue|继续
+contract|合同
+contrast|对比
+control|控制
+conversation|对话
+convert|转换
+convince|说服
+cook|烹饪
+cool|凉爽的
+copy|复制
+corner|角落
+correct|正确的
+cost|花费
+cotton|棉花
+cough|咳嗽
+count|计数
+country|国家
+county|县
+couple|一对
+courage|勇气
+course|课程
+court|法庭；球场
+cover|覆盖
+cow|奶牛
+crack|裂缝
+craft|工艺
+crash|碰撞
+crazy|疯狂的
+cream|奶油
+create|创造
+credit|信用
+crew|船员
+crime|犯罪
+crisis|危机
+critic|评论家
+crop|作物
+cross|穿过
+crowd|人群
+crucial|关键的
+cruel|残酷的
+cry|哭
+culture|文化
+cup|杯子
+cure|治愈
+curious|好奇的
+current|当前的
+curve|曲线
+custom|习俗
+cut|切
+cycle|循环
+damage|损害
+dance|跳舞
+danger|危险
+dark|黑暗的
+data|数据
+date|日期
+daughter|女儿
+day|天
+dead|死的
+deal|交易
+dear|亲爱的
+death|死亡
+debate|辩论
+debt|债务
+decade|十年
+decide|决定
+declare|宣布
+decline|下降
+decorate|装饰
+deep|深的
+defeat|击败
+defend|防守
+define|定义
+degree|程度
+delay|延迟
+deliver|交付
+demand|要求
+deny|否认
+depend|依靠
+deposit|存款
+depth|深度
+derive|源自
+describe|描述
+desert|沙漠
+deserve|值得
+design|设计
+desire|渴望
+desk|书桌
+destroy|破坏
+detail|细节
+detect|检测
+develop|发展
+device|装置
+devote|奉献
+dialogue|对话
+diet|饮食
+differ|不同
+difficult|困难的
+dig|挖
+dinner|晚餐
+direct|直接的
+dirty|脏的
+disagree|不同意
+disappear|消失
+disaster|灾难
+discover|发现
+discuss|讨论
+disease|疾病
+dish|盘子
+distance|距离
+divide|分开
+doctor|医生
+document|文件
+dog|狗
+dollar|美元
+door|门
+double|双倍的
+doubt|怀疑
+down|向下
+dozen|一打
+draw|画
+dream|梦
+dress|连衣裙
+drink|喝
+drive|驾驶
+drop|掉落
+dry|干的
+duck|鸭子
+duty|职责
+each|每个
+eager|渴望的
+ear|耳朵
+early|早的
+earn|赚
+earth|地球
+ease|轻松
+east|东方
+easy|容易的
+eat|吃
+economy|经济
+edge|边缘
+educate|教育
+effect|效果
+effort|努力
+egg|鸡蛋
+eight|八
+either|两者之一
+elect|选举
+electric|电的
+element|元素
+else|其他
+emerge|出现
+emergency|紧急情况
+emotion|情感
+employ|雇用
+empty|空的
+enable|使能够
+end|结束
+enemy|敌人
+energy|能量
+engage|参与
+engine|引擎
+enjoy|享受
+enough|足够的
+enter|进入
+entire|整个的
+equal|相等的
+equipment|设备
+error|错误
+escape|逃跑
+especially|尤其
+essay|文章
+essential|必要的
+establish|建立
+estimate|估计
+even|甚至
+event|事件
+ever|曾经
+every|每个
+evidence|证据
+exact|精确的
+example|例子
+excellent|优秀的
+except|除…之外
+exchange|交换
+excite|使兴奋
+excuse|借口
+exercise|锻炼
+exist|存在
+expand|扩大
+expect|期待
+expense|费用
+experience|经验
+experiment|实验
+expert|专家
+explain|解释
+explore|探索
+export|出口
+express|表达
+extend|延长
+extra|额外的
+face|脸
+fact|事实
+factor|因素
+factory|工厂
+fail|失败
+fair|公平的
+fall|落下
+false|假的
+familiar|熟悉的
+family|家庭
+famous|著名的
+farm|农场
+fashion|时尚
+fast|快的
+fat|胖的
+father|父亲
+fault|错误
+favor|恩惠
+fear|害怕
+feature|特征
+feed|喂养
+feel|感觉
+female|女性的
+fence|栅栏
+festival|节日
+fetch|取来
+few|少数
+field|田地
+fight|战斗
+figure|数字；人物
+fill|装满
+film|电影
+final|最后的
+find|找到
+fine|好的
+finger|手指
+finish|完成
+fire|火
+firm|公司
+first|第一
+fish|鱼
+fit|适合
+fix|修理
+flag|旗帜
+flat|平的
+flight|航班
+floor|地板
+flow|流动
+flower|花
+fly|飞
+focus|集中
+fog|雾
+fold|折叠
+follow|跟随
+food|食物
+foot|脚
+force|力量
+foreign|外国的
+forest|森林
+forget|忘记
+forgive|原谅
+form|形式
+former|前者的
+forward|向前
+free|自由的
+fresh|新鲜的
+friend|朋友
+frighten|使害怕
+from|从
+front|前面
+fruit|水果
+fuel|燃料
+full|满的
+fun|乐趣
+fund|资金
+funny|有趣的
+future|未来
+gain|获得
+game|游戏
+garden|花园
+gas|气体
+gather|聚集
+general|一般的
+generation|一代人
+gentle|温柔的
+get|得到
+gift|礼物
+girl|女孩
+give|给
+glad|高兴的
+glass|玻璃
+global|全球的
+go|去
+goal|目标
+god|神
+gold|黄金
+good|好的
+govern|统治
+grade|年级
+grand|宏伟的
+grant|授予
+grass|草
+gray|灰色的
+great|伟大的
+green|绿色的
+greet|问候
+ground|地面
+group|团体
+grow|生长
+guard|守卫
+guess|猜
+guest|客人
+guide|指导
+habit|习惯
+hair|头发
+half|一半
+hall|大厅
+hand|手
+handle|处理
+hang|悬挂
+happen|发生
+happy|快乐的
+hard|困难的
+harm|伤害
+harvest|收获
+hat|帽子
+hate|恨
+have|有
+head|头
+health|健康
+hear|听见
+heart|心脏
+heat|热
+heavy|重的
+height|高度
+help|帮助
+here|这里
+hero|英雄
+hide|隐藏
+high|高的
+hill|小山
+history|历史
+hit|打
+hold|握住
+hole|洞
+holiday|假日
+home|家
+honest|诚实的
+hope|希望
+horror|恐怖
+horse|马
+hospital|医院
+host|主人
+hot|热的
+hotel|旅馆
+hour|小时
+house|房子
+how|怎样
+human|人类的
+hundred|一百
+hungry|饥饿的
+hunt|打猎
+hurry|匆忙
+hurt|伤害
+husband|丈夫
+ice|冰
+idea|主意
+if|如果
+ignore|忽视
+ill|生病的
+image|形象
+imagine|想象
+impact|影响
+import|进口
+important|重要的
+improve|改善
+in|在…里
+include|包括
+increase|增加
+indeed|确实
+industry|工业
+infer|推断
+influence|影响
+inform|通知
+initial|最初的
+injure|伤害
+inner|内部的
+insect|昆虫
+inside|里面
+insist|坚持
+install|安装
+instance|实例
+instead|代替
+instruct|指导
+instrument|仪器
+intend|打算
+interest|兴趣
+internal|内部的
+international|国际的
+interview|采访
+into|进入
+introduce|介绍
+invent|发明
+invest|投资
+invite|邀请
+iron|铁
+island|岛
+issue|问题
+item|项目
+itself|它自己
+job|工作
+join|加入
+joke|笑话
+journey|旅程
+joy|欢乐
+judge|判断
+jump|跳
+just|仅仅
+keep|保持
+key|钥匙
+kick|踢
+kid|小孩
+kill|杀死
+kind|种类
+king|国王
+kiss|吻
+kitchen|厨房
+knee|膝盖
+knife|刀
+knock|敲
+know|知道
+label|标签
+labor|劳动
+lack|缺乏
+ladder|梯子
+lady|女士
+lake|湖
+lamp|灯
+land|土地
+language|语言
+large|大的
+last|最后的
+late|晚的
+laugh|笑
+launch|发射
+law|法律
+lay|放置
+lazy|懒的
+lead|带领
+leaf|叶子
+learn|学习
+least|最少
+leave|离开
+left|左边
+leg|腿
+legal|合法的
+lend|借出
+length|长度
+less|更少
+lesson|课
+let|让
+letter|信
+level|水平
+library|图书馆
+lie|躺；说谎
+life|生命
+lift|举起
+light|光
+like|喜欢
+limit|限制
+line|线
+link|连接
+lip|嘴唇
+list|列表
+listen|听
+little|小的
+live|生活
+load|装载
+local|当地的
+lock|锁
+lonely|孤独的
+long|长的
+look|看
+lose|失去
+loud|大声的
+love|爱
+low|低的
+luck|运气
+lunch|午餐
+machine|机器
+mad|疯的
+magazine|杂志
+main|主要的
+major|主要的
+make|制作
+man|男人
+manage|管理
+manner|方式
+many|许多
+map|地图
+march|行军
+mark|标记
+market|市场
+marry|结婚
+mass|大量
+master|主人
+match|比赛
+material|材料
+matter|事情
+may|可以
+maybe|也许
+me|我
+meal|一餐
+mean|意思是
+measure|测量
+meat|肉
+medical|医学的
+meet|遇见
+member|成员
+memory|记忆
+mend|修补
+mention|提到
+menu|菜单
+message|消息
+metal|金属
+method|方法
+middle|中间
+might|可能
+milk|牛奶
+mind|思想
+mine|我的
+minute|分钟
+mirror|镜子
+miss|错过
+mistake|错误
+mix|混合
+model|模型
+modern|现代的
+moment|时刻
+money|钱
+month|月
+moon|月亮
+more|更多
+morning|早上
+most|最多
+mother|母亲
+mountain|山
+mouth|嘴
+move|移动
+movie|电影
+much|许多
+music|音乐
+must|必须
+name|名字
+narrow|窄的
+nation|国家
+nature|自然
+near|近的
+necessary|必要的
+neck|脖子
+need|需要
+neighbor|邻居
+neither|两者都不
+nervous|紧张的
+never|从不
+new|新的
+news|新闻
+next|下一个
+nice|好的
+night|夜晚
+no|不
+noble|贵族的
+noise|噪音
+none|没有一个
+noon|中午
+normal|正常的
+north|北方
+nose|鼻子
+not|不
+note|笔记
+nothing|没有东西
+notice|注意
+novel|小说
+now|现在
+number|数字
+nurse|护士
+obey|服从
+object|物体
+observe|观察
+obtain|获得
+obvious|明显的
+occasion|场合
+occur|发生
+ocean|海洋
+odd|奇怪的
+of|…的
+off|离开
+offer|提供
+office|办公室
+often|经常
+oil|油
+old|老的
+on|在…上
+once|一次
+one|一
+only|只有
+open|打开
+operate|操作
+opinion|意见
+oppose|反对
+option|选择
+or|或者
+order|命令；顺序
+organize|组织
+other|其他
+ought|应该
+our|我们的
+out|出去
+outside|外面
+over|结束；在上方
+own|自己的
+pack|打包
+page|页
+pain|疼痛
+paint|画
+pair|一对
+palace|宫殿
+pale|苍白的
+paper|纸
+parent|父母
+park|公园
+part|部分
+particular|特别的
+partner|伙伴
+party|聚会
+pass|通过
+past|过去
+path|小路
+patient|病人
+pattern|模式
+pay|支付
+peace|和平
+pen|钢笔
+people|人们
+percent|百分比
+perfect|完美的
+perform|表演
+perhaps|也许
+period|时期
+person|人
+persuade|说服
+pet|宠物
+phone|电话
+photo|照片
+physical|身体的
+pick|挑选
+picture|图片
+piece|一块
+pink|粉色的
+place|地方
+plan|计划
+plant|植物
+plastic|塑料
+play|玩
+please|请
+pleasure|愉快
+plenty|大量
+point|点
+police|警察
+policy|政策
+polite|礼貌的
+political|政治的
+pool|水池
+poor|穷的
+popular|流行的
+position|位置
+positive|积极的
+possible|可能的
+post|邮寄
+pot|锅
+potato|土豆
+pound|磅
+power|力量
+practice|练习
+praise|赞扬
+prepare|准备
+present|现在的
+preserve|保存
+press|按
+pretty|漂亮的
+prevent|防止
+price|价格
+pride|骄傲
+primary|主要的
+print|印刷
+prison|监狱
+private|私人的
+prize|奖品
+probably|大概
+problem|问题
+process|过程
+produce|生产
+product|产品
+professor|教授
+profit|利润
+program|节目
+progress|进步
+promise|承诺
+promote|促进
+pronounce|发音
+proof|证据
+proper|适当的
+protect|保护
+proud|骄傲的
+prove|证明
+provide|提供
+public|公共的
+pull|拉
+punish|惩罚
+pupil|学生
+pure|纯的
+purpose|目的
+push|推
+put|放
+quality|质量
+quantity|数量
+quarter|四分之一
+question|问题
+quick|快的
+quiet|安静的
+quite|相当
+race|比赛；种族
+radio|收音机
+rail|铁轨
+rain|雨
+raise|举起；提高
+range|范围
+rapid|快速的
+rare|稀少的
+rate|比率
+rather|宁愿
+reach|到达
+read|读
+ready|准备好的
+real|真实的
+reason|原因
+receive|收到
+recent|最近的
+recognize|认出
+record|记录
+recover|恢复
+reduce|减少
+refer|参考
+reflect|反映
+refuse|拒绝
+regard|看待
+region|地区
+register|登记
+regret|后悔
+regular|规则的
+reject|拒绝
+relate|联系
+relax|放松
+release|释放
+relief|宽慰
+remain|保持
+remember|记得
+remind|提醒
+remove|移除
+repair|修理
+repeat|重复
+replace|替换
+reply|回答
+report|报告
+represent|代表
+require|需要
+rescue|营救
+research|研究
+reserve|保留
+resist|抵抗
+respect|尊重
+respond|回应
+responsible|负责的
+rest|休息
+restaurant|餐馆
+result|结果
+return|返回
+reveal|揭示
+review|复习
+reward|奖励
+rich|富有的
+ride|骑
+right|右边；正确的
+ring|戒指
+rise|升起
+risk|风险
+river|河流
+road|路
+rock|岩石
+role|角色
+roll|滚动
+roof|屋顶
+room|房间
+root|根
+rope|绳子
+round|圆的
+route|路线
+row|排
+rub|擦
+rude|无礼的
+ruin|毁灭
+rule|规则
+run|跑
+rush|冲
+sad|悲伤的
+safe|安全的
+sail|航行
+salt|盐
+same|相同的
+sand|沙子
+save|拯救
+say|说
+scale|规模
+scene|场景
+school|学校
+science|科学
+score|得分
+scream|尖叫
+screen|屏幕
+sea|海
+search|搜索
+season|季节
+seat|座位
+second|第二；秒
+secret|秘密
+section|部分
+see|看见
+seed|种子
+seek|寻找
+seem|似乎
+select|选择
+self|自我
+sell|卖
+send|发送
+sense|感觉
+sentence|句子
+separate|分开
+series|系列
+serious|严重的
+serve|服务
+service|服务
+set|设置
+settle|解决
+seven|七
+several|几个
+severe|严重的
+shake|摇动
+shall|将
+shame|羞耻
+shape|形状
+share|分享
+sharp|锋利的
+she|她
+sheep|绵羊
+sheet|床单
+shelf|架子
+shell|壳
+shelter|庇护所
+shift|转移
+shine|闪耀
+ship|船
+shirt|衬衫
+shoe|鞋
+shoot|射击
+shop|商店
+shore|岸
+short|短的
+should|应该
+shoulder|肩膀
+shout|喊
+show|展示
+shut|关闭
+sick|生病的
+side|边
+sight|视力
+sign|标志
+signal|信号
+silence|沉默
+silk|丝绸
+silly|愚蠢的
+silver|银
+similar|相似的
+simple|简单的
+since|自从
+sing|唱歌
+single|单一的
+sink|下沉
+sir|先生
+sister|姐妹
+sit|坐
+situation|情况
+six|六
+size|尺寸
+skill|技能
+skin|皮肤
+sky|天空
+sleep|睡觉
+slide|滑动
+slight|轻微的
+slow|慢的
+small|小的
+smart|聪明的
+smell|闻
+smile|微笑
+smoke|烟
+smooth|光滑的
+snake|蛇
+snow|雪
+so|所以
+soap|肥皂
+social|社会的
+society|社会
+soft|软的
+soil|土壤
+soldier|士兵
+solid|固体的
+solve|解决
+some|一些
+son|儿子
+song|歌
+soon|很快
+sore|疼痛的
+sorry|抱歉的
+sort|种类
+soul|灵魂
+sound|声音
+soup|汤
+source|来源
+south|南方
+space|空间
+speak|说话
+special|特别的
+speech|演讲
+speed|速度
+spell|拼写
+spend|花费
+spirit|精神
+split|分裂
+spoil|破坏
+sport|运动
+spot|地点
+spread|传播
+spring|春天
+square|广场；平方
+staff|员工
+stage|舞台
+stair|楼梯
+stand|站立
+standard|标准
+star|星星
+start|开始
+state|状态
+station|车站
+stay|停留
+steal|偷
+steam|蒸汽
+steel|钢
+step|步骤
+stick|棍子
+still|仍然
+stomach|胃
+stone|石头
+stop|停止
+store|商店
+storm|暴风雨
+story|故事
+straight|直的
+strange|奇怪的
+stranger|陌生人
+strategy|策略
+stream|溪流
+street|街道
+strength|力量
+stress|压力
+stretch|伸展
+strict|严格的
+strike|打击
+string|绳子
+strong|强的
+struggle|挣扎
+student|学生
+study|学习
+stupid|愚蠢的
+style|风格
+subject|主题
+succeed|成功
+success|成功
+such|这样的
+sudden|突然的
+suffer|遭受
+sugar|糖
+suggest|建议
+suit|适合
+summer|夏天
+sun|太阳
+supper|晚餐
+supply|供应
+support|支持
+suppose|假设
+sure|确定的
+surface|表面
+surprise|惊喜
+survive|幸存
+swim|游泳
+system|系统
+table|桌子
+take|拿
+talk|谈话
+tall|高的
+taste|味道
+tax|税
+tea|茶
+teach|教
+team|队伍
+tear|眼泪
+technology|技术
+telephone|电话
+tell|告诉
+temperature|温度
+temple|寺庙
+ten|十
+tend|倾向于
+term|术语；学期
+terrible|可怕的
+test|测试
+than|比
+thank|感谢
+that|那个
+the|这
+theatre|剧院
+their|他们的
+them|他们
+then|然后
+there|那里
+these|这些
+they|他们
+thick|厚的
+thin|薄的
+thing|东西
+think|想
+third|第三
+thirsty|渴的
+this|这个
+those|那些
+though|虽然
+thought|想法
+thousand|一千
+thread|线
+threat|威胁
+three|三
+throat|喉咙
+through|穿过
+throw|扔
+thumb|拇指
+thunder|雷
+thus|因此
+ticket|票
+tie|系
+tight|紧的
+till|直到
+time|时间
+tiny|微小的
+tip|尖端；小费
+tired|疲倦的
+title|标题
+to|到
+today|今天
+together|一起
+tomorrow|明天
+tongue|舌头
+tonight|今晚
+too|也；太
+tool|工具
+tooth|牙齿
+top|顶部
+total|总的
+touch|触摸
+toward|朝向
+tower|塔
+town|城镇
+toy|玩具
+trace|痕迹
+track|轨道
+trade|贸易
+tradition|传统
+traffic|交通
+train|火车；训练
+transfer|转移
+translate|翻译
+transport|运输
+travel|旅行
+treat|对待
+tree|树
+tremble|颤抖
+trip|旅行
+trouble|麻烦
+trousers|裤子
+truck|卡车
+true|真的
+trust|信任
+truth|真相
+try|尝试
+turn|转动
+twelve|十二
+twenty|二十
+twice|两次
+two|二
+type|类型
+ugly|丑的
+uncle|叔叔
+under|在下面
+understand|理解
+unhappy|不快乐的
+uniform|制服
+union|联盟
+unit|单位
+unite|联合
+universe|宇宙
+unless|除非
+until|直到
+up|向上
+upon|在…上
+upset|心烦的
+urban|城市的
+urge|催促
+use|使用
+useful|有用的
+usual|通常的
+value|价值
+variety|多样性
+various|各种的
+vast|广阔的
+vegetable|蔬菜
+vehicle|车辆
+very|非常
+victory|胜利
+view|观点
+village|村庄
+violence|暴力
+visit|参观
+voice|声音
+volume|音量；卷
+vote|投票
+wait|等待
+wake|醒来
+walk|走
+wall|墙
+want|想要
+war|战争
+warm|温暖的
+warn|警告
+wash|洗
+waste|浪费
+watch|手表；观看
+water|水
+wave|波浪
+way|方式
+weak|弱的
+wealth|财富
+wear|穿
+weather|天气
+week|周
+weigh|称重
+weight|重量
+welcome|欢迎
+well|好
+west|西方
+wet|湿的
+what|什么
+wheat|小麦
+wheel|轮子
+when|当…时
+where|哪里
+whether|是否
+which|哪个
+while|当…时
+whisper|低语
+white|白色的
+who|谁
+whole|整个的
+why|为什么
+wide|宽的
+wife|妻子
+wild|野生的
+will|将
+win|赢
+wind|风
+window|窗户
+wine|葡萄酒
+wing|翅膀
+winter|冬天
+wire|电线
+wise|明智的
+wish|希望
+with|和
+within|在里面
+without|没有
+woman|女人
+wonder|想知道
+wood|木头
+word|单词
+work|工作
+world|世界
+worry|担心
+worse|更坏的
+worth|值得
+would|将
+wound|伤口
+write|写
+wrong|错误的
+yard|院子
+year|年
+yellow|黄色的
+yes|是
+yesterday|昨天
+yet|还
+you|你
+young|年轻的
+your|你的
+youth|青春
+zero|零
+zone|地带`;
+
+const POEMS = POEMS_RAW.split('\n').filter(function (l) { return l.indexOf('|') > 0; }).map(function (line, i) {
+  const c = line.split('|');
+  return { id: 'p' + i, q: c[0], a: c[1], w: [c[1], c[2], c[3], c[4]], src: c[5] || '' };
+});
+
+const WORDS = WORDS_RAW.split('\n').filter(function (l) { return l.indexOf('|') > 0; }).map(function (line, i) {
+  const c = line.split('|');
+  return { id: 'w' + i, en: c[0].trim(), zh: c[1].trim() };
+});
 
 /* ================= 状态 ================= */
 const S = {
@@ -1450,6 +3084,91 @@ function viewReport() {
     if (ws.length > 1) delta = Math.round((w.weight - ws[0].weight) * 10) / 10;
   }
 
+  // 餐次热量分布
+  const mealKcal = { breakfast: 0, lunch: 0, dinner: 0, snack: 0 };
+  logged.forEach(function (r) {
+    (store.data.logs[r.date] || []).forEach(function (x) {
+      if (mealKcal[x.meal] === undefined) mealKcal[x.meal] = 0;
+      mealKcal[x.meal] += (x.kcal || 0);
+    });
+  });
+  const mealSum = Object.keys(mealKcal).reduce(function (s, k) { return s + mealKcal[k]; }, 0) || 1;
+  const mealMix = [
+    { k: 'breakfast', n: '早餐', c: '#f59e0b' },
+    { k: 'lunch', n: '午餐', c: '#12a05b' },
+    { k: 'dinner', n: '晚餐', c: '#3b82f6' },
+    { k: 'snack', n: '加餐', c: '#a855f7' }
+  ].map(function (m) {
+    return { n: m.n, c: m.c, pct: Math.round(mealKcal[m.k] / mealSum * 100), kcal: Math.round(mealKcal[m.k]) };
+  });
+
+  // 常吃食物 Top5
+  const foodCount = {};
+  Object.keys(store.data.logs).forEach(function (dt) {
+    (store.data.logs[dt] || []).forEach(function (x) {
+      if (!foodCount[x.name]) foodCount[x.name] = { c: 0, kcal: 0 };
+      foodCount[x.name].c += 1;
+      foodCount[x.name].kcal += (x.kcal || 0);
+    });
+  });
+  const topFoods = Object.keys(foodCount)
+    .map(function (n) { return { n: n, c: foodCount[n].c, kcal: Math.round(foodCount[n].kcal) }; })
+    .sort(function (a, b) { return b.c - a.c; })
+    .slice(0, 5);
+
+  // 连续记录天数
+  let streakDays = 0;
+  let curD = todayStr();
+  while ((store.data.logs[curD] || []).length) {
+    streakDays += 1;
+    curD = addDays(curD, -1);
+    if (streakDays > 999) break;
+  }
+
+  // 本周 vs 上周日均
+  const wkStart = weekKey(todayStr());
+  let thisSum = 0, thisN = 0, lastSum = 0, lastN = 0;
+  Object.keys(store.data.logs).forEach(function (dt) {
+    const s2 = N_sumDay(store.data.logs[dt]);
+    if (weekKey(dt) === wkStart) { thisSum += s2; thisN += 1; }
+    else if (weekKey(dt) === weekKey(addDays(wkStart, -7))) { lastSum += s2; lastN += 1; }
+  });
+  const thisAvg = thisN ? Math.round(thisSum / thisN) : 0;
+  const lastAvg = lastN ? Math.round(lastSum / lastN) : 0;
+  const avgDelta = thisAvg && lastAvg ? thisAvg - lastAvg : 0;
+
+  const extraCards =
+    '<div class="card"><div class="row between" style="margin-bottom:4px">' +
+    '<b style="font-size:15px">餐次热量分布</b><span class="xs mute">近 ' + range + ' 天</span></div>' +
+    '<div class="mixbar">' + mealMix.map(function (m) {
+      return '<i style="width:' + m.pct + '%;background:' + m.c + '"></i>';
+    }).join('') + '</div>' +
+    '<div class="mixlg">' + mealMix.map(function (m) {
+      return '<span><b>' + m.n + ' ' + m.pct + '%</b> ' + m.kcal + 'kcal</span>';
+    }).join('') + '</div></div>' +
+
+    (topFoods.length
+      ? '<div class="card"><div class="row between" style="margin-bottom:4px">' +
+        '<b style="font-size:15px">最常吃</b><span class="xs mute">全部记录累计</span></div>' +
+        topFoods.map(function (f, i) {
+          return '<div class="topfood"><span class="rk">' + (i + 1) + '</span>' +
+            '<span class="nm">' + esc(f.n) + '</span>' +
+            '<span class="ct">' + f.c + ' 次</span></div>';
+        }).join('') + '</div>'
+      : '') +
+
+    '<div class="card"><div class="row between">' +
+    '<b style="font-size:15px">坚持情况</b>' +
+    '<span class="xs mute">本周 vs 上周</span></div>' +
+    '<div class="streak" style="margin-top:8px"><b>' + streakDays + '</b>' +
+    '<span class="sm mute">天连续记录</span></div>' +
+    '<div class="row between" style="margin-top:10px;font-size:12px;color:var(--mute)">' +
+    '<span>本周日均 <b style="color:var(--ink)">' + thisAvg + '</b> kcal</span>' +
+    '<span>上周日均 <b style="color:var(--ink)">' + lastAvg + '</b> kcal</span>' +
+    (avgDelta ? '<span style="color:' + (avgDelta > 0 ? 'var(--red)' : 'var(--green)') + '">' +
+      (avgDelta > 0 ? '+' : '') + avgDelta + '</span>' : '') +
+    '</div></div>';
+
   const tips = [];
   if (!logged.length) {
     tips.push('还没有记录，先去「今日」添加一餐吧');
@@ -1503,6 +3222,7 @@ function viewReport() {
       (delta > 0 ? '↑ ' + delta : (delta < 0 ? '↓ ' + (-delta) : '— 0')) + ' kg</div></div>' +
       '<div class="xs mute" style="margin-top:8px">最近记录 ' + w.date + '，变化为区间首尾差</div></div>' : '') +
 
+    extraCards +
     '<div class="card"><b style="font-size:15px">建议</b><div style="margin-top:10px">' +
     tips.map(function (x) { return '<div class="adv"><i>•</i><p>' + esc(x) + '</p></div>'; }).join('') +
     '</div></div>' +
@@ -1751,7 +3471,7 @@ function trainRow(group, it, i, isCustom) {
 
 /* ---------------- 训练计划 ---------------- */
 function planData() {
-  if (!store.data.plan) store.data.plan = { split: 'ppl3', days: {}, cycle: 0, checkins: {}, coins: 0, weekPaid: {}, buffs: {} };
+  if (!store.data.plan) store.data.plan = { split: 'ppl3_a', days: {}, cycle: 0, checkins: {}, coins: 0, weekPaid: {}, buffs: {} };
   const p = store.data.plan;
   p.coins = p.coins || 0;
   p.checkins = p.checkins || {};
@@ -1774,12 +3494,12 @@ function weekCheckins() {
 }
 function todayDayIndex() {
   const p = planData();
-  const sp = SPLITS[p.split] || SPLITS.ppl3;
+  const sp = SPLITS[p.split] || SPLITS.ppl3_a;
   return p.cycle % sp.days.length;
 }
 function dayGroups(idx) {
   const p = planData();
-  const sp = SPLITS[p.split] || SPLITS.ppl3;
+  const sp = SPLITS[p.split] || SPLITS.ppl3_a;
   const custom = p.days[p.split + '#' + idx];
   if (custom) return custom.slice();
   const d = sp.days[idx] || { g: [] };
@@ -1810,7 +3530,7 @@ function weeklyPlan() {
 
 function viewPlan() {
   const p = planData();
-  const sp = SPLITS[p.split] || SPLITS.ppl3;
+  const sp = SPLITS[p.split] || SPLITS.ppl3_a;
   const idx = todayDayIndex();
   const today = todayStr();
   const groups = dayGroups(idx);
@@ -1861,6 +3581,8 @@ function viewPlan() {
     '<div class="qa" data-act="game" data-g="pong"><span>🏓</span>电子乒乓</div>' +
     '<div class="qa" data-act="game" data-g="whack"><span>🐹</span>打地鼠</div>' +
     '<div class="qa" data-act="game" data-g="poem"><span>📜</span>古诗填空</div>' +
+    '<div class="qa" data-act="game" data-g="word"><span>🔤</span>单词拼写</div>' +
+    '<div class="qa" data-act="game" data-g="scratch"><span>🎟️</span>刮刮乐</div>' +
     '</div>' +
     '<div class="btn gray" style="margin-top:10px" data-act="shop">场外商店 · 用代币换永久加成</div></div>';
 }
@@ -1948,6 +3670,10 @@ function gapBox(intake, t, over) {
 }
 
 /* 体重迷你趋势 */
+function N_sumDay(list) {
+  return (list || []).reduce(function (s, r) { return s + (r.kcal || 0); }, 0);
+}
+
 function sparkline(pts) {
   if (!pts || pts.length < 2) return '';
   const vals = pts.map(function (p) { return p.weight; });
@@ -1981,6 +3707,7 @@ function buildBackup() {
     videos: store.data.videos || {},
     barcodes: store.data.barcodes || {},
     plan: store.data.plan || {},
+    quizDone: store.data.quizDone || { poem: [], word: [] },
     settings: store.data.settings || DEFAULT_SETTINGS,
     hasBgImage: !!BG_IMAGE
   });
@@ -2125,6 +3852,17 @@ function applyBackup(text) {
       bc[k] = d.barcodes[k];
     });
     store.data.barcodes = bc;
+    touched = true;
+  }
+
+  if (d.quizDone && typeof d.quizDone === 'object') {
+    const qd = { poem: [], word: [] };
+    ['poem', 'word'].forEach(function (k) {
+      if (Array.isArray(d.quizDone[k])) {
+        qd[k] = d.quizDone[k].filter(function (x) { return typeof x === 'string'; });
+      }
+    });
+    store.data.quizDone = qd;
     touched = true;
   }
 
@@ -2295,7 +4033,9 @@ function buffLv(id) {
 const GAME_META = {
   pong: { name: '电子乒乓', hint: '拖动手指控制球拍，接到球就得分。球速会越来越快。' },
   whack: { name: '打地鼠', hint: '地鼠冒头就点它，30 秒看你能打几只。' },
-  poem: { name: '古诗填空', hint: '选出正确的下句，答错不扣分但很浪费时间。' }
+  poem: { name: '古诗填空', hint: '选出正确的下句，答错不扣分但很浪费时间。答对不再重复出现。' },
+  word: { name: '单词拼写', hint: '看中文拼英文，90 秒内尽量多拼。答过的不再重复。' },
+  scratch: { name: '刮刮乐', hint: '10 代币一张，刮开 3 格。三个相同数字中奖，三个空则没中。' }
 };
 
 function viewGame() {
@@ -2316,6 +4056,8 @@ function bootGame(kind) {
   if (!host) return;
   if (kind === 'whack') bootWhack(host);
   else if (kind === 'poem') bootPoem(host);
+  else if (kind === 'word') bootWord(host);
+  else if (kind === 'scratch') bootScratch(host);
   else bootPong(host);
 }
 
@@ -2489,31 +4231,54 @@ function bootWhack(host) {
 }
 
 /* ---------- 古诗填空 ---------- */
-function bootPoem(host) {
-  const extra = buffLv('poem_time') * 15;
-  const hints = buffLv('poem_hint');
-  let total = 60 + extra;
-  let cur = 0, right = 0, over = false, locked = false;
-  const order = POEMS.map(function (_, i) { return i; }).sort(function () { return Math.random() - 0.5; });
+function quizPool(kind, all) {
+  const qd = store.data.quizDone || (store.data.quizDone = { poem: [], word: [] });
+  const done = qd[kind] || [];
+  return all.filter(function (x) { return done.indexOf(x.id) < 0; });
+}
+function markDone(kind, id) {
+  const qd = store.data.quizDone || (store.data.quizDone = { poem: [], word: [] });
+  const arr = qd[kind] || [];
+  if (arr.indexOf(id) < 0) arr.push(id);
+  qd[kind] = arr;
+  store.save();
+}
 
+function bootPoem(host) {
+  const hints = buffLv('poem_hint');
+  const pool = quizPool('poem', POEMS);
+  let total = 999, right = 0, over = false, locked = false, answered = 0;
+  const totalCount = pool.length;
+
+  if (!pool.length) {
+    host.innerHTML = '<div class="gamewrap"><div class="gres">' +
+      '<div class="sub">古诗已经全部答完了 🎉</div>' +
+      '<div class="btn gray" style="margin:16px auto 0;width:180px" data-act="resetquiz" data-k="poem">重置古诗题库</div>' +
+      '</div></div>';
+    return;
+  }
+
+  const start = Date.now();
   host.innerHTML = '<div class="gamewrap">' +
-    '<div class="gamehead"><b>古诗填空</b><span class="gclock" id="gclock">' + total + 's</span></div>' +
+    '<div class="gamehead"><b>古诗填空</b><span class="gclock" id="gclock">0:00</span></div>' +
     '<div class="gstage quiz" id="quizbox" style="padding:14px"></div>' +
     '<div class="row between" style="margin-top:8px;font-size:12px;color:var(--mute)">' +
     '<span>答对 <b id="gscore" style="color:var(--ink)">0</b></span>' +
-    '<span id="gprog">1 / ' + POEMS.length + '</span></div></div>';
+    '<span id="gprog">剩余 ' + totalCount + ' 题</span></div></div>';
 
   const box = document.getElementById('quizbox');
+  let idx = 0;
 
   const draw = function () {
-    const q = POEMS[order[cur % order.length]];
+    if (idx >= pool.length) { finish(); return; }
+    const q = pool[idx];
     const opts = q.w.slice().sort(function () { return Math.random() - 0.5; });
-    const removeN = hints;
     box.innerHTML = '<div class="qt">' + esc(q.q) + '</div>' +
-      opts.map(function (o, i) {
-        return '<div class="qo" data-o="' + i + '" data-v="' + esc(o) + '">' + esc(o) + '</div>';
+      opts.map(function (o) {
+        return '<div class="qo" data-v="' + esc(o) + '">' + esc(o) + '</div>';
       }).join('') +
-      (removeN ? '<div class="xs mute" style="margin-top:6px" id="hintbtn" data-n="' + removeN + '">排除一个错误选项（' + removeN + ' 次）</div>' : '');
+      (hints ? '<div class="xs mute" style="margin-top:6px" id="hintbtn">排除一个错误选项（' + hints + ' 次）</div>' : '') +
+      '<div class="xs mute" style="margin-top:8px">' + esc(q.src) + '</div>';
 
     box.querySelectorAll('.qo').forEach(function (el) {
       el.addEventListener('click', function () {
@@ -2523,23 +4288,19 @@ function bootPoem(host) {
         if (v === q.a) {
           right += 1;
           el.classList.add('ok');
-          const se = document.getElementById('gscore');
-          if (se) se.textContent = right;
         } else {
           el.classList.add('bad');
           box.querySelectorAll('.qo').forEach(function (x) {
             if (x.getAttribute('data-v') === q.a) x.classList.add('ok');
           });
         }
-        setTimeout(function () {
-          locked = false;
-          cur += 1;
-          if (!over) {
-            const pe = document.getElementById('gprog');
-            if (pe) pe.textContent = ((cur % POEMS.length) + 1) + ' / ' + POEMS.length;
-            draw();
-          }
-        }, 520);
+        markDone('poem', q.id);
+        answered += 1;
+        const se = document.getElementById('gscore');
+        if (se) se.textContent = right;
+        const pe = document.getElementById('gprog');
+        if (pe) pe.textContent = '剩余 ' + (totalCount - answered) + ' 题';
+        setTimeout(function () { locked = false; idx += 1; draw(); }, 480);
       });
     });
 
@@ -2547,48 +4308,205 @@ function bootPoem(host) {
     if (hb) {
       hb.addEventListener('click', function () {
         if (over || locked) return;
-        const wrongOnes = [];
+        const wrong = [];
         box.querySelectorAll('.qo').forEach(function (x) {
-          if (x.getAttribute('data-v') !== q.a && !x.classList.contains('gone')) wrongOnes.push(x);
+          if (x.getAttribute('data-v') !== q.a && !x.classList.contains('gone')) wrong.push(x);
         });
-        const n = Math.min(Number(hb.getAttribute('data-n')), wrongOnes.length - 1);
-        if (n <= 0) return;
-        for (let i = 0; i < n; i++) {
-          if (wrongOnes[i]) {
-            wrongOnes[i].classList.add('gone');
-            wrongOnes[i].style.opacity = '.28';
-            wrongOnes[i].style.textDecoration = 'line-through';
-          }
+        if (wrong[0]) {
+          wrong[0].classList.add('gone');
+          wrong[0].style.opacity = '.25';
+          wrong[0].style.textDecoration = 'line-through';
         }
         hb.remove();
       });
     }
   };
 
-  const finish = function () {
+  function finish() {
     over = true;
+    const sec = Math.round((Date.now() - start) / 1000);
     const got = Math.max(1, right * 2);
     addCoins(got);
     stopGames();
-    box.innerHTML = '<div class="gres" style="padding:60px 0">' +
-      '<div class="big">' + right + '</div>' +
-      '<div class="sub">答对 ' + right + ' 题 · 获得 ' + got + ' 代币</div></div>';
+    box.innerHTML = '<div class="gres"><div class="big">' + right + '</div>' +
+      '<div class="sub">答完 ' + answered + ' 题 · 用时 ' + fmtSec(sec) + ' · 获得 ' + got + ' 代币</div></div>';
     setTimeout(function () { toast('获得 ' + got + ' 代币'); }, 60);
+  }
+
+  GT = { timer: setInterval(function () {
+    const el2 = document.getElementById('gclock');
+    if (el2) el2.textContent = fmtSec(Math.round((Date.now() - start) / 1000));
+  }, 500) };
+  draw();
+}
+
+function fmtSec(s) {
+  const m = Math.floor(s / 60), r = s % 60;
+  return m + ':' + (r < 10 ? '0' : '') + r;
+}
+
+/* ---------- 单词拼写 ---------- */
+function bootWord(host) {
+  const reveal = buffLv('word_reveal');
+  const pool = quizPool('word', WORDS);
+  let total = 90, right = 0, over = false, locked = false, answered = 0;
+  const totalCount = pool.length;
+
+  if (!pool.length) {
+    host.innerHTML = '<div class="gamewrap"><div class="gres">' +
+      '<div class="sub">单词已经全部拼完了 🎉</div>' +
+      '<div class="btn gray" style="margin:16px auto 0;width:180px" data-act="resetquiz" data-k="word">重置单词题库</div>' +
+      '</div></div>';
+    return;
+  }
+
+  host.innerHTML = '<div class="gamewrap">' +
+    '<div class="gamehead"><b>单词拼写</b><span class="gclock" id="gclock">' + total + 's</span></div>' +
+    '<div class="gstage" id="wordbox" style="padding:16px"></div>' +
+    '<div class="row between" style="margin-top:8px;font-size:12px;color:var(--mute)">' +
+    '<span>拼对 <b id="gscore" style="color:var(--ink)">0</b></span>' +
+    '<span id="gprog">剩余 ' + totalCount + ' 个</span></div></div>';
+
+  const box = document.getElementById('wordbox');
+  let idx = 0;
+
+  const draw = function () {
+    if (idx >= pool.length) { finish(); return; }
+    const w = pool[idx];
+    const hint = reveal ? w.en.slice(0, reveal) + new Array(w.en.length - reveal + 1).join('·') : '';
+    box.innerHTML = '<div class="qt" style="font-size:20px;text-align:center;margin:18px 0 6px">' + esc(w.zh) + '</div>' +
+      (hint ? '<div class="xs mute" style="text-align:center;letter-spacing:2px">' + esc(hint) + '</div>' : '') +
+      '<input id="wordin" autocomplete="off" autocapitalize="off" spellcheck="false" ' +
+      'style="width:100%;height:46px;margin-top:14px;border-radius:12px;background:var(--el2);' +
+      'padding:0 14px;font-size:17px;text-align:center;letter-spacing:1px" placeholder="拼出英文">' +
+      '<div class="btn" style="margin-top:12px" data-act="wordsubmit">提交</div>' +
+      '<div class="xs mute" style="text-align:center;margin-top:8px">回车也能提交</div>';
+    const inp = document.getElementById('wordin');
+    if (inp) {
+      inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') submitWord(); });
+      setTimeout(function () { try { inp.focus(); } catch (e2) { } }, 80);
+    }
   };
 
-  GT = { timer: null, raf: null };
-  GT.timer = setInterval(function () {
+  function submitWord() {
+    if (over || locked) return;
+    const inp = document.getElementById('wordin');
+    const val = ((inp && inp.value) || '').trim().toLowerCase();
+    if (!val) { toast('先拼一下'); return; }
+    locked = true;
+    const w = pool[idx];
+    let ok = val === w.en.toLowerCase();
+    if (ok) {
+      right += 1;
+      const se = document.getElementById('gscore');
+      if (se) se.textContent = right;
+    }
+    markDone('word', w.id);
+    answered += 1;
+    const pe = document.getElementById('gprog');
+    if (pe) pe.textContent = '剩余 ' + (totalCount - answered) + ' 个';
+    if (!ok) toast('正确写法：' + w.en);
+    setTimeout(function () { locked = false; idx += 1; draw(); }, ok ? 260 : 900);
+  }
+
+  function finish() {
+    over = true;
+    const got = Math.max(1, right);
+    addCoins(got);
+    stopGames();
+    box.innerHTML = '<div class="gres"><div class="big">' + right + '</div>' +
+      '<div class="sub">拼对 ' + right + ' 个 · 获得 ' + got + ' 代币</div></div>';
+    setTimeout(function () { toast('获得 ' + got + ' 代币'); }, 60);
+  }
+
+  GT = { timer: setInterval(function () {
     if (over) return;
     total -= 1;
     const ce = document.getElementById('gclock');
     if (ce) ce.textContent = total + 's';
     if (total <= 0) finish();
-  }, 1000);
+  }, 1000) };
 
   draw();
+  GT.submit = submitWord;
+  window.__wordSubmit = submitWord;
+}
+
+/* ---------- 刮刮乐 ---------- */
+const SCRATCH_TABLE = [
+  { v: 0, p: 0.18 }, { v: 4, p: 0.12 }, { v: 5, p: 0.12 },
+  { v: 8, p: 0.18 }, { v: 10, p: 0.15 }, { v: 15, p: 0.20 }, { v: 20, p: 0.05 }
+];
+
+function rollScratch() {
+  const r = Math.random();
+  let acc = 0;
+  for (let i = 0; i < SCRATCH_TABLE.length; i++) {
+    acc += SCRATCH_TABLE[i].p;
+    if (r <= acc) return SCRATCH_TABLE[i].v;
+  }
+  return 0;
+}
+
+function bootScratch(host) {
+  const p = planData();
+  const luck = buffLv('scratch_luck');
+  let picked = [], result = null, settled = false;
+
+  const draw = function () {
+    const cells = [];
+    for (let i = 0; i < 36; i++) {
+      const on = picked.indexOf(i) > -1;
+      const val = on && result !== null ? (result === 0 ? '空' : result) : '';
+      cells.push('<div class="scratchcell ' + (on ? 'open' : '') + '" data-i="' + i + '">' + val + '</div>');
+    }
+    host.innerHTML = '<div class="gamewrap">' +
+      '<div class="gamehead"><b>刮刮乐</b><span class="gclock">' + (picked.length) + '/3</span></div>' +
+      '<div class="gstage" style="padding:10px"><div class="scratchgrid">' + cells.join('') + '</div></div>' +
+      '<div class="row between" style="margin-top:10px;font-size:12px;color:var(--mute)">' +
+      '<span>代币 <b style="color:var(--ink)">' + planData().coins + '</b></span>' +
+      '<span>' + (result === null ? '刮开 3 格揭晓' : (result === 0 ? '三个空，没中' : '刮中三个 ' + result + '！')) + '</span></div>' +
+      (settled
+        ? '<div class="btn" style="margin-top:12px" data-act="game" data-g="scratch">再买一张（10 代币）</div>'
+        : '') +
+      '</div>';
+  };
+
+  if ((planData().coins || 0) < 10) {
+    host.innerHTML = '<div class="gamewrap"><div class="gres">' +
+      '<div class="sub">代币不足，先完成一次训练打卡吧</div></div></div>';
+    return;
+  }
+  if (!S.scratchPaid) {
+    addCoins(-10);
+    S.scratchPaid = true;
+    result = rollScratch();
+    if (result === 0 && luck) result = 4;
+  }
+
+  host.addEventListener('click', function (e) {
+    const cell = e.target.closest('.scratchcell');
+    if (!cell || settled) return;
+    const i = Number(cell.dataset.i);
+    if (picked.indexOf(i) > -1 || picked.length >= 3) return;
+    picked.push(i);
+    if (picked.length === 3) {
+      settled = true;
+      if (result > 0) addCoins(result);
+      setTimeout(function () {
+        toast(result > 0 ? '刮中三个 ' + result + '，+' + result + ' 代币' : '三个空，没中');
+      }, 80);
+    }
+    draw();
+  });
+
+  draw();
+  if (picked.length === 3) settled = true;
 }
 
 /* ---------- 场外商店 ---------- */
+const GAME_LABEL = { pong: '🏓 电子乒乓', whack: '🐹 打地鼠', poem: '📜 古诗填空', word: '🔤 单词拼写', scratch: '🎟️ 刮刮乐' };
+
 function viewShop() {
   const p = planData();
   const rows = BUFFS.map(function (b) {
@@ -2596,7 +4514,7 @@ function viewShop() {
     const full = lv >= b.max;
     const cost = b.cost * (lv + 1);
     return '<div class="shopitem">' +
-      '<div class="si"><div class="sn">' + b.name + ' ' +
+      '<div class="si"><div class="gtag">' + (GAME_LABEL[b.game] || '通用') + '</div><div class="sn">' + b.name + ' ' +
       (lv ? '<span style="color:var(--green);font-size:11px">Lv.' + lv + '</span>' : '') +
       '</div><div class="sd">' + b.desc + '</div></div>' +
       (full
@@ -2950,6 +4868,22 @@ document.addEventListener('click', function (e) {
       S.kbOpen = '';
       renderKeepScroll(); break;
 
+    case 'wordsubmit':
+      if (window.__wordSubmit) window.__wordSubmit();
+      break;
+
+    case 'resetquiz': {
+      const k = el.dataset.k;
+      if (!confirm('重置这个题库？已答过的会重新出现')) break;
+      const qd = store.data.quizDone || (store.data.quizDone = { poem: [], word: [] });
+      qd[k] = [];
+      store.save();
+      S.scratchPaid = false;
+      render();
+      toast('已重置');
+      break;
+    }
+
     case 'traintab':
       S.trainTab = el.dataset.k;
       render(); break;
@@ -3018,6 +4952,8 @@ document.addEventListener('click', function (e) {
 
     case 'game':
       S.gameKind = el.dataset.g || 'pong';
+      if (S.gameKind !== 'scratch') S.scratchPaid = false;
+      if (el.dataset.g === 'scratch' && S.lastScratch !== true) S.scratchPaid = false;
       S.view = 'game';
       render(); break;
 
