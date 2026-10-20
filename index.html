@@ -477,9 +477,9 @@ body{background-color:var(--bg)}
 /*__LOGIC_START__*/
 /* ================= 食物库（每100g，参考中国食物成分表 / USDA） ================= */
 const RAW = `
-s01|米饭（熟）|staple|mifan|116|2.6|25.9|0.3|0.3|碗|150
+s01|米饭（熟）|staple|mifan|130|2.6|30|0.3|0.3|碗|150
 s02|糙米饭（熟）|staple|caomifan|112|2.6|24|0.9|1.8|碗|150
-s03|白粥|staple|baizhou|46|1.1|9.9|0.2|0.1|碗|250
+s03|白粥|staple|baizhou|58|1.1|13|0.2|0.1|碗|250
 s04|燕麦片（干）|staple|yanmaipian|377|15|61|6.7|10.6|份|40
 s05|全麦面包|staple|quanmaimianbao|246|9.7|41|3.4|6|片|35
 s06|白面包|staple|baimianbao|264|8.5|49|3.2|2.3|片|35
@@ -489,7 +489,7 @@ s09|红薯|staple|hongshu|86|1.1|20|0.2|3|个|200
 s10|紫薯|staple|zishu|82|1.5|18|0.2|2.5|个|150
 s11|土豆|staple|tudou|77|2|17|0.1|2.2|个|150
 s12|玉米（鲜）|staple|yumi|112|4|22|1.2|2.9|根|180
-s13|馒头|staple|mantou|223|7|47|1.1|1.3|个|100
+s13|馒头|staple|mantou|238|7|50|1.1|1.3|个|100
 s14|荞麦面（熟）|staple|qiaomaimian|99|5.1|21|0.1|2.3|份|200
 s15|藜麦（熟）|staple|limai|120|4.4|21|1.9|2.8|份|150
 s16|小米粥|staple|xiaomizhou|46|1.4|8.4|0.7|0.4|碗|250
@@ -849,26 +849,44 @@ const MEALS = [
   { key: 'snack', name: '加餐', icon: '🍎', hint: '练后补充' }
 ];
 
+/* 活动系数只算「日常活动」，训练消耗单独加（套表口径） */
 const ACTIVITY = [
-  { key: 'sedentary', name: '久坐少动', desc: '办公室工作，几乎不运动', factor: 1.2 },
-  { key: 'light', name: '轻度活动', desc: '每周 1-3 次轻松运动', factor: 1.375 },
-  { key: 'moderate', name: '中度活动', desc: '每周 3-5 次训练', factor: 1.55 },
-  { key: 'active', name: '高强度', desc: '每周 6-7 次训练', factor: 1.725 },
-  { key: 'athlete', name: '运动员级', desc: '每天 2 练 / 体力劳动', factor: 1.9 }
+  { key: 'sedentary', name: '久坐少动', desc: '办公室，几乎不走动', factor: 1.25 },
+  { key: 'light', name: '轻度活动', desc: '偶尔走动，通勤不多', factor: 1.35 },
+  { key: 'moderate', name: '一般活动', desc: '普通上班/上学（套表默认）', factor: 1.43 },
+  { key: 'active', name: '经常走动', desc: '销售、教师、常跑动', factor: 1.52 },
+  { key: 'athlete', name: '体力劳动', desc: '搬运、工地、每天两练', factor: 1.62 }
+];
+
+/* 减脂赤字档位（套表 0.64 系数 = 激进 36%） */
+const DEFICIT_LEVELS = [
+  { key: 'gentle', name: '温和', deficit: 0.20, desc: '减得慢，训练状态好' },
+  { key: 'standard', name: '标准', deficit: 0.28, desc: '推荐，掉秤与状态平衡' },
+  { key: 'aggressive', name: '激进', deficit: 0.36, desc: '套表系数，掉得快但易累' }
+];
+
+/* 训练水平 → 单次力量训练消耗（大卡） */
+const EXP_LEVELS = [
+  { key: 'new', name: '新手', kcal: 150, desc: '练不到半年' },
+  { key: 'mid', name: '有基础', kcal: 200, desc: '半年到两年' },
+  { key: 'adv', name: '老手', kcal: 250, desc: '两年以上，强度高' }
 ];
 
 const GOALS = [
-  { key: 'cut', name: '减脂', desc: '热量赤字 20%，高蛋白保肌', adjust: -0.2, proteinPerKg: 1.8, fatRatio: 0.25 },
-  { key: 'maintain', name: '维持', desc: '热量平衡，稳定体型', adjust: 0, proteinPerKg: 1.5, fatRatio: 0.27 },
-  { key: 'bulk', name: '增肌', desc: '热量盈余 12%，足量碳水', adjust: 0.12, proteinPerKg: 1.8, fatRatio: 0.25 }
+  { key: 'cut', name: '减脂', desc: '按赤字档位扣热量，高蛋白保肌', proteinPerKg: 1.8, proteinPerKgRest: 1.6 },
+  { key: 'maintain', name: '维持', desc: '吃到总消耗，稳定体型', proteinPerKg: 1.6, proteinPerKgRest: 1.6 },
+  { key: 'bulk', name: '增肌', desc: '在总消耗上 +10%，足量碳水', proteinPerKg: 1.8, proteinPerKgRest: 1.7 }
 ];
+
+const FAT_PER_KG = 0.74;   // 脂肪固定按体重给（套表口径）
 
 const DEFAULT_PROFILE = {
   gender: 'male', age: 25, height: 175, weight: 70,
-  activity: 'moderate', goal: 'maintain', targetWeight: 68
+  activity: 'moderate', goal: 'maintain', targetWeight: 68,
+  deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-20.8';
+const BUILD = '2026-10-21.1';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1 };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -991,22 +1009,61 @@ function tdee(p) { return Math.round(bmr(p) * actFactor(p)); }
 function goalOf(p) {
   return GOALS.filter(function (x) { return x.key === (p.goal || 'maintain'); })[0] || GOALS[1];
 }
-function targets(p) {
+/**
+ * 每日目标（套表口径）
+ * - 无训练日消耗 = BMR × 活动系数（活动系数只含日常活动）
+ * - 训练日额外 +150/200/250 大卡
+ * - 减脂：总消耗 × (1 − 赤字)，赤字 20/28/36%
+ * - 蛋白 1.8/1.6 g/kg（训练日/休息日），脂肪固定 0.74 g/kg，碳水吃剩余
+ * @param {object} p 档案
+ * @param {{trainDay?:boolean}} opts 今天是不是力量训练日
+ */
+function targets(p, opts) {
   const pr = p || DEFAULT_PROFILE;
-  const base = bmr(pr), total = tdee(pr), goal = goalOf(pr);
-  let kcal = Math.round(total * (1 + goal.adjust));
-  kcal = Math.max(kcal, Math.round(base * 1.1), 1200);
+  const trainDay = !!(opts && opts.trainDay);
+  const base = bmr(pr);
+  const noEx = Math.round(base * actFactor(pr));
+  const exp = EXP_LEVELS.filter(function (x) { return x.key === (pr.exp || 'mid'); })[0] || EXP_LEVELS[1];
+  const trainKcal = trainDay ? exp.kcal : 0;
+  const total = noEx + trainKcal;
+  const goal = goalOf(pr);
   const weight = num(pr.weight, 70);
-  let protein = Math.round(weight * goal.proteinPerKg);
-  protein = Math.min(protein, Math.round((kcal * 0.4) / 4));
-  const fat = Math.round((kcal * goal.fatRatio) / 9);
+
+  let kcal;
+  let deficitPct = 0;
+  if (goal.key === 'cut') {
+    const d = DEFICIT_LEVELS.filter(function (x) { return x.key === (pr.deficit || 'standard'); })[0] || DEFICIT_LEVELS[1];
+    deficitPct = d.deficit;
+    kcal = Math.round(total * (1 - d.deficit));
+  } else if (goal.key === 'bulk') {
+    kcal = Math.round(total * 1.10);
+    deficitPct = -0.10;
+  } else {
+    kcal = total;
+  }
+  // 安全下限：套表休息日可低至约 0.91×BMR，所以下限放到 0.9×BMR 与 1200 取大
+  kcal = Math.max(kcal, Math.round(base * 0.9), 1200);
+
+  const perKg = trainDay ? goal.proteinPerKg : (goal.proteinPerKgRest || goal.proteinPerKg);
+  const protein = Math.round(weight * perKg);
+  const fat = Math.round(weight * FAT_PER_KG);
   let carb = Math.round((kcal - protein * 4 - fat * 9) / 4);
-  if (carb < 50) carb = 50;
+  if (carb < 40) carb = 40;
+
   const fiber = Math.round(Math.min(40, Math.max(25, (kcal / 1000) * 14)));
+
   return {
     kcal: kcal, protein: protein, carb: carb, fat: fat, fiber: fiber,
-    water: Math.round(weight * 35), bmr: base, tdee: total,
-    goalName: goal.name, goalDesc: goal.desc, proteinPerKg: goal.proteinPerKg,
+    water: Math.round(weight * 35),
+    bmr: base, tdee: total, noEx: noEx, trainKcal: trainKcal, trainDay: trainDay,
+    goalName: goal.name, goalDesc: goal.desc,
+    proteinPerKg: perKg, fatPerKg: FAT_PER_KG,
+    carbPerKg: Math.round((carb / weight) * 100) / 100,
+    deficitPct: Math.round(deficitPct * 100),
+    deficitName: (goal.key === 'cut'
+      ? ((DEFICIT_LEVELS.filter(function (x) { return x.key === (pr.deficit || 'standard'); })[0] || DEFICIT_LEVELS[1]).name)
+      : (goal.key === 'bulk' ? '盈余' : '持平')),
+    expName: exp.name,
     proteinKcalPct: Math.round(((protein * 4) / kcal) * 100),
     carbKcalPct: Math.round(((carb * 4) / kcal) * 100),
     fatKcalPct: Math.round(((fat * 9) / kcal) * 100)
@@ -2858,7 +2915,7 @@ const ICON = {
 /* ================= 今日 ================= */
 function viewToday() {
   const d = S.date;
-  const t = targets(store.data.profile);
+  const t = targets(store.data.profile, { trainDay: isTrainDay(d) });
   const recs = getLogs(d);
   const in_ = sumRecords(recs);
   const over = in_.kcal > t.kcal;
@@ -2910,7 +2967,8 @@ function viewToday() {
     '</div>' +
 
     '<div class="card">' +
-    '<div class="herohead"><span class="pill">' + t.goalName + ' · 目标 ' + t.kcal + ' kcal</span>' +
+    '<div class="herohead"><span class="pill" data-act="toggleTrainDay">' +
+    t.goalName + ' · ' + (t.trainDay ? '训练日' : '休息日') + ' ' + t.kcal + ' kcal ↺</span>' +
     '<span class="link" data-act="tab" data-v="profile">调整目标</span></div>' +
     '<div class="ringbox"><svg viewBox="0 0 100 100">' +
     '<defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">' +
@@ -2965,7 +3023,7 @@ function listForAdd() {
 }
 
 function viewAdd() {
-  const t = targets(store.data.profile);
+  const t = targets(store.data.profile, { trainDay: isTrainDay(S.date) });
   const in_ = sumRecords(getLogs(S.date));
   const list = listForAdd();
 
@@ -3046,7 +3104,7 @@ function sheetNewFood() {
 
 /* ================= 报告 ================= */
 function viewReport() {
-  const t = targets(store.data.profile);
+  const t = targets(store.data.profile, { trainDay: isTrainDay(S.date) });
   const range = S.range;
   const dates = lastNDates(range);
   const rows = dates.map(function (d) {
@@ -3250,7 +3308,7 @@ function viewReport() {
 /* ================= 我的 ================= */
 function viewProfile() {
   const p = store.data.profile;
-  const t = targets(p);
+  const t = targets(p, { trainDay: isTrainDay() });
   const ws = store.data.weights;
 
   return '<div class="wrap">' +
@@ -3272,16 +3330,41 @@ function viewProfile() {
         '<div class="x">×' + a.factor + '</div></div>';
     }).join('') + '</div>' +
 
+    '<div class="card"><div class="row between" style="margin-bottom:10px">' +
+    '<b style="font-size:15px">训练水平</b><span class="xs mute">决定练一次消耗多少</span></div>' +
+    EXP_LEVELS.map(function (e) {
+      return '<div class="opt ' + ((p.exp || 'mid') === e.key ? 'on' : '') + '" data-act="setexp" data-k="' + e.key + '">' +
+        '<div><div class="n">' + e.name + '</div><div class="d">' + e.desc + '</div></div>' +
+        '<div class="x">+' + e.kcal + ' kcal</div></div>';
+    }).join('') + '</div>' +
+
     '<div class="card"><b style="font-size:15px">我的目标</b>' +
     '<div class="goals" style="margin-top:10px">' + GOALS.map(function (g) {
       return '<div class="g ' + (p.goal === g.key ? 'on' : '') + '" data-act="goal" data-k="' + g.key + '">' +
         '<div class="n">' + g.name + '</div><div class="d">' + g.desc + '</div></div>';
-    }).join('') + '</div></div>' +
+    }).join('') + '</div>' +
+    (p.goal === 'cut'
+      ? '<div class="xs mute" style="margin:14px 0 8px">减脂档位（赤字）</div>' +
+        '<div class="goals">' + DEFICIT_LEVELS.map(function (d) {
+          return '<div class="g ' + ((p.deficit || 'standard') === d.key ? 'on' : '') +
+            '" data-act="setdeficit" data-k="' + d.key + '">' +
+            '<div class="n">' + d.name + '</div>' +
+            '<div class="d">−' + Math.round(d.deficit * 100) + '% · ' + d.desc + '</div></div>';
+        }).join('') + '</div>'
+      : '') + '</div>' +
 
     '<div class="card rescard"><div class="row between"><b style="font-size:15px">每日目标</b>' +
     '<span class="xs mute">修改即时生效</span></div>' +
-    '<div class="kbig" style="margin-top:8px"><b id="tg_kcal">' + t.kcal + '</b><small>kcal / 天</small></div>' +
-    '<div class="formula" id="tg_formula">BMR ' + t.bmr + ' × 活动系数 = TDEE ' + t.tdee + '，按「' + t.goalName + '」调整</div>' +
+    '<div class="kbig" style="margin-top:8px"><b id="tg_kcal">' + t.kcal + '</b>' +
+    '<small>' + (t.trainDay ? 'kcal · 训练日' : 'kcal · 休息日') + '</small></div>' +
+    '<div class="formula" id="tg_formula">' +
+    'BMR ' + t.bmr + ' × 活动系数 = 日常 ' + t.noEx + '｜' +
+    (t.trainDay ? '训练 +' + t.trainKcal + ' = ' + t.tdee : '休息日不加训练 = ' + t.tdee) +
+    '｜' + t.goalName + (t.deficitPct ? '（' + (t.deficitPct > 0 ? '−' + t.deficitPct : '+' + Math.abs(t.deficitPct)) + '%）' : '') +
+    ' = ' + t.kcal + '</div>' +
+    '<div class="xs mute" style="text-align:center;margin:-6px 0 12px">' +
+    '换另一天的口径：训练日 ' + targets(p, { trainDay: true }).kcal +
+    ' / 休息日 ' + targets(p, { trainDay: false }).kcal + ' kcal</div>' +
     '<div class="ng">' +
     '<div class="n"><b>' + t.protein + '</b><span>蛋白质 g</span><i>' + t.proteinKcalPct + '% 供能</i></div>' +
     '<div class="n"><b>' + t.carb + '</b><span>碳水 g</span><i>' + t.carbKcalPct + '% 供能</i></div>' +
@@ -3544,7 +3627,7 @@ function groupName(k) {
 
 function weeklyPlan() {
   const pr = store.data.profile;
-  const t = targets(pr);
+  const t = targets(pr, { trainDay: isTrainDay() });
   const cut = pr.goal === 'cut', bulk = pr.goal === 'bulk';
   const days = cut ? 5 : 4;
   return {
@@ -3971,6 +4054,13 @@ function viewKnowledge() {
     '</div>';
 }
 
+
+/* ================= 训练日判定 ================= */
+function isTrainDay(dateStr) {
+  if (S.forceTrainDay === true || S.forceTrainDay === false) return S.forceTrainDay;
+  const p = planData();
+  return !!p.checkins[dateStr || todayStr()];
+}
 
 /* ================= 小游戏 ================= */
 let GT = null;
@@ -4525,12 +4615,17 @@ function render() {
 
 /* 只刷新目标卡（避免输入框失焦） */
 function refreshTargets() {
-  const t = targets(store.data.profile);
+  const t = targets(store.data.profile, { trainDay: isTrainDay(S.date) });
   const el = $('tg_kcal');
   if (!el) return;
   el.textContent = t.kcal;
   const f = $('tg_formula');
-  if (f) f.textContent = 'BMR ' + t.bmr + ' × 活动系数 = TDEE ' + t.tdee + '，按「' + t.goalName + '」调整';
+  if (f) {
+    f.textContent = 'BMR ' + t.bmr + ' × 活动系数 = 日常 ' + t.noEx + '｜' +
+      (t.trainDay ? '训练 +' + t.trainKcal + ' = ' + t.tdee : '休息日不加训练 = ' + t.tdee) +
+      '｜' + t.goalName + (t.deficitPct ? '（' + (t.deficitPct > 0 ? '−' + t.deficitPct : '+' + Math.abs(t.deficitPct)) + '%）' : '') +
+      ' = ' + t.kcal;
+  }
   const ng = document.querySelector('.ng');
   if (ng) {
     ng.innerHTML =
@@ -4767,6 +4862,19 @@ document.addEventListener('click', function (e) {
       store.data.settings = store.data.settings || Object.assign({}, DEFAULT_SETTINGS);
       store.data.settings.accent = el.dataset.k;
       store.save(); applyAppearance(); renderKeepScroll(); break;
+
+    case 'toggleTrainDay':
+      S.forceTrainDay = !isTrainDay();
+      render(); toast(S.forceTrainDay ? '已切到训练日' : '已切到休息日');
+      break;
+
+    case 'setexp':
+      store.data.profile.exp = el.dataset.k;
+      store.save(); renderKeepScroll(); break;
+
+    case 'setdeficit':
+      store.data.profile.deficit = el.dataset.k;
+      store.save(); renderKeepScroll(); break;
 
     case 'alpha':
       store.data.settings = store.data.settings || Object.assign({}, DEFAULT_SETTINGS);
