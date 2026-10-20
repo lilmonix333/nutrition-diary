@@ -411,6 +411,7 @@ body{background-color:var(--bg);background-size:cover;background-position:center
 .scratchgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
 .scratchcell{aspect-ratio:1/1;border-radius:8px;background:var(--el);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--mute);user-select:none}
 .scratchcell.open{background:rgba(var(--acc),.2);color:var(--green)}
+.scratchcell.blank{background:var(--el2);color:var(--mute2)}
 .gtag{font-size:9.5px;color:var(--mute);margin-bottom:2px}
 .mixbar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:8px 0 6px}
 .mixbar i{display:block;height:100%}
@@ -867,7 +868,7 @@ const DEFAULT_PROFILE = {
   activity: 'moderate', goal: 'maintain', targetWeight: 68
 };
 
-const BUILD = '2026-10-20.6';
+const BUILD = '2026-10-20.7';
 const CAN_SCAN = (typeof window !== 'undefined') && ('BarcodeDetector' in window) && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain' };
 
@@ -1231,7 +1232,7 @@ const BUFFS = [
   { id: 'whack_gold', game: 'whack', name: '金色地鼠', desc: '连中 3 只后下一只是金色，+2 分（最多 1 级）', max: 1, cost: 120 },
   { id: 'poem_hint', game: 'poem', name: '文曲星', desc: '每级多排除一个错误选项（最多 2 级）', max: 2, cost: 70 },
   { id: 'word_reveal', game: 'word', name: '多留一个字母', desc: '每级少挖 2 个空，长单词更友好（最多 2 级）', max: 2, cost: 70 },
-  { id: 'scratch_luck', game: 'scratch', name: '不空手', desc: '刮刮乐抽到「空」时改判为 4 币（最多 1 级）', max: 1, cost: 150 }
+  { id: 'scratch_luck', game: 'scratch', name: '不空手', desc: '盘面里不再出现「空」组，这张票必中（最多 1 级）', max: 1, cost: 150 }
 ];
 
 const POEMS_RAW = `床前明月光，|疑是地上霜|疑是银河落九天|低头思故乡|举杯邀明月|李白《静夜思》
@@ -4156,7 +4157,7 @@ const GAME_META = {
   whack: { name: '打地鼠', hint: '地鼠冒头就点它，30 秒看你能打几只。' },
   poem: { name: '古诗填空', hint: '选出正确的下句，答错不扣分但很浪费时间。答对不再重复出现。' },
   word: { name: '单词拼写', hint: '看中文，把挖空的字母按顺序填出来。90 秒内尽量多填，答过的不再重复。' },
-  scratch: { name: '刮刮乐', hint: '10 代币一张，刮开 3 格。三个相同数字中奖，三个空则没中。' }
+  scratch: { name: '刮刮乐', hint: '10 代币一张。36 格里埋着 12 组三连，刮出任意三个相同数字立即结算；先刮到三个「空」则没中。' }
 };
 
 function viewGame() {
@@ -4603,75 +4604,108 @@ function bootWord(host) {
 }
 
 /* ---------- 刮刮乐 ---------- */
-const SCRATCH_TABLE = [
-  { v: 0, p: 0.18 }, { v: 4, p: 0.12 }, { v: 5, p: 0.12 },
-  { v: 8, p: 0.18 }, { v: 10, p: 0.15 }, { v: 15, p: 0.20 }, { v: 20, p: 0.05 }
-];
+/* 盘面 = 12 组三连（共 36 格）。每组 3 个相同数字，随机打散。
+   刮开时按「数值」计数，任意数值凑够 3 个立即结算：
+   - 三连是空 → 没中
+   - 三连是数字 → 得该数字代币
+   结果在刮的过程中才产生，票面本身不含答案。 */
+const SCRATCH_COMP_LOSE = [0, 0, 4, 4, 5, 8, 8, 10, 10, 10, 15, 15];
+const SCRATCH_COMP_SAFE = [8, 10, 4, 4, 5, 8, 8, 10, 10, 10, 15, 15];
 
-function rollScratch() {
-  const r = Math.random();
-  let acc = 0;
-  for (let i = 0; i < SCRATCH_TABLE.length; i++) {
-    acc += SCRATCH_TABLE[i].p;
-    if (r <= acc) return SCRATCH_TABLE[i].v;
+function makeScratchBoard(lucky) {
+  const comp = lucky ? SCRATCH_COMP_SAFE : SCRATCH_COMP_LOSE;
+  const cells = [];
+  comp.forEach(function (v) { cells.push(v, v, v); });
+  for (let i = cells.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const t = cells[i]; cells[i] = cells[j]; cells[j] = t;
   }
-  return 0;
+  return cells;
 }
 
 function bootScratch(host) {
-  const p = planData();
   const luck = buffLv('scratch_luck');
-  let picked = [], result = null, settled = false;
 
-  const draw = function () {
-    const cells = [];
-    for (let i = 0; i < 36; i++) {
-      const on = picked.indexOf(i) > -1;
-      const val = on && result !== null ? (result === 0 ? '空' : result) : '';
-      cells.push('<div class="scratchcell ' + (on ? 'open' : '') + '" data-i="' + i + '">' + val + '</div>');
+  if (!S.scBoard) {
+    const p0 = planData();
+    if ((p0.coins || 0) < 10) {
+      host.innerHTML = '<div class="gamewrap"><div class="gres">' +
+        '<div class="sub">代币不足（一张需要 10），先去打个卡吧</div>' +
+        '<div class="btn gray" style="margin:16px auto 0;width:180px" data-act="backtrain">返回训练</div>' +
+        '</div></div>';
+      return;
     }
-    host.innerHTML = '<div class="gamewrap">' +
-      '<div class="gamehead"><b>刮刮乐</b><span class="gclock">' + (picked.length) + '/3</span></div>' +
-      '<div class="gstage" style="padding:10px"><div class="scratchgrid">' + cells.join('') + '</div></div>' +
-      '<div class="row between" style="margin-top:10px;font-size:12px;color:var(--mute)">' +
-      '<span>代币 <b style="color:var(--ink)">' + planData().coins + '</b></span>' +
-      '<span>' + (result === null ? '刮开 3 格揭晓' : (result === 0 ? '三个空，没中' : '刮中三个 ' + result + '！')) + '</span></div>' +
-      (settled
-        ? '<div class="btn" style="margin-top:12px" data-act="game" data-g="scratch">再买一张（10 代币）</div>'
-        : '') +
-      '</div>';
+    addCoins(-10);
+    S.scBoard = makeScratchBoard(!!luck);
+    S.scOpen = {};
+    S.scDone = false;
+    S.scPay = 0;
+  }
+
+  const tally = function () {
+    const cnt = {};
+    Object.keys(S.scOpen).forEach(function (k) {
+      const v = String(S.scBoard[Number(k)]);
+      cnt[v] = (cnt[v] || 0) + 1;
+    });
+    return cnt;
   };
 
-  if ((planData().coins || 0) < 10) {
-    host.innerHTML = '<div class="gamewrap"><div class="gres">' +
-      '<div class="sub">代币不足，先完成一次训练打卡吧</div></div></div>';
-    return;
-  }
-  if (!S.scratchPaid) {
-    addCoins(-10);
-    S.scratchPaid = true;
-    result = rollScratch();
-    if (result === 0 && luck) result = 4;
-  }
+  const draw = function () {
+    const opened = Object.keys(S.scOpen).length;
+    const cells = S.scBoard.map(function (v, i) {
+      const on = !!S.scOpen[i];
+      const txt = on ? (v === 0 ? '空' : v) : '';
+      return '<div class="scratchcell ' + (on ? 'open' : '') + (on && v === 0 ? ' blank' : '') +
+        '" data-i="' + i + '">' + txt + '</div>';
+    }).join('');
 
-  host.addEventListener('click', function (e) {
-    const cell = e.target.closest('.scratchcell');
-    if (!cell || settled) return;
-    const i = Number(cell.dataset.i);
-    if (picked.indexOf(i) > -1 || picked.length >= 3) return;
-    picked.push(i);
-    if (picked.length === 3) {
-      settled = true;
-      if (result > 0) addCoins(result);
-      setTimeout(function () {
-        toast(result > 0 ? '刮中三个 ' + result + '，+' + result + ' 代币' : '三个空，没中');
-      }, 80);
+    let head = '已刮 ' + opened + ' / 36';
+    let foot = '';
+
+    if (S.scDone) {
+      head = S.scPay > 0 ? '+' + S.scPay + ' 代币' : '没中';
+      foot = '<div class="gres" style="padding:12px 0 2px">' +
+        '<div class="big" style="font-size:28px">' + (S.scPay > 0 ? '+' + S.scPay : '0') + '</div>' +
+        '<div class="sub">' + (S.scPay > 0
+          ? '刮出三个 ' + S.scPay + '，代币已到账'
+          : '先刮出了三个「空」，这张没中') + '</div></div>' +
+        '<div class="btn" style="margin-top:10px" data-act="game" data-g="scratch">再来一张（10 代币）</div>';
+    } else {
+      foot = '<div class="xs mute" style="text-align:center;margin-top:10px">' +
+        '任意三个相同数字即结算 · 三个「空」则没中</div>';
     }
-    draw();
-  });
+
+    host.innerHTML = '<div class="gamewrap">' +
+      '<div class="gamehead"><b>刮刮乐</b><span class="gclock">' + head + '</span></div>' +
+      '<div class="gstage" style="padding:10px"><div class="scratchgrid">' + cells + '</div></div>' +
+      foot + '</div>';
+  };
+
+  if (!host.__scBound) {
+    host.__scBound = true;
+    host.addEventListener('click', function (e) {
+      if (S.scDone) return;
+      const cell = e.target.closest('.scratchcell');
+      if (!cell) return;
+      const i = Number(cell.dataset.i);
+      if (S.scOpen[i]) return;
+
+      S.scOpen[i] = true;
+      const cnt = tally();
+      Object.keys(cnt).forEach(function (v) {
+        if (!S.scDone && cnt[v] >= 3) {
+          S.scDone = true;
+          const val = Number(v);
+          S.scPay = val;
+          if (val > 0) addCoins(val);
+        }
+      });
+      draw();
+    });
+  }
 
   draw();
-  if (picked.length === 3) settled = true;
 }
 
 /* ---------- 场外商店 ---------- */
@@ -5122,8 +5156,9 @@ document.addEventListener('click', function (e) {
 
     case 'game':
       S.gameKind = el.dataset.g || 'pong';
-      if (S.gameKind !== 'scratch') S.scratchPaid = false;
-      if (el.dataset.g === 'scratch' && S.lastScratch !== true) S.scratchPaid = false;
+      if (S.gameKind === 'scratch') {
+        S.scBoard = null; S.scOpen = {}; S.scDone = false; S.scPay = 0;
+      }
       S.view = 'game';
       render(); break;
 
