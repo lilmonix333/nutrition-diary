@@ -309,7 +309,8 @@ body{background-color:var(--bg);background-size:cover;background-position:center
 .kwgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:2px 0 16px}
 .kwtile{background:var(--card);border-radius:14px;padding:11px 4px 9px;text-align:center;border:1.5px solid transparent;transition:transform .12s}
 .kwtile:active{transform:scale(.96)}
-.kwtile .ki{display:block;font-size:18px;line-height:1.15;margin-bottom:4px}
+.kwtile .ki{display:flex;width:26px;height:26px;border-radius:9px;margin:0 auto 5px;align-items:center;justify-content:center;font-size:12px;font-weight:800;background:var(--el);color:var(--ink2)}
+.kwtile.on .ki{background:rgba(var(--acc),.22);color:var(--green)}
 .kwtile .kn{display:block;font-size:13.5px;font-weight:700}
 .kwtile .kc{display:block;font-size:9.5px;color:var(--mute);margin-top:2px}
 .kwtile.on{background:var(--soft);border-color:rgba(var(--acc),.42)}
@@ -336,6 +337,65 @@ body{background-color:var(--bg);background-size:cover;background-position:center
 .tsearch input{flex:1;height:42px;background:var(--el2);border-radius:12px;padding:0 12px;font-size:15px}
 .tsearch .gb{width:64px;height:42px;border-radius:12px;background:var(--solid);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .note{font-size:10.5px;color:var(--mute);line-height:1.75;text-align:center;padding:4px 16px 18px}
+/* 分段 tab */
+.seg3{display:flex;background:var(--el);border-radius:12px;padding:3px;margin-bottom:12px}
+.seg3 .s{flex:1;height:34px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:13px;color:var(--mute)}
+.seg3 .s.on{background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 1px 6px rgba(0,0,0,.1)}
+
+/* 代币条 */
+.coinbar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(var(--acc),.14),rgba(var(--acc),.05));border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.coinbar .cb{display:flex;align-items:baseline;gap:5px}
+.coinbar b{font-size:22px;font-weight:800;color:var(--green);line-height:1}
+.coinbar .cl{font-size:11px;color:var(--mute)}
+.coinbar .cw{font-size:11px;color:var(--ink2);text-align:right;line-height:1.5}
+
+/* 分化选择 */
+.splits{display:flex;gap:8px;margin-bottom:6px}
+.split{flex:1;padding:10px;border-radius:12px;background:var(--el2);text-align:center;border:1.5px solid transparent}
+.split.on{background:var(--soft);border-color:rgba(var(--acc),.4)}
+.split b{display:block;font-size:14px}
+.split span{display:block;font-size:10px;color:var(--mute);margin-top:2px}
+
+/* 计划卡 */
+.plantags{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 12px}
+.ptag{display:flex;align-items:center;gap:5px;padding:7px 11px;border-radius:99px;background:rgba(var(--acc),.12);color:var(--green);font-size:12.5px;font-weight:600}
+.ptag .x{font-size:14px;opacity:.55;padding:0 1px}
+.ptag.add{background:var(--el2);color:var(--mute);font-weight:400}
+.goalbox{background:var(--el2);border-radius:12px;padding:11px 13px;margin-bottom:12px}
+.goalbox .gt{font-size:13px;font-weight:700;margin-bottom:6px}
+.goalbox li{font-size:11.5px;color:var(--ink2);line-height:1.85;margin-left:14px}
+.progbar{height:8px;border-radius:8px;background:var(--el);overflow:hidden;margin:8px 0 4px}
+.progbar i{display:block;height:100%;background:var(--green);border-radius:8px;transition:width .3s}
+
+/* 游戏 */
+.gamewrap{background:var(--card);border-radius:16px;padding:14px;margin-bottom:12px;position:relative}
+.gamehead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.gamehead b{font-size:14px}
+.gclock{font-size:12px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums}
+.gstage{position:relative;width:100%;border-radius:12px;overflow:hidden;background:var(--el2)}
+#pongcv{display:block;width:100%;height:300px;touch-action:none}
+.moles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mole{aspect-ratio:1/1;border-radius:12px;background:var(--el);display:flex;align-items:center;justify-content:center;font-size:26px;user-select:none}
+.mole.up{background:rgba(var(--acc),.22)}
+.quiz .qt{font-size:15px;line-height:1.7;margin:6px 0 12px;font-weight:600}
+.quiz .qo{padding:11px 13px;border-radius:11px;background:var(--el2);font-size:14px;margin-bottom:8px;border:1.5px solid transparent}
+.quiz .qo:active{background:var(--soft)}
+.quiz .qo.ok{background:rgba(16,185,129,.18);border-color:#10b981}
+.quiz .qo.bad{background:rgba(239,68,68,.16);border-color:var(--red)}
+.gres{text-align:center;padding:16px 0}
+.gres .big{font-size:34px;font-weight:800;color:var(--green);line-height:1}
+.gres .sub{font-size:12px;color:var(--mute);margin-top:6px}
+
+/* 商店 */
+.shopitem{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.shopitem:last-child{border-bottom:none}
+.shopitem .si{flex:1;min-width:0}
+.shopitem .sn{font-size:13.5px;font-weight:600}
+.shopitem .sd{font-size:10.5px;color:var(--mute);margin-top:2px}
+.shopitem .buy{padding:6px 12px;border-radius:99px;background:var(--soft);color:var(--green);font-size:12px;font-weight:700;flex:0 0 auto}
+.shopitem .buy.full{background:var(--el2);color:var(--mute)}
+.shopitem .buy:active{opacity:.7}
+
 
 /* 体重迷你趋势 */
 .spark{width:100%;height:48px;display:block;margin-top:8px}
@@ -346,9 +406,6 @@ body{background-color:var(--bg);background-size:cover;background-position:center
 .qa span{font-size:17px;line-height:1}
 .qa:active{background:var(--soft);border-color:rgba(var(--acc),.3)}
 
-/* 照片 */
-.photostrip{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
-.photostrip img{width:90px;height:90px;border-radius:12px;object-fit:cover;flex:0 0 auto;background:var(--el)}
 
 /* 扫码 */
 .scanbox{position:fixed;left:0;right:0;top:0;bottom:0;z-index:120;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -772,6 +829,8 @@ const DEFAULT_PROFILE = {
   activity: 'moderate', goal: 'maintain', targetWeight: 68
 };
 
+const BUILD = '2026-10-20.3';
+const CAN_SCAN = (typeof window !== 'undefined') && ('BarcodeDetector' in window) && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -796,7 +855,7 @@ const BGS = [
 
 /* 训练方式 → B 站搜索词 */
 const TRAIN = [
-  { key: 'chest', name: '胸', icon: '🏋️', items: [
+  { key: 'chest', name: '胸', tag: '胸', items: [
     { bv: 'BV1Gm421G72V', t: '练胸常犯错误以及细节纠正', up: '拿铁孙同学', dur: 44, v: 149440 },
     { bv: 'BV1Rx4y147B6', t: '卧推细节', up: '拿铁孙同学', dur: 32, v: 212154 },
     { bv: 'BV1kS411w7ho', t: '新手练胸这样做', up: '拿铁孙同学', dur: 40, v: 101563 },
@@ -804,43 +863,46 @@ const TRAIN = [
     { bv: 'BV14i421h7oS', t: '练胸前的热身很重要', up: '拿铁孙同学', dur: 31, v: 68968 },
     { bv: 'BV1wE421N7f7', t: '俯卧撑你练对了吗？', up: '拿铁孙同学', dur: 48, v: 34565 }
   ] },
-  { key: 'back', name: '背', icon: '🧗', items: [
+  { key: 'back', name: '背', tag: '背', items: [
     { bv: 'BV1QM4y1v7h2', t: '引体向上教学（基础版）', up: '抱抱玛尔塔', dur: 116, v: 206272 },
     { bv: 'BV18c41137LA', t: '引体向上教学（进阶版）', up: '抱抱玛尔塔', dur: 138, v: 5014 },
     { bv: 'BV19V4y117bf', t: '引体向上教学（终极版）', up: '抱抱玛尔塔', dur: 178, v: 42192 },
     { t: '划船动作详解（哑铃 / 杠铃 / 坐姿）', q: '划船 背部 训练 教学' }
   ] },
-  { key: 'shoulder', name: '肩', icon: '🤸', items: [
+  { key: 'core', name: '腹核心', tag: '腹', items: [
+    { bv: 'BV11ZPZzYE5n', t: '8分钟高效虐腹训练（在家也能练）', up: 'ALEX健身频道', dur: 519, v: 132128 },
+    { bv: 'BV1Qx4y1t73o', t: '8分钟高效腹肌训练（居家无器械）', up: 'ALEX健身频道', dur: 494, v: 59379 },
+    { bv: 'BV1uKfsBaECc', t: '每天9分钟，坚持一个月腹部变化有多大', up: 'ALEX健身频道', dur: 556, v: 31984 },
+    { bv: 'BV1KE421A7sb', t: '居家腹肌跟练（新手友好 / 无器械）', up: 'ALEX健身频道', dur: 429, v: 27242 },
+    { bv: 'BV18JSTB4EzT', t: '拒绝无效练腹｜8分钟高效腹肌（进阶）', up: 'ALEX健身频道', dur: 477, v: 26696 },
+    { bv: 'BV1Q8C9BCEKx', t: '9分钟腹肌跟练（新手也能做）', up: 'ALEX健身频道', dur: 563, v: 19320 }
+  ] },
+  { key: 'shoulder', name: '肩', tag: '肩', items: [
+    { bv: 'BV1tZTy6oEHg', t: '绳索单侧侧平举（练肩中束）', up: '人民的健身教练', dur: 70, v: 1481 },
     { t: '哑铃 / 杠铃推举完整教学', q: '肩推 哑铃 教学' },
-    { t: '侧平举与三角肌中束', q: '侧平举 三角肌 中束' },
     { t: '肩部热身与圆肩改善', q: '肩部 热身 圆肩 改善' }
   ] },
-  { key: 'arm', name: '手臂', icon: '💪', items: [
+  { key: 'arm', name: '手臂', tag: '臂', items: [
     { t: '二头弯举的三种握法', q: '二头弯举 教学' },
     { t: '三头下压与窄距卧推', q: '三头 下压 窄距卧推' },
     { t: '手臂超级组训练', q: '手臂 超级组 训练' }
   ] },
-  { key: 'core', name: '腹核心', icon: '🎯', items: [
-    { t: '卷腹标准做法与颈部保护', q: '卷腹 标准 颈部 保护' },
-    { t: '平板支撑正确姿势与进阶', q: '平板支撑 标准 进阶' },
-    { t: '10 分钟核心跟练', q: '核心训练 10分钟 跟练' }
-  ] },
-  { key: 'glute', name: '臀腿', icon: '🦵', items: [
+  { key: 'glute', name: '臀腿', tag: '腿', items: [
     { t: '深蹲标准动作拆解', q: '深蹲 标准 动作 教学' },
     { t: '臀桥与臀中肌激活', q: '臀桥 臀中肌 激活' },
     { t: '硬拉新手入门', q: '硬拉 新手 教学' }
   ] },
-  { key: 'cardio', name: '减脂有氧', icon: '🔥', items: [
+  { key: 'cardio', name: '减脂有氧', tag: '氧', items: [
     { t: '居家 HIIT 20 分钟跟练', q: 'HIIT 20分钟 居家 跟练' },
     { t: '爬楼 / 快走 / 跳绳怎么选', q: '有氧 燃脂 怎么选' },
     { t: '不伤膝的低冲击有氧', q: '低强度有氧 不伤膝' }
   ] },
-  { key: 'beginner', name: '新手入门', icon: '🌱', items: [
+  { key: 'beginner', name: '新手入门', tag: '新', items: [
     { t: '健身房第一课：器械认知', q: '健身房 新手 第一课 器械' },
     { t: '新手一周几练、怎么排计划', q: '新手 训练计划 一周几练' },
     { t: '增肌的吃与练基础', q: '增肌 饮食 训练 基础' }
   ] },
-  { key: 'stretch', name: '拉伸放松', icon: '🧘', items: [
+  { key: 'stretch', name: '拉伸放松', tag: '伸', items: [
     { t: '训练后全身拉伸 10 分钟', q: '全身拉伸 10分钟' },
     { t: '久坐族的髋与腘绳肌放松', q: '久坐 髋 放松 拉伸' },
     { t: '泡沫轴放松教学', q: '泡沫轴 放松 教学' }
@@ -947,7 +1009,8 @@ function defaultData() {
   return {
     profile: Object.assign({}, DEFAULT_PROFILE),
     logs: {}, water: {}, custom: [], weights: [],
-    fav: [], videos: {}, barcodes: {}, settings: Object.assign({}, DEFAULT_SETTINGS)
+    fav: [], videos: {}, barcodes: {}, settings: Object.assign({}, DEFAULT_SETTINGS),
+    plan: { split: 'ppl3', days: {}, cycle: 0, checkins: {}, coins: 0, weekPaid: {}, buffs: {} }
   };
 }
 
@@ -977,6 +1040,8 @@ const store = {
         fav: Array.isArray(d.fav) ? d.fav.filter(function (x) { return typeof x === 'string'; }) : [],
         videos: (d.videos && typeof d.videos === 'object' && !Array.isArray(d.videos)) ? d.videos : {},
         barcodes: (d.barcodes && typeof d.barcodes === 'object' && !Array.isArray(d.barcodes)) ? d.barcodes : {},
+        plan: Object.assign({ split: 'ppl3', days: {}, cycle: 0, checkins: {}, coins: 0, weekPaid: {}, buffs: {} },
+          (d.plan && typeof d.plan === 'object') ? d.plan : {}),
         settings: Object.assign({}, DEFAULT_SETTINGS,
           (d.settings && typeof d.settings === 'object') ? d.settings : {})
       };
@@ -1019,6 +1084,45 @@ const KB = [
   { c: '恢复', t: '渐进超负荷：每周多一点点', b: '身体只对「比上次更难」的刺激作出适应。可以是加 2.5kg、多加一次、或者同样重量做得更稳。每 4–6 周安排一周降量（强度不变、组数减半）能避免疲劳累积。' }
 ];
 
+
+const SPLITS = {
+  ppl3: { name: '三分化', desc: '推 / 拉 / 腿', days: [
+    { n: '推（胸肩三头）', g: ['chest', 'shoulder', 'arm'] },
+    { n: '拉（背二头）', g: ['back', 'arm'] },
+    { n: '腿（臀腿核心）', g: ['glute', 'core'] },
+    { n: '休息', g: [] }
+  ] },
+  ppl5: { name: '五分化', desc: '胸背腿肩臂有氧', days: [
+    { n: '胸', g: ['chest'] },
+    { n: '背', g: ['back'] },
+    { n: '腿', g: ['glute'] },
+    { n: '肩臂', g: ['shoulder', 'arm'] },
+    { n: '有氧核心', g: ['cardio', 'core'] }
+  ] }
+};
+
+const BUFFS = [
+  { id: 'pong_paddle', game: 'pong', name: '加长球拍', desc: '每级球拍 +14px，最多 3 级', max: 3, cost: 60 },
+  { id: 'pong_life', game: 'pong', name: '多一条命', desc: '每级 +1 命，最多 2 级', max: 2, cost: 80 },
+  { id: 'whack_time', game: 'whack', name: '时间延长', desc: '每级 +8 秒，最多 3 级', max: 3, cost: 50 },
+  { id: 'whack_slow', game: 'whack', name: '地鼠慢一点', desc: '每级停留 +0.18 秒，最多 2 级', max: 2, cost: 60 },
+  { id: 'poem_time', game: 'poem', name: '读题时间', desc: '每级 +15 秒，最多 2 级', max: 2, cost: 40 },
+  { id: 'poem_hint', game: 'poem', name: '排除一项', desc: '每级多排除一个错误项，最多 2 级', max: 2, cost: 70 }
+];
+
+const POEMS = [
+  { q: '床前明月光，＿＿＿＿＿。', a: '疑是地上霜', w: ['疑是地上霜', '疑是银河落九天', '低头思故乡', '举杯邀明月'], src: '李白《静夜思》' },
+  { q: '海内存知己，＿＿＿＿＿。', a: '天涯若比邻', w: ['天涯若比邻', '天涯共此时', '海角亦相邻', '千里共婵娟'], src: '王勃《送杜少府之任蜀州》' },
+  { q: '会当凌绝顶，＿＿＿＿＿。', a: '一览众山小', w: ['一览众山小', '孤帆远影碧空尽', '一览无余皆小丘', '更上一层楼'], src: '杜甫《望岳》' },
+  { q: '春眠不觉晓，＿＿＿＿＿。', a: '处处闻啼鸟', w: ['处处闻啼鸟', '夜来风雨声', '花落知多少', '梦里花落知多少'], src: '孟浩然《春晓》' },
+  { q: '长风破浪会有时，＿＿＿＿＿。', a: '直挂云帆济沧海', w: ['直挂云帆济沧海', '扶摇直上九万里', '乘风破浪会有时', '直上云霄九万里'], src: '李白《行路难》' },
+  { q: '大漠孤烟直，＿＿＿＿＿。', a: '长河落日圆', w: ['长河落日圆', '长空落日圆', '孤城落日圆', '长河明月圆'], src: '王维《使至塞上》' },
+  { q: '山重水复疑无路，＿＿＿＿＿。', a: '柳暗花明又一村', w: ['柳暗花明又一村', '逢山开路又一篇', '峰回路转不见君', '柳暗花明又一春'], src: '陆游《游山西村》' },
+  { q: '人生自古谁无死，＿＿＿＿＿。', a: '留取丹心照汗青', w: ['留取丹心照汗青', '留取丹心照古今', '但愿丹心照汗青', '留取声名照汗青'], src: '文天祥《过零丁洋》' },
+  { q: '问渠那得清如许，＿＿＿＿＿。', a: '为有源头活水来', w: ['为有源头活水来', '为有新渠活水来', '缘有源头活水来', '为有清泉活水来'], src: '朱熹《观书有感》' },
+  { q: '沉舟侧畔千帆过，＿＿＿＿＿。', a: '病树前头万木春', w: ['病树前头万木春', '枯树前头万木春', '病树前头又一春', '病木前头万木春'], src: '刘禹锡《酬乐天扬州初逢席上见赠》' }
+];
+
 /* ================= 状态 ================= */
 const S = {
   view: 'today',
@@ -1028,7 +1132,9 @@ const S = {
   kw: '',
   pickFood: null,
   grams: 100,
-  range: 7
+  range: 7,
+  trainTab: 'plan',
+  gameKind: 'pong'
 };
 
 /* ================= 工具 ================= */
@@ -1125,16 +1231,6 @@ function viewToday() {
     cups += '<div class="cup ' + (on ? 'on' : '') + '" data-act="cup" data-i="' + i + '">' + (on ? '💧' : '○') + '</div>';
   }
 
-  const dayPhotos = (PHOTOS[d] || []);
-  const photoCard = dayPhotos.length
-    ? '<div class="card"><div class="row between" style="margin-bottom:8px">' +
-      '<b style="font-size:15px">今天的照片</b>' +
-      '<span class="xs mute">' + dayPhotos.length + ' 张 · 点一下可删除</span></div>' +
-      '<div class="photostrip">' + dayPhotos.map(function (p) {
-        return '<img src="' + p.data + '" data-act="delphoto" data-id="' + p.id + '" alt="餐食照片">';
-      }).join('') + '</div></div>'
-    : '';
-
   const mealHtml = MEALS.map(function (m) {
     const items = recs.filter(function (r) { return r.meal === m.key; });
     const kcal = items.reduce(function (s, r) { return s + (r.kcal || 0); }, 0);
@@ -1187,7 +1283,6 @@ function viewToday() {
       '<span class="xs" style="color:var(--green);font-weight:700" data-act="copyyesterday">一键复制昨天的饮食 ›</span></div>' : '') +
     '</div>' +
 
-    photoCard +
     mealHtml +
 
     '<div class="card"><div class="row between" style="margin-bottom:10px">' +
@@ -1236,8 +1331,7 @@ function viewAdd() {
     }).join('') + '</div>' +
 
     '<div class="quickacts">' +
-    '<div class="qa" data-act="scanbarcode"><span>▣</span>扫码录入</div>' +
-    '<div class="qa" data-act="takephoto"><span>📷</span>拍照记录</div>' +
+    '<div class="qa" data-act="scanbarcode"><span>▣</span>' + (CAN_SCAN ? '扫码录入' : '输入条码') + '</div>' +
     '<div class="qa" data-act="newfood"><span>＋</span>自定义食物</div>' +
     '</div>' +
 
@@ -1474,10 +1568,12 @@ function viewProfile() {
     '<div class="rbtn" data-act="export"><span>导出备份（复制 JSON）</span><span class="arrow">›</span></div>' +
     '<div class="rbtn" data-act="import"><span>从剪贴板导入</span><span class="arrow">›</span></div>' +
     '<div class="rbtn" data-act="clear"><span class="red">清空所有数据</span><span class="arrow">›</span></div>' +
+    '<div class="rbtn" data-act="checkupdate"><span>检查更新</span><span class="arrow">↻</span></div>' +
     '<div class="rbtn" data-act="about"><span>关于与计算公式</span><span class="arrow">›</span></div></div>' +
 
     '<div class="xs mute" style="text-align:center;padding:6px 0 20px;line-height:1.6">' +
-    '数据仅保存在本机浏览器，换机/清缓存会丢失<br>建议在「导出备份」定期保存 JSON</div>' +
+    '数据仅保存在本机浏览器，换机/清缓存会丢失<br>建议在「导出备份」定期保存 JSON' +
+    '<br><span style="opacity:.6">构建 ' + BUILD + '</span></div>' +
     '</div>';
 }
 
@@ -1621,7 +1717,7 @@ function fmtViews(v) {
   return v >= 10000 ? (v / 10000).toFixed(v >= 100000 ? 0 : 1) + '万' : String(v);
 }
 
-function trainRow(group, it, i) {
+function trainRow(group, it, i, isCustom) {
   const key = group.key + '#' + i;
   const bind = (store.data.videos || {})[key];
   const bv = (bind && bind.bv) || it.bv || '';
@@ -1637,7 +1733,9 @@ function trainRow(group, it, i) {
       '<div class="ico">B站</div>' +
       '<div class="rt"><div class="t1"><span class="tag">视频</span>' + esc(title) + '</div>' +
       '<div class="t2">' + esc(meta || bv) + '</div></div>' +
-      '<div class="more" data-act="bind" data-g="' + group.key + '" data-i="' + i + '">⋯</div></div>';
+      (isCustom
+        ? '<div class="more" data-act="delvideo" data-g="' + group.key + '" data-i="' + i + '">✕</div>'
+        : '<div class="more" data-act="bind" data-g="' + group.key + '" data-i="' + i + '">⋯</div>') + '</div>';
   }
 
   const q = it.q || title;
@@ -1645,45 +1743,177 @@ function trainRow(group, it, i) {
     '<div class="ico q">🔍</div>' +
     '<div class="rt"><div class="t1"><span class="tag q">搜索</span>' + esc(title) + '</div>' +
     '<div class="t2">' + esc(q) + '</div></div>' +
-    '<div class="more" data-act="bind" data-g="' + group.key + '" data-i="' + i + '">⋯</div></div>';
+    (isCustom
+      ? '<div class="more" data-act="delvideo" data-g="' + group.key + '" data-i="' + i + '">✕</div>'
+      : '<div class="more" data-act="bind" data-g="' + group.key + '" data-i="' + i + '">⋯</div>') + '</div>';
 }
 
-function viewTrain() {
+
+/* ---------------- 训练计划 ---------------- */
+function planData() {
+  if (!store.data.plan) store.data.plan = { split: 'ppl3', days: {}, cycle: 0, checkins: {}, coins: 0, weekPaid: {}, buffs: {} };
+  const p = store.data.plan;
+  p.coins = p.coins || 0;
+  p.checkins = p.checkins || {};
+  p.days = p.days || {};
+  p.buffs = p.buffs || {};
+  p.weekPaid = p.weekPaid || {};
+  return p;
+}
+
+function weekKey(d) {
+  const t = new Date(parseDate(d).getTime());
+  const day = (t.getDay() + 6) % 7;
+  t.setDate(t.getDate() - day);
+  return fmtDate(t);
+}
+function weekCheckins() {
+  const p = planData();
+  const wk = weekKey(todayStr());
+  return Object.keys(p.checkins).filter(function (d) { return weekKey(d) === wk; });
+}
+function todayDayIndex() {
+  const p = planData();
+  const sp = SPLITS[p.split] || SPLITS.ppl3;
+  return p.cycle % sp.days.length;
+}
+function dayGroups(idx) {
+  const p = planData();
+  const sp = SPLITS[p.split] || SPLITS.ppl3;
+  const custom = p.days[p.split + '#' + idx];
+  if (custom) return custom.slice();
+  const d = sp.days[idx] || { g: [] };
+  return d.g.slice();
+}
+function groupName(k) {
+  const g = TRAIN.filter(function (x) { return x.key === k; })[0];
+  return g ? g.name : k;
+}
+
+function weeklyPlan() {
+  const pr = store.data.profile;
+  const t = targets(pr);
+  const cut = pr.goal === 'cut', bulk = pr.goal === 'bulk';
+  const days = cut ? 5 : 4;
+  return {
+    days: days,
+    title: cut ? '本周减脂目标' : (bulk ? '本周增肌目标' : '本周维持目标'),
+    items: [
+      '完成 ' + days + ' 次训练并打卡',
+      '日均热量控制在 ' + t.kcal + ' kcal 附近',
+      '蛋白日均 ≥ ' + Math.round(t.protein * 0.9) + ' g',
+      '饮水每天 ≥ ' + t.water + ' ml',
+      cut ? '体重下降 0.3–0.7 kg' : (bulk ? '体重上升 0.2–0.4 kg' : '体重波动不超过 ±0.5 kg')
+    ]
+  };
+}
+
+function viewPlan() {
+  const p = planData();
+  const sp = SPLITS[p.split] || SPLITS.ppl3;
+  const idx = todayDayIndex();
+  const today = todayStr();
+  const groups = dayGroups(idx);
+  const doneToday = !!p.checkins[today];
+  const wk = weekCheckins().length;
+  const goal = weeklyPlan();
+  const pct = Math.min(100, Math.round(wk / goal.days * 100));
+
+  const splitBtns = Object.keys(SPLITS).map(function (k) {
+    const s = SPLITS[k];
+    return '<div class="split ' + (p.split === k ? 'on' : '') + '" data-act="setsplit" data-k="' + k + '">' +
+      '<b>' + s.name + '</b><span>' + s.desc + '</span></div>';
+  }).join('');
+
+  const tags = groups.map(function (g, i) {
+    return '<div class="ptag">' + groupName(g) +
+      '<span class="x" data-act="deldaygrp" data-i="' + i + '">×</span></div>';
+  }).join('') + '<div class="ptag add" data-act="adddaygrp">＋ 添加部位</div>';
+
+  return '<div class="coinbar"><div><div class="cb"><b>' + p.coins + '</b><span class="cl">代币</span></div>' +
+    '<div class="cl" style="margin-top:4px">打卡 +10 · 连打 +5 · 周目标 +100</div></div>' +
+    '<div class="cw">本周已练<br><b style="font-size:16px;color:var(--ink)">' + wk + '</b> / ' + goal.days + ' 次</div></div>' +
+
+    '<div class="card"><div class="row between" style="margin-bottom:8px">' +
+    '<b style="font-size:15px">训练分化</b><span class="xs mute">改分化不会清空打卡</span></div>' +
+    '<div class="splits">' + splitBtns + '</div></div>' +
+
+    '<div class="card">' +
+    '<div class="row between"><b style="font-size:15px">今日 · ' + (sp.days[idx] ? sp.days[idx].n : '训练') + '</b>' +
+    '<span class="xs mute">第 ' + (p.cycle + 1) + ' 次循环</span></div>' +
+    '<div class="plantags">' + tags + '</div>' +
+    '<div class="btn ' + (doneToday ? 'gray' : '') + '" data-act="checkin" style="' + (doneToday ? 'background:var(--el2);color:var(--mute);box-shadow:none' : '') + '">' +
+    (doneToday ? '今天已打卡 ✓' : '完成训练，打卡 +10') + '</div></div>' +
+
+    '<div class="card"><div class="row between" style="margin-bottom:6px">' +
+    '<b style="font-size:15px">' + goal.title + '</b><span class="xs mute">' + wk + '/' + goal.days + ' 次</span></div>' +
+    '<div class="progbar"><i style="width:' + pct + '%"></i></div>' +
+    '<div class="goalbox" style="margin-top:10px;margin-bottom:0"><div class="gt">本周要做到</div><ul style="margin:0;padding:0;list-style:none">' +
+    goal.items.map(function (x) { return '<li>· ' + esc(x) + '</li>'; }).join('') + '</ul></div>' +
+    (wk >= goal.days && !p.weekPaid[weekKey(today)]
+      ? '<div class="btn" style="margin-top:12px" data-act="claimweek">领取本周奖励 +100</div>'
+      : (p.weekPaid[weekKey(today)] ? '<div class="xs mute" style="text-align:center;padding-top:10px">本周奖励已领取 ✓</div>' : '')) +
+    '</div>' +
+
+    '<div class="card"><div class="row between" style="margin-bottom:8px">' +
+    '<b style="font-size:15px">训练间歇小游戏</b><span class="xs mute">1–2 分钟</span></div>' +
+    '<div class="quickacts" style="margin:0">' +
+    '<div class="qa" data-act="game" data-g="pong"><span>🏓</span>电子乒乓</div>' +
+    '<div class="qa" data-act="game" data-g="whack"><span>🐹</span>打地鼠</div>' +
+    '<div class="qa" data-act="game" data-g="poem"><span>📜</span>古诗填空</div>' +
+    '</div>' +
+    '<div class="btn gray" style="margin-top:10px" data-act="shop">场外商店 · 用代币换永久加成</div></div>';
+}
+
+/* ---------------- 跟练视频 ---------------- */
+function viewVideoList() {
   const cur = S.train || 'chest';
   const group = TRAIN.filter(function (a) { return a.key === cur; })[0] || TRAIN[0];
-  const direct = group.items.filter(function (it, i) {
+  const custom = ((store.data.videos || {})['list#' + group.key]) || [];
+  const items = group.items.concat(custom);
+  const direct = items.filter(function (it, i) {
     return it.bv || (store.data.videos || {})[group.key + '#' + i];
   }).length;
 
   const tiles = TRAIN.map(function (a) {
+    const extra = (((store.data.videos || {})['list#' + a.key]) || []).length;
     const vids = a.items.filter(function (it, i) {
       return it.bv || (store.data.videos || {})[a.key + '#' + i];
-    }).length;
+    }).length + extra;
     return '<div class="kwtile ' + (a.key === group.key ? 'on' : '') + '" data-act="trainkw" data-k="' + a.key + '">' +
-      '<span class="ki">' + a.icon + '</span>' +
+      '<span class="ki">' + a.tag + '</span>' +
       '<span class="kn">' + a.name + '</span>' +
       '<span class="kc">' + (vids ? vids + ' 个视频' : a.items.length + ' 个关键词') + '</span></div>';
   }).join('');
 
-  return '<div class="wrap">' +
-    '<div class="xs mute" style="padding:2px 4px 10px">选个部位，点条目直接跳 B 站观看</div>' +
-    '<div class="kwgrid">' + tiles + '</div>' +
-
+  return '<div class="kwgrid">' + tiles + '</div>' +
     '<div class="card">' +
     '<div class="grpbar"><b>' + group.name + ' · 跟练清单</b>' +
     '<span>' + (direct ? direct + ' 个视频直链' : '关键词搜索') + '</span></div>' +
-    group.items.map(function (it, i) { return trainRow(group, it, i); }).join('') +
+    items.map(function (it, i) { return trainRow(group, it, i, i >= group.items.length); }).join('') +
+    '<div class="rbtn" style="margin-top:6px;border-bottom:none;padding-bottom:0" data-act="addvideo" data-g="' + group.key + '">' +
+    '<span class="green" style="font-size:13px">＋ 添加一个视频</span><span class="arrow">›</span></div>' +
     '</div>' +
-
     '<div class="card"><b style="font-size:15px">自己搜</b>' +
     '<div class="xs mute" style="margin:6px 0 10px">输入任意关键词，直接打开 B 站搜索结果</div>' +
     '<div class="tsearch"><input id="tkw" placeholder="如 引体向上 教学" enterkeyhint="search">' +
     '<div class="gb" data-act="tsearch">搜索</div></div></div>' +
+    '<div class="note">点「⋯」可换视频 / 删除自定义条目，改过的存本机<br>已核实的直链共 16 条，其余部位可自行添加</div>';
+}
 
-    '<div class="note">点「⋯」可以把某一条换成你自己收藏的视频，改过的会存本机<br>' +
-    '每条视频都带 BV 号，可用 tools/check_bili.py 批量体检是否下架</div>' +
-    viewKnowledge() +
-    '</div>';
+function viewTrain() {
+  const tab = S.trainTab || 'plan';
+  const tabs = [['plan', '训练计划'], ['video', '跟练视频'], ['kb', '小知识']];
+  const seg = '<div class="seg3">' + tabs.map(function (t) {
+    return '<div class="s ' + (tab === t[0] ? 'on' : '') + '" data-act="traintab" data-k="' + t[0] + '">' + t[1] + '</div>';
+  }).join('') + '</div>';
+
+  let body = '';
+  if (tab === 'video') body = viewVideoList();
+  else if (tab === 'kb') body = viewKnowledge();
+  else body = viewPlan();
+
+  return '<div class="wrap">' + seg + body + '</div>';
 }
 
 /* ================= 小工具 ================= */
@@ -1750,6 +1980,7 @@ function buildBackup() {
     fav: store.data.fav || [],
     videos: store.data.videos || {},
     barcodes: store.data.barcodes || {},
+    plan: store.data.plan || {},
     settings: store.data.settings || DEFAULT_SETTINGS,
     hasBgImage: !!BG_IMAGE
   });
@@ -1922,71 +2153,6 @@ function pruneFav() {
 }
 
 
-/* ================= 照片（单独存，不塞进主数据） ================= */
-const PHOTO_KEY = 'nutrition_diary_photos';
-let PHOTOS = {};
-
-function loadPhotos() {
-  try { PHOTOS = JSON.parse(localStorage.getItem(PHOTO_KEY) || '{}') || {}; }
-  catch (e) { PHOTOS = {}; }
-}
-function savePhotos() {
-  try { localStorage.setItem(PHOTO_KEY, JSON.stringify(PHOTOS)); }
-  catch (e) { toast('照片太多了，先删几张'); }
-}
-function trimPhotos() {
-  const keys = Object.keys(PHOTOS).sort();
-  let total = 0;
-  keys.forEach(function (k) { total += (PHOTOS[k] || []).length; });
-  while (total > 30 && keys.length) {
-    const k = keys.shift();
-    const arr = PHOTOS[k] || [];
-    if (arr.length) { arr.shift(); total -= 1; }
-    if (arr.length) PHOTOS[k] = arr; else delete PHOTOS[k];
-  }
-}
-
-function takePhoto() {
-  const inp = document.createElement('input');
-  inp.type = 'file';
-  inp.accept = 'image/*';
-  inp.setAttribute('capture', 'environment');
-  inp.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
-  document.body.appendChild(inp);
-  inp.addEventListener('change', function () {
-    const file = inp.files && inp.files[0];
-    setTimeout(function () { inp.remove(); }, 100);
-    if (!file) return;
-    if (!/^image\//.test(file.type || '')) { toast('请选择图片'); return; }
-    const url = URL.createObjectURL(file);
-    const img = new Image();
-    img.onload = function () {
-      const MAX = 560;
-      const sc = Math.min(1, MAX / Math.max(img.width, img.height));
-      const w = Math.max(1, Math.round(img.width * sc));
-      const h = Math.max(1, Math.round(img.height * sc));
-      const cv = document.createElement('canvas');
-      cv.width = w; cv.height = h;
-      cv.getContext('2d').drawImage(img, 0, 0, w, h);
-      let data = '';
-      try { data = cv.toDataURL('image/jpeg', 0.62); }
-      catch (e) { toast('这张图处理不了'); URL.revokeObjectURL(url); return; }
-      const d = S.date;
-      const list = PHOTOS[d] || [];
-      list.push({ id: 'ph' + Date.now().toString(36), ts: Date.now(), data: data });
-      PHOTOS[d] = list;
-      trimPhotos();
-      savePhotos();
-      URL.revokeObjectURL(url);
-      render();
-      toast('照片已存到这一天');
-    };
-    img.onerror = function () { toast('读不了这张图'); URL.revokeObjectURL(url); };
-    img.src = url;
-  });
-  inp.click();
-}
-
 /* ================= 扫码 ================= */
 let scanStream = null;
 
@@ -2102,6 +2268,355 @@ function viewKnowledge() {
     '</div>';
 }
 
+
+/* ================= 小游戏 ================= */
+let GT = null;
+
+function stopGames() {
+  if (GT) {
+    if (GT.timer) clearInterval(GT.timer);
+    if (GT.raf) cancelAnimationFrame(GT.raf);
+    if (GT.moleTimer) clearInterval(GT.moleTimer);
+    GT = null;
+  }
+}
+
+function addCoins(n) {
+  const p = planData();
+  p.coins = Math.max(0, (p.coins || 0) + n);
+  store.save();
+  return p.coins;
+}
+function buffLv(id) {
+  const p = planData();
+  return Math.min(9, (p.buffs && p.buffs[id]) || 0);
+}
+
+const GAME_META = {
+  pong: { name: '电子乒乓', hint: '拖动手指控制球拍，接到球就得分。球速会越来越快。' },
+  whack: { name: '打地鼠', hint: '地鼠冒头就点它，30 秒看你能打几只。' },
+  poem: { name: '古诗填空', hint: '选出正确的下句，答错不扣分但很浪费时间。' }
+};
+
+function viewGame() {
+  const k = S.gameKind || 'pong';
+  const m = GAME_META[k] || GAME_META.pong;
+  return '<div class="wrap">' +
+    '<div class="row between" style="padding:2px 4px 10px">' +
+    '<div class="back" data-act="backtrain">‹</div>' +
+    '<b style="font-size:17px">' + m.name + '</b><span style="width:34px"></span></div>' +
+    '<div id="gamehost"></div>' +
+    '<div class="note">' + m.hint + '<br>代币可以在「场外商店」换成永久加成</div>' +
+    '</div>';
+}
+
+function bootGame(kind) {
+  stopGames();
+  const host = document.getElementById('gamehost');
+  if (!host) return;
+  if (kind === 'whack') bootWhack(host);
+  else if (kind === 'poem') bootPoem(host);
+  else bootPong(host);
+}
+
+/* ---------- 电子乒乓 ---------- */
+function bootPong(host) {
+  const padLv = buffLv('pong_paddle');
+  const lifeLv = buffLv('pong_life');
+  const PADW = 64 + padLv * 14;
+  let lives = 3 + lifeLv;
+  let score = 0, left = 90, over = false;
+
+  host.innerHTML = '<div class="gamewrap">' +
+    '<div class="gamehead"><b>电子乒乓</b><span class="gclock" id="gclock">90s</span></div>' +
+    '<div class="gstage"><canvas id="pongcv"></canvas></div>' +
+    '<div class="row between" style="margin-top:8px;font-size:12px;color:var(--mute)">' +
+    '<span>得分 <b id="gscore" style="color:var(--ink)">0</b></span>' +
+    '<span>生命 <b id="glife" style="color:var(--ink)">' + lives + '</b></span></div></div>';
+
+  const cv = document.getElementById('pongcv');
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = Math.max(240, cv.clientWidth || 300), H = 300;
+  cv.width = W * dpr; cv.height = H * dpr;
+  cv.style.height = H + 'px';
+  const ctx = cv.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const pad = { w: Math.min(PADW, W * 0.6), h: 10, x: W / 2 };
+  const ball = { x: W / 2, y: H / 2, r: 6, vx: 2.2, vy: -2.8 };
+
+  function movePad(clientX) {
+    const rect = cv.getBoundingClientRect();
+    const x = (clientX - rect.left) / rect.width * W;
+    pad.x = Math.max(pad.w / 2, Math.min(W - pad.w / 2, x));
+  }
+  cv.addEventListener('pointermove', function (e) { movePad(e.clientX); });
+  cv.addEventListener('pointerdown', function (e) { movePad(e.clientX); });
+
+  const draw = function () {
+    const css = getComputedStyle(document.documentElement);
+    const line = css.getPropertyValue('--line').trim() || '#eef1f4';
+    const acc = css.getPropertyValue('--green').trim() || '#12a05b';
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = line;
+    ctx.fillRect(pad.x - pad.w / 2, H - 22, pad.w, pad.h);
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+    ctx.fillStyle = acc;
+    ctx.fill();
+  };
+
+  const loop = function () {
+    if (!GT || over) return;
+    ball.x += ball.vx; ball.y += ball.vy;
+    if (ball.x < ball.r) { ball.x = ball.r; ball.vx = Math.abs(ball.vx); }
+    if (ball.x > W - ball.r) { ball.x = W - ball.r; ball.vx = -Math.abs(ball.vx); }
+    if (ball.y < ball.r) { ball.y = ball.r; ball.vy = Math.abs(ball.vy); }
+    if (ball.y > H - 22 - ball.r && ball.y < H - 12 &&
+        Math.abs(ball.x - pad.x) < pad.w / 2 + ball.r && ball.vy > 0) {
+      ball.vy = -Math.abs(ball.vy) * 1.03;
+      ball.vx += (ball.x - pad.x) * 0.05;
+      const sp = Math.hypot(ball.vx, ball.vy);
+      const cap = 9;
+      if (sp > cap) { ball.vx = ball.vx / sp * cap; ball.vy = ball.vy / sp * cap; }
+      score += 1;
+      const se = document.getElementById('gscore');
+      if (se) se.textContent = score;
+    }
+    if (ball.y > H + 20) {
+      lives -= 1;
+      const le = document.getElementById('glife');
+      if (le) le.textContent = lives;
+      if (lives <= 0) { finishPong(); return; }
+      ball.x = W / 2; ball.y = H / 2; ball.vx = 2.2; ball.vy = -2.8;
+    }
+    draw();
+    GT.raf = requestAnimationFrame(loop);
+  };
+
+  function finishPong() {
+    over = true;
+    const got = Math.max(1, Math.floor(score / 3));
+    addCoins(got);
+    stopGames();
+    const stage = document.querySelector('.gstage');
+    if (stage) {
+      stage.innerHTML = '<div class="gres" style="padding:70px 0">' +
+        '<div class="big">' + score + '</div>' +
+        '<div class="sub">接住 ' + score + ' 球 · 获得 ' + got + ' 代币</div></div>';
+    }
+    setTimeout(function () { toast('获得 ' + got + ' 代币'); }, 60);
+  }
+
+  GT = { raf: null, timer: null };
+  GT.timer = setInterval(function () {
+    if (over) return;
+    left -= 1;
+    const ce = document.getElementById('gclock');
+    if (ce) ce.textContent = left + 's';
+    if (left <= 0) finishPong();
+  }, 1000);
+
+  ball.vx = (Math.random() > 0.5 ? 1 : -1) * 2.2;
+  GT.raf = requestAnimationFrame(loop);
+}
+
+/* ---------- 打地鼠 ---------- */
+function bootWhack(host) {
+  const extra = buffLv('whack_time') * 8;
+  const stay = 620 + buffLv('whack_slow') * 180;
+  let total = 30 + extra;
+  let score = 0, over = false;
+  let cur = -1;
+
+  let cells = '';
+  for (let i = 0; i < 9; i++) cells += '<div class="mole" data-i="' + i + '"></div>';
+
+  host.innerHTML = '<div class="gamewrap">' +
+    '<div class="gamehead"><b>打地鼠</b><span class="gclock" id="gclock">' + total + 's</span></div>' +
+    '<div class="gstage"><div class="moles" style="padding:10px">' + cells + '</div></div>' +
+    '<div class="row between" style="margin-top:8px;font-size:12px;color:var(--mute)">' +
+    '<span>得分 <b id="gscore" style="color:var(--ink)">0</b></span></div></div>';
+
+  const nodes = host.querySelectorAll('.mole');
+  if (!nodes || nodes.length < 9) return;   // DOM 还没就绪就别启动，避免空指针
+  nodes.forEach(function (n) {
+    n.addEventListener('click', function () {
+      if (over) return;
+      if (Number(n.dataset.i) === cur) {
+        score += 1;
+        cur = -1;
+        n.classList.remove('up');
+        n.textContent = '';
+        const se = document.getElementById('gscore');
+        if (se) se.textContent = score;
+      }
+    });
+  });
+
+  const pop = function () {
+    if (over) return;
+    nodes.forEach(function (n) { n.classList.remove('up'); n.textContent = ''; });
+    cur = Math.floor(Math.random() * 9);
+    nodes[cur].classList.add('up');
+    nodes[cur].textContent = '🐹';
+  };
+
+  const finish = function () {
+    over = true;
+    const got = Math.max(1, Math.floor(score / 4));
+    addCoins(got);
+    stopGames();
+    const stage = document.querySelector('.gstage');
+    if (stage) {
+      stage.innerHTML = '<div class="gres" style="padding:70px 0">' +
+        '<div class="big">' + score + '</div>' +
+        '<div class="sub">打到 ' + score + ' 只 · 获得 ' + got + ' 代币</div></div>';
+    }
+    setTimeout(function () { toast('获得 ' + got + ' 代币'); }, 60);
+  };
+
+  GT = { timer: null, moleTimer: null, raf: null };
+  GT.moleTimer = setInterval(pop, Math.max(520, stay));
+  GT.timer = setInterval(function () {
+    if (over) return;
+    total -= 1;
+    const ce = document.getElementById('gclock');
+    if (ce) ce.textContent = total + 's';
+    if (total <= 0) finish();
+  }, 1000);
+  pop();
+}
+
+/* ---------- 古诗填空 ---------- */
+function bootPoem(host) {
+  const extra = buffLv('poem_time') * 15;
+  const hints = buffLv('poem_hint');
+  let total = 60 + extra;
+  let cur = 0, right = 0, over = false, locked = false;
+  const order = POEMS.map(function (_, i) { return i; }).sort(function () { return Math.random() - 0.5; });
+
+  host.innerHTML = '<div class="gamewrap">' +
+    '<div class="gamehead"><b>古诗填空</b><span class="gclock" id="gclock">' + total + 's</span></div>' +
+    '<div class="gstage quiz" id="quizbox" style="padding:14px"></div>' +
+    '<div class="row between" style="margin-top:8px;font-size:12px;color:var(--mute)">' +
+    '<span>答对 <b id="gscore" style="color:var(--ink)">0</b></span>' +
+    '<span id="gprog">1 / ' + POEMS.length + '</span></div></div>';
+
+  const box = document.getElementById('quizbox');
+
+  const draw = function () {
+    const q = POEMS[order[cur % order.length]];
+    const opts = q.w.slice().sort(function () { return Math.random() - 0.5; });
+    const removeN = hints;
+    box.innerHTML = '<div class="qt">' + esc(q.q) + '</div>' +
+      opts.map(function (o, i) {
+        return '<div class="qo" data-o="' + i + '" data-v="' + esc(o) + '">' + esc(o) + '</div>';
+      }).join('') +
+      (removeN ? '<div class="xs mute" style="margin-top:6px" id="hintbtn" data-n="' + removeN + '">排除一个错误选项（' + removeN + ' 次）</div>' : '');
+
+    box.querySelectorAll('.qo').forEach(function (el) {
+      el.addEventListener('click', function () {
+        if (over || locked) return;
+        locked = true;
+        const v = el.getAttribute('data-v');
+        if (v === q.a) {
+          right += 1;
+          el.classList.add('ok');
+          const se = document.getElementById('gscore');
+          if (se) se.textContent = right;
+        } else {
+          el.classList.add('bad');
+          box.querySelectorAll('.qo').forEach(function (x) {
+            if (x.getAttribute('data-v') === q.a) x.classList.add('ok');
+          });
+        }
+        setTimeout(function () {
+          locked = false;
+          cur += 1;
+          if (!over) {
+            const pe = document.getElementById('gprog');
+            if (pe) pe.textContent = ((cur % POEMS.length) + 1) + ' / ' + POEMS.length;
+            draw();
+          }
+        }, 520);
+      });
+    });
+
+    const hb = document.getElementById('hintbtn');
+    if (hb) {
+      hb.addEventListener('click', function () {
+        if (over || locked) return;
+        const wrongOnes = [];
+        box.querySelectorAll('.qo').forEach(function (x) {
+          if (x.getAttribute('data-v') !== q.a && !x.classList.contains('gone')) wrongOnes.push(x);
+        });
+        const n = Math.min(Number(hb.getAttribute('data-n')), wrongOnes.length - 1);
+        if (n <= 0) return;
+        for (let i = 0; i < n; i++) {
+          if (wrongOnes[i]) {
+            wrongOnes[i].classList.add('gone');
+            wrongOnes[i].style.opacity = '.28';
+            wrongOnes[i].style.textDecoration = 'line-through';
+          }
+        }
+        hb.remove();
+      });
+    }
+  };
+
+  const finish = function () {
+    over = true;
+    const got = Math.max(1, right * 2);
+    addCoins(got);
+    stopGames();
+    box.innerHTML = '<div class="gres" style="padding:60px 0">' +
+      '<div class="big">' + right + '</div>' +
+      '<div class="sub">答对 ' + right + ' 题 · 获得 ' + got + ' 代币</div></div>';
+    setTimeout(function () { toast('获得 ' + got + ' 代币'); }, 60);
+  };
+
+  GT = { timer: null, raf: null };
+  GT.timer = setInterval(function () {
+    if (over) return;
+    total -= 1;
+    const ce = document.getElementById('gclock');
+    if (ce) ce.textContent = total + 's';
+    if (total <= 0) finish();
+  }, 1000);
+
+  draw();
+}
+
+/* ---------- 场外商店 ---------- */
+function viewShop() {
+  const p = planData();
+  const rows = BUFFS.map(function (b) {
+    const lv = p.buffs[b.id] || 0;
+    const full = lv >= b.max;
+    const cost = b.cost * (lv + 1);
+    return '<div class="shopitem">' +
+      '<div class="si"><div class="sn">' + b.name + ' ' +
+      (lv ? '<span style="color:var(--green);font-size:11px">Lv.' + lv + '</span>' : '') +
+      '</div><div class="sd">' + b.desc + '</div></div>' +
+      (full
+        ? '<div class="buy full">已满级</div>'
+        : '<div class="buy" data-act="buy" data-id="' + b.id + '">' + cost + ' 币</div>') +
+      '</div>';
+  }).join('');
+
+  return '<div class="wrap">' +
+    '<div class="row between" style="padding:2px 4px 10px">' +
+    '<div class="back" data-act="backtrain">‹</div>' +
+    '<b style="font-size:17px">场外商店</b><span style="width:34px"></span></div>' +
+    '<div class="coinbar"><div class="cb"><b>' + p.coins + '</b><span class="cl">代币</span></div>' +
+    '<div class="cw">加成永久生效<br>不会让游戏变无聊</div></div>' +
+    '<div class="card">' + rows + '</div>' +
+    '<div class="note">加成只提高容错（板子更长、时间更宽裕），核心难度不会消除：<br>' +
+    '乒乓球的球速会越打越快，地鼠出现间隔会越来越短。</div>' +
+    '</div>';
+}
+
 /* ================= 渲染 ================= */
 function renderTabbar() {
   const items = [
@@ -2124,11 +2639,14 @@ function renderFab() {
 function render() {
   // 任何一次重绘都把扫码浮层收掉，避免摄像头一直开着
   closeScanner();
+  stopGames();
   let html = '';
   if (S.view === 'today') html = viewToday();
   else if (S.view === 'add') html = viewAdd();
   else if (S.view === 'report') html = viewReport();
   else if (S.view === 'train') html = viewTrain();
+  else if (S.view === 'game') html = viewGame();
+  else if (S.view === 'shop') html = viewShop();
   else html = viewProfile();
 
   $('root').innerHTML = html;
@@ -2141,6 +2659,7 @@ function render() {
   $('overlay').innerHTML = ov;
 
   window.scrollTo(0, 0);
+  if (S.view === 'game') bootGame(S.gameKind);
 }
 
 /* 只刷新目标卡（避免输入框失焦） */
@@ -2368,6 +2887,20 @@ document.addEventListener('click', function (e) {
       try { localStorage.removeItem(KEY_IMG); } catch (e) { }
       store.save(); applyAppearance(); render(); toast('已清空'); break;
 
+    case 'checkupdate': {
+      if (!navigator.onLine) { toast('现在没联网，连网后再试'); break; }
+      toast('正在检查更新…');
+      const done = function () { location.reload(); };
+      if (typeof caches === 'undefined') { done(); break; }
+      caches.keys()
+        .then(function (keys) {
+          return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+        })
+        .then(done)
+        .catch(done);
+      break;
+    }
+
     case 'about':
       alert('营养日记\n\nBMR 采用 Mifflin-St Jeor 公式，TDEE = BMR × 活动系数，目标热量在 TDEE 上按减脂/维持/增肌调整。\n\n食物营养值取自常见食物成分表，为估算值。\n\n本工具不构成医疗建议。');
       break;
@@ -2406,17 +2939,6 @@ document.addEventListener('click', function (e) {
     case 'closescan':
       closeScanner(); manualBarcode(); break;
 
-    case 'takephoto':
-      takePhoto(); break;
-
-    case 'delphoto': {
-      const pid = el.dataset.id;
-      if (!confirm('删除这张照片？')) return;
-      const list = (PHOTOS[S.date] || []).filter(function (p) { return p.id !== pid; });
-      if (list.length) PHOTOS[S.date] = list; else delete PHOTOS[S.date];
-      savePhotos(); render(); break;
-    }
-
     case 'kb': {
       const k = el.dataset.k;
       S.kbOpen = (S.kbOpen === k) ? '' : k;
@@ -2427,6 +2949,137 @@ document.addEventListener('click', function (e) {
       S.kbCat = el.dataset.k;
       S.kbOpen = '';
       renderKeepScroll(); break;
+
+    case 'traintab':
+      S.trainTab = el.dataset.k;
+      render(); break;
+
+    case 'setsplit': {
+      const p = planData();
+      p.split = el.dataset.k;
+      p.cycle = 0;
+      store.save(); render(); break;
+    }
+
+    case 'adddaygrp': {
+      const list = TRAIN.map(function (g, i) { return (i + 1) + '. ' + g.name; }).join('\n');
+      const ans = prompt('添加训练部位，输入编号（可只输一个）：\n\n' + list);
+      if (!ans) break;
+      const picks = String(ans).split(/[^0-9]+/).map(Number).filter(function (n) { return n >= 1 && n <= TRAIN.length; });
+      if (!picks.length) { toast('编号不对'); break; }
+      const p = planData();
+      const idx = todayDayIndex();
+      const key = p.split + '#' + idx;
+      const cur = dayGroups(idx);
+      picks.forEach(function (n) {
+        const g = TRAIN[n - 1];
+        if (cur.indexOf(g.key) < 0) cur.push(g.key);
+      });
+      p.days[key] = cur;
+      store.save(); render(); break;
+    }
+
+    case 'deldaygrp': {
+      const p = planData();
+      const idx = todayDayIndex();
+      const key = p.split + '#' + idx;
+      const cur = dayGroups(idx);
+      cur.splice(Number(el.dataset.i), 1);
+      p.days[key] = cur;
+      store.save(); render(); break;
+    }
+
+    case 'checkin': {
+      const p = planData();
+      const t = todayStr();
+      if (p.checkins[t]) { toast('今天已经打过卡了'); break; }
+      const streak = !!p.checkins[addDays(t, -1)];
+      p.checkins[t] = dayGroups(todayDayIndex());
+      p.cycle = (p.cycle || 0) + 1;
+      store.save();
+      addCoins(streak ? 15 : 10);
+      render();
+      toast(streak ? '打卡成功 +15（连打加成）' : '打卡成功 +10');
+      break;
+    }
+
+    case 'claimweek': {
+      const p = planData();
+      const wk = weekKey(todayStr());
+      if (p.weekPaid[wk]) { toast('本周已经领过了'); break; }
+      if (weekCheckins().length < weeklyPlan().days) { toast('还没达标'); break; }
+      p.weekPaid[wk] = true;
+      store.save();
+      addCoins(100);
+      render();
+      toast('本周目标达成 +100');
+      break;
+    }
+
+    case 'game':
+      S.gameKind = el.dataset.g || 'pong';
+      S.view = 'game';
+      render(); break;
+
+    case 'shop':
+      S.view = 'shop';
+      render(); break;
+
+    case 'backtrain':
+      S.view = 'train';
+      S.trainTab = 'plan';
+      render(); break;
+
+    case 'buy': {
+      const b = BUFFS.filter(function (x) { return x.id === el.dataset.id; })[0];
+      if (!b) break;
+      const p = planData();
+      const lv = p.buffs[b.id] || 0;
+      if (lv >= b.max) { toast('已经满级'); break; }
+      const cost = b.cost * (lv + 1);
+      if ((p.coins || 0) < cost) { toast('代币不够，还差 ' + (cost - p.coins)); break; }
+      p.coins -= cost;
+      p.buffs[b.id] = lv + 1;
+      store.save(); render();
+      toast(b.name + ' 升到 Lv.' + (lv + 1));
+      break;
+    }
+
+    case 'addvideo': {
+      const g = el.dataset.g;
+      const title = prompt('给这个视频起个名字（会显示在清单里）：');
+      if (!title) break;
+      const link = prompt('粘贴 B 站视频链接或 BV 号：');
+      if (!link) break;
+      const m = String(link).match(/BV[0-9A-Za-z]{10}/);
+      if (!m) { toast('没识别到 BV 号'); break; }
+      const videos = Object.assign({}, store.data.videos || {});
+      const key = 'list#' + g;
+      const list = (videos[key] || []).concat([{ t: String(title), bv: m[0], up: '自定义', dur: 0, v: 0 }]);
+      videos[key] = list;
+      store.data.videos = videos;
+      store.save(); render();
+      toast('已添加');
+      break;
+    }
+
+    case 'delvideo': {
+      const g = el.dataset.g;
+      const i = Number(el.dataset.i);
+      const grp = TRAIN.filter(function (a) { return a.key === g; })[0];
+      if (!grp) break;
+      const ci = i - grp.items.length;
+      const videos = Object.assign({}, store.data.videos || {});
+      const list = (videos['list#' + g] || []).slice();
+      if (ci < 0 || ci >= list.length) break;
+      if (!confirm('删除「' + list[ci].t + '」这条自定义视频？')) break;
+      list.splice(ci, 1);
+      if (list.length) videos['list#' + g] = list; else delete videos['list#' + g];
+      store.data.videos = videos;
+      store.save(); render();
+      toast('已删除');
+      break;
+    }
 
     case 'openvideo': {
       const href = el.dataset.href;
@@ -2544,7 +3197,6 @@ document.addEventListener('input', function (e) {
 store.load();
 if (!localStorage.getItem(KEY)) store.save();
 try { BG_IMAGE = localStorage.getItem(KEY_IMG) || ''; } catch (e) { BG_IMAGE = ''; }
-loadPhotos();
 applyAppearance();
 pruneFav();
 try {
@@ -2572,7 +3224,14 @@ try {
 /* service worker：离线可用 */
 if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
   window.addEventListener('load', function () {
-    navigator.serviceWorker.register('sw.js?v=20261020').catch(function () { });
+    navigator.serviceWorker.register('sw.js?v=' + BUILD).catch(function () { });
+  });
+  // 新 SW 接管后自动刷新一次，避免下次打开还看到旧界面
+  let swReloaded = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function () {
+    if (swReloaded) return;
+    swReloaded = true;
+    location.reload();
   });
 }
 
