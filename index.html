@@ -367,6 +367,26 @@ body{background-color:var(--bg);background-size:cover;background-position:center
 .progbar{height:8px;border-radius:8px;background:var(--el);overflow:hidden;margin:8px 0 4px}
 .progbar i{display:block;height:100%;background:var(--green);border-radius:8px;transition:width .3s}
 
+/* 推荐动作 */
+.exlist{margin-bottom:12px;border-top:1px solid var(--line);padding-top:10px}
+.exgrp{margin-bottom:9px}
+.exgrp:last-child{margin-bottom:0}
+.exgh{font-size:11px;color:var(--green);font-weight:700;margin-bottom:4px}
+.ex{display:flex;align-items:center;justify-content:space-between;padding:3px 0;font-size:12.5px}
+.ex .en{color:var(--ink2)}
+.ex .es{color:var(--mute);font-size:11px;font-variant-numeric:tabular-nums}
+.dayrow{padding:10px 0;border-bottom:1px solid var(--line)}
+.dayrow:last-child{border-bottom:none;padding-bottom:0}
+.dayrow.on{background:rgba(var(--acc),.06);margin:0 -10px;padding-left:10px;padding-right:10px;border-radius:10px}
+.dh{display:flex;align-items:center;gap:7px}
+.dn{font-size:10px;font-weight:800;color:var(--mute);background:var(--el2);border-radius:5px;padding:1px 5px}
+.dname{font-size:13.5px;font-weight:600}
+.dtag{font-size:9.5px;color:var(--green);background:rgba(var(--acc),.14);border-radius:4px;padding:1px 5px;margin-left:auto}
+.dg{display:flex;gap:5px;flex-wrap:wrap;margin:5px 0 0}
+.dg span{font-size:10.5px;color:var(--ink2);background:var(--el2);border-radius:5px;padding:2px 7px}
+.dg .rest{color:var(--mute)}
+.dex{font-size:10.5px;color:var(--mute);margin-top:5px;line-height:1.6}
+
 /* 游戏 */
 .gamewrap{background:var(--card);border-radius:16px;padding:14px;margin-bottom:12px;position:relative}
 .gamehead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
@@ -385,6 +405,9 @@ body{background-color:var(--bg);background-size:cover;background-position:center
 .gres{text-align:center;padding:16px 0}
 .gres .big{font-size:34px;font-weight:800;color:var(--green);line-height:1}
 .gres .sub{font-size:12px;color:var(--mute);margin-top:6px}
+.masked{text-align:center;font-size:26px;font-weight:800;letter-spacing:3px;line-height:1.5;word-break:break-all}
+.masked .mk{color:var(--ink)}
+.masked .bl{color:var(--green);border-bottom:2px solid rgba(var(--acc),.45);padding:0 3px;margin:0 1px}
 .scratchgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
 .scratchcell{aspect-ratio:1/1;border-radius:8px;background:var(--el);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--mute);user-select:none}
 .scratchcell.open{background:rgba(var(--acc),.2);color:var(--green)}
@@ -844,7 +867,7 @@ const DEFAULT_PROFILE = {
   activity: 'moderate', goal: 'maintain', targetWeight: 68
 };
 
-const BUILD = '2026-10-20.4';
+const BUILD = '2026-10-20.6';
 const CAN_SCAN = (typeof window !== 'undefined') && ('BarcodeDetector' in window) && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain' };
 
@@ -1107,6 +1130,54 @@ const KB = [
 ];
 
 
+const EXERCISES_RAW = `chest|杠铃卧推|4×6-8
+chest|上斜哑铃卧推|3×8-12
+chest|双杠臂屈伸|3×8-12
+chest|绳索夹胸|3×12-15
+chest|俯卧撑|3×力竭
+back|引体向上|4×力竭
+back|杠铃划船|4×8-10
+back|高位下拉|3×10-12
+back|坐姿绳索划船|3×12
+back|直臂下压|3×15
+shoulder|站姿杠铃推举|4×6-8
+shoulder|哑铃侧平举|4×12-15
+shoulder|俯身飞鸟|3×15
+shoulder|面拉|3×15
+arm|杠铃弯举|3×8-12
+arm|绳索三头下压|3×10-12
+arm|锤式弯举|3×12
+arm|仰卧臂屈伸|3×10-12
+glute|杠铃深蹲|4×6-10
+glute|罗马尼亚硬拉|3×8-10
+glute|腿举|3×10-12
+glute|保加利亚分腿蹲|3×10/侧
+glute|臀桥|3×12-15
+core|卷腹|3×15-20
+core|悬垂举腿|3×10-12
+core|平板支撑|3×40秒
+core|俄罗斯转体|3×20
+cardio|HIIT 冲刺|8×30秒
+cardio|爬楼机|20 分钟
+cardio|快走 / 爬坡|30 分钟
+beginner|器械全身循环|3 轮
+beginner|哑铃高脚杯深蹲|3×12
+beginner|跪姿俯卧撑|3×10
+beginner|坐姿划船|3×12
+stretch|全身静态拉伸|10 分钟
+stretch|泡沫轴放松|8 分钟
+stretch|髋屈肌 + 腘绳肌拉伸|2×40 秒`;
+
+const EXERCISES = {};
+EXERCISES_RAW.split('\n').forEach(function (line) {
+  const c = line.split('|');
+  if (c.length < 3) return;
+  if (!EXERCISES[c[0]]) EXERCISES[c[0]] = [];
+  EXERCISES[c[0]].push({ n: c[1], s: c[2] });
+});
+
+function exercisesFor(k) { return EXERCISES[k] || []; }
+
 const SPLITS = {
   ppl3_a: { name: '三分化·推拉腿', tag: '推/拉/腿', days: [
     { n: '推（胸肩三头）', g: ['chest', 'shoulder', 'arm'] },
@@ -1127,6 +1198,22 @@ const SPLITS = {
     { n: '肩 + 臂', g: ['shoulder', 'arm'] },
     { n: '有氧 + 核心', g: ['cardio', 'core'] }
   ] },
+  ppl2: { name: '二分化·上下肢', tag: '上肢/下肢', days: [
+    { n: '上肢（胸背肩臂）', g: ['chest', 'back', 'shoulder', 'arm'] },
+    { n: '下肢 + 核心', g: ['glute', 'core'] },
+    { n: '休息', g: [] }
+  ] },
+  ppl4: { name: '四分化·胸背腿肩', tag: '胸/背/腿/肩', days: [
+    { n: '胸 + 三头', g: ['chest', 'arm'] },
+    { n: '背 + 二头', g: ['back', 'arm'] },
+    { n: '腿 + 臀', g: ['glute'] },
+    { n: '肩 + 核心', g: ['shoulder', 'core'] }
+  ] },
+  full_ab: { name: '全身 A/B', tag: '一周 2–3 练', days: [
+    { n: '全身 A（推为主）', g: ['chest', 'shoulder', 'glute'] },
+    { n: '全身 B（拉为主）', g: ['back', 'arm', 'core'] },
+    { n: '休息', g: [] }
+  ] },
   ppl5_b: { name: '五分化·分化版', tag: '肩臂腹腿', days: [
     { n: '肩', g: ['shoulder'] },
     { n: '手臂', g: ['arm'] },
@@ -1143,7 +1230,7 @@ const BUFFS = [
   { id: 'whack_time', game: 'whack', name: '加时赛', desc: '每级 +8 秒（最多 3 级）', max: 3, cost: 50 },
   { id: 'whack_gold', game: 'whack', name: '金色地鼠', desc: '连中 3 只后下一只是金色，+2 分（最多 1 级）', max: 1, cost: 120 },
   { id: 'poem_hint', game: 'poem', name: '文曲星', desc: '每级多排除一个错误选项（最多 2 级）', max: 2, cost: 70 },
-  { id: 'word_reveal', game: 'word', name: '首字母提示', desc: '每级多显示 1 个字母（最多 2 级）', max: 2, cost: 70 },
+  { id: 'word_reveal', game: 'word', name: '多留一个字母', desc: '每级少挖 2 个空，长单词更友好（最多 2 级）', max: 2, cost: 70 },
   { id: 'scratch_luck', game: 'scratch', name: '不空手', desc: '刮刮乐抽到「空」时改判为 4 币（最多 1 级）', max: 1, cost: 150 }
 ];
 
@@ -3542,7 +3629,7 @@ function viewPlan() {
   const splitBtns = Object.keys(SPLITS).map(function (k) {
     const s = SPLITS[k];
     return '<div class="split ' + (p.split === k ? 'on' : '') + '" data-act="setsplit" data-k="' + k + '">' +
-      '<b>' + s.name + '</b><span>' + s.desc + '</span></div>';
+      '<b>' + s.name + '</b><span>' + (s.tag || '') + '</span></div>';
   }).join('');
 
   const tags = groups.map(function (g, i) {
@@ -3559,9 +3646,43 @@ function viewPlan() {
     '<div class="splits">' + splitBtns + '</div></div>' +
 
     '<div class="card">' +
+    '<div class="row between" style="margin-bottom:6px">' +
+    '<b style="font-size:15px">' + sp.name + ' · 安排</b>' +
+    '<span class="xs mute">' + sp.days.length + ' 日循环</span></div>' +
+    sp.days.map(function (day, i) {
+      const gs = (p.days[p.split + '#' + i] || day.g);
+      const isToday = i === idx;
+      return '<div class="dayrow ' + (isToday ? 'on' : '') + '">' +
+        '<div class="dh"><span class="dn">D' + (i + 1) + '</span>' +
+        '<span class="dname">' + esc(day.n) + '</span>' +
+        (isToday ? '<span class="dtag">今天</span>' : '') + '</div>' +
+        '<div class="dg">' + (gs.length
+          ? gs.map(function (g) { return '<span>' + groupName(g) + '</span>'; }).join('')
+          : '<span class="rest">休息</span>') + '</div>' +
+        (gs.length
+          ? '<div class="dex">' + gs.map(function (g) {
+              return exercisesFor(g).slice(0, 3).map(function (e2) { return e2.n + ' ' + e2.s; }).join(' · ');
+            }).filter(Boolean).join(' ｜ ') + '</div>'
+          : '') +
+        '</div>';
+    }).join('') +
+    '</div>' +
+
+    '<div class="card">' +
     '<div class="row between"><b style="font-size:15px">今日 · ' + (sp.days[idx] ? sp.days[idx].n : '训练') + '</b>' +
     '<span class="xs mute">第 ' + (p.cycle + 1) + ' 次循环</span></div>' +
     '<div class="plantags">' + tags + '</div>' +
+    (groups.length
+      ? '<div class="exlist">' + groups.map(function (g) {
+          const ex = exercisesFor(g);
+          if (!ex.length) return '';
+          return '<div class="exgrp"><div class="exgh">' + groupName(g) + '</div>' +
+            ex.map(function (e2) {
+              return '<div class="ex"><span class="en">' + esc(e2.n) + '</span>' +
+                '<span class="es">' + esc(e2.s) + '</span></div>';
+            }).join('') + '</div>';
+        }).join('') + '</div>'
+      : '') +
     '<div class="btn ' + (doneToday ? 'gray' : '') + '" data-act="checkin" style="' + (doneToday ? 'background:var(--el2);color:var(--mute);box-shadow:none' : '') + '">' +
     (doneToday ? '今天已打卡 ✓' : '完成训练，打卡 +10') + '</div></div>' +
 
@@ -4034,7 +4155,7 @@ const GAME_META = {
   pong: { name: '电子乒乓', hint: '拖动手指控制球拍，接到球就得分。球速会越来越快。' },
   whack: { name: '打地鼠', hint: '地鼠冒头就点它，30 秒看你能打几只。' },
   poem: { name: '古诗填空', hint: '选出正确的下句，答错不扣分但很浪费时间。答对不再重复出现。' },
-  word: { name: '单词拼写', hint: '看中文拼英文，90 秒内尽量多拼。答过的不再重复。' },
+  word: { name: '单词拼写', hint: '看中文，把挖空的字母按顺序填出来。90 秒内尽量多填，答过的不再重复。' },
   scratch: { name: '刮刮乐', hint: '10 代币一张，刮开 3 格。三个相同数字中奖，三个空则没中。' }
 };
 
@@ -4345,7 +4466,48 @@ function fmtSec(s) {
   return m + ':' + (r < 10 ? '0' : '') + r;
 }
 
-/* ---------- 单词拼写 ---------- */
+/* ---------- 单词拼写（挖空填字母） ---------- */
+function maskWord(en, ratio) {
+  const chars = en.split('');
+  const pos = [];
+  for (let i = 0; i < chars.length; i++) {
+    if (/[a-zA-Z]/.test(chars[i])) pos.push(i);
+  }
+  if (pos.length <= 1) {
+    return { html: '<span class="mk">' + esc(en) + '</span>', answer: en.toLowerCase(), blanks: 0 };
+  }
+  let n = Math.round(pos.length * ratio);
+  if (n < 1) n = 1;
+  if (n > pos.length - 1) n = pos.length - 1;
+
+  // 首字母永远留着（更好认）；4 个字母以内的短词连尾字母也留着
+  let cand = pos.slice(1);
+  if (pos.length <= 4) cand = cand.slice(0, -1);
+  if (!cand.length) {
+    return { html: '<span class="mk">' + esc(en) + '</span>', answer: en.toLowerCase(), blanks: 0 };
+  }
+  if (n > cand.length) n = cand.length;
+
+  const pick = cand.slice();
+  for (let i = pick.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const t = pick[i]; pick[i] = pick[j]; pick[j] = t;
+  }
+  const blank = {};
+  pick.slice(0, n).forEach(function (i) { blank[i] = true; });
+
+  let html = '', ans = '';
+  for (let i = 0; i < chars.length; i++) {
+    if (blank[i]) {
+      html += '<span class="bl">_</span>';
+      ans += chars[i].toLowerCase();
+    } else {
+      html += '<span class="mk">' + esc(chars[i]) + '</span>';
+    }
+  }
+  return { html: html, answer: ans, blanks: n };
+}
+
 function bootWord(host) {
   const reveal = buffLv('word_reveal');
   const pool = quizPool('word', WORDS);
@@ -4369,18 +4531,25 @@ function bootWord(host) {
 
   const box = document.getElementById('wordbox');
   let idx = 0;
+  let curAns = '';
 
   const draw = function () {
     if (idx >= pool.length) { finish(); return; }
     const w = pool[idx];
-    const hint = reveal ? w.en.slice(0, reveal) + new Array(w.en.length - reveal + 1).join('·') : '';
-    box.innerHTML = '<div class="qt" style="font-size:20px;text-align:center;margin:18px 0 6px">' + esc(w.zh) + '</div>' +
-      (hint ? '<div class="xs mute" style="text-align:center;letter-spacing:2px">' + esc(hint) + '</div>' : '') +
+    const ratio = Math.max(0.15, 0.55 - reveal * 0.12);
+    const mk = maskWord(w.en, ratio);
+    curAns = mk.answer;
+
+    box.innerHTML = '<div class="qt" style="font-size:16px;text-align:center;margin:6px 0 12px;color:var(--mute)">' +
+      esc(w.zh) + '</div>' +
+      '<div class="masked">' + mk.html + '</div>' +
+      '<div class="xs mute" style="text-align:center;margin-top:6px">填出 ' + mk.blanks + ' 个空（按从左到右顺序）</div>' +
       '<input id="wordin" autocomplete="off" autocapitalize="off" spellcheck="false" ' +
-      'style="width:100%;height:46px;margin-top:14px;border-radius:12px;background:var(--el2);' +
-      'padding:0 14px;font-size:17px;text-align:center;letter-spacing:1px" placeholder="拼出英文">' +
+      'style="width:100%;height:46px;margin-top:12px;border-radius:12px;background:var(--el2);' +
+      'padding:0 14px;font-size:17px;text-align:center;letter-spacing:4px" placeholder="填缺失字母">' +
       '<div class="btn" style="margin-top:12px" data-act="wordsubmit">提交</div>' +
-      '<div class="xs mute" style="text-align:center;margin-top:8px">回车也能提交</div>';
+      '<div class="xs mute" style="text-align:center;margin-top:8px">回车也能提交 · 提示：' + (w.en.length) + ' 个字母</div>';
+
     const inp = document.getElementById('wordin');
     if (inp) {
       inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') submitWord(); });
@@ -4391,11 +4560,11 @@ function bootWord(host) {
   function submitWord() {
     if (over || locked) return;
     const inp = document.getElementById('wordin');
-    const val = ((inp && inp.value) || '').trim().toLowerCase();
-    if (!val) { toast('先拼一下'); return; }
+    const val = ((inp && inp.value) || '').replace(/[\s·_.]/g, '').toLowerCase();
+    if (!val) { toast('先把空填上'); return; }
     locked = true;
     const w = pool[idx];
-    let ok = val === w.en.toLowerCase();
+    const ok = val === curAns;
     if (ok) {
       right += 1;
       const se = document.getElementById('gscore');
@@ -4405,8 +4574,9 @@ function bootWord(host) {
     answered += 1;
     const pe = document.getElementById('gprog');
     if (pe) pe.textContent = '剩余 ' + (totalCount - answered) + ' 个';
-    if (!ok) toast('正确写法：' + w.en);
-    setTimeout(function () { locked = false; idx += 1; draw(); }, ok ? 260 : 900);
+    if (!ok) toast('正确：' + w.en);
+    else if (inp) { inp.style.borderColor = ''; }
+    setTimeout(function () { locked = false; idx += 1; draw(); }, ok ? 300 : 1100);
   }
 
   function finish() {
@@ -4426,10 +4596,10 @@ function bootWord(host) {
     if (ce) ce.textContent = total + 's';
     if (total <= 0) finish();
   }, 1000) };
-
-  draw();
   GT.submit = submitWord;
   window.__wordSubmit = submitWord;
+
+  draw();
 }
 
 /* ---------- 刮刮乐 ---------- */
