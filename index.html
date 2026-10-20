@@ -24,7 +24,9 @@
 
   /* 浅色 */
   --bg:#f4f6f8;
-  --card:#ffffff;
+  --card-rgb:255,255,255;
+  --cardA:1;
+  --card:rgba(var(--card-rgb),var(--cardA));
   --el:#f4f6f8;
   --el2:#f8fafb;
   --line:#eef1f4;
@@ -41,7 +43,8 @@
 
 [data-theme="dark"]{
   --bg:#0f141a;
-  --card:#181f27;
+  --card-rgb:24,31,39;
+  --card:rgba(var(--card-rgb),var(--cardA));
   --el:#1f2831;
   --el2:#1b232b;
   --line:#2a3441;
@@ -277,7 +280,9 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 
 
 /* ========== 主题 / 皮肤 ========== */
-body{background-color:var(--bg);background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:scroll}
+body{background-color:var(--bg)}
+#bgfixed{position:fixed;left:0;top:0;right:0;bottom:0;z-index:-1;pointer-events:none;
+  background-position:center center;background-size:cover;background-repeat:no-repeat;background-color:var(--bg)}
 [data-theme="dark"] .card,[data-theme="dark"] .sumcard,[data-theme="dark"] .flist{box-shadow:none}
 [data-theme="dark"] .mask{background:rgba(0,0,0,.6)}
 
@@ -446,12 +451,6 @@ body{background-color:var(--bg);background-size:cover;background-position:center
 .qa:active{background:var(--soft);border-color:rgba(var(--acc),.3)}
 
 
-/* 扫码 */
-.scanbox{position:fixed;left:0;right:0;top:0;bottom:0;z-index:120;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.scanbox video{width:100%;max-height:68vh;object-fit:cover}
-.scanframe{position:absolute;width:74%;height:26%;border:2px solid #4ade80;border-radius:12px;box-shadow:0 0 0 9999px rgba(0,0,0,.5)}
-.scanhint{position:relative;color:#fff;font-size:13px;margin-top:16px;z-index:2}
-.scanbtns{position:relative;margin-top:16px;z-index:2}
 
 /* 小知识 */
 .kbchips{display:flex;gap:6px;margin:8px 0 10px;overflow-x:auto;scrollbar-width:none}
@@ -468,6 +467,7 @@ body{background-color:var(--bg);background-size:cover;background-position:center
 </style>
 </head>
 <body>
+<div id="bgfixed"></div>
 <div id="root"></div>
 <div id="overlay"></div>
 <div class="tabbar" id="tabbar"></div>
@@ -868,9 +868,8 @@ const DEFAULT_PROFILE = {
   activity: 'moderate', goal: 'maintain', targetWeight: 68
 };
 
-const BUILD = '2026-10-20.7';
-const CAN_SCAN = (typeof window !== 'undefined') && ('BarcodeDetector' in window) && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain' };
+const BUILD = '2026-10-20.8';
+const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1 };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
 const ACCENTS = {
@@ -1053,7 +1052,7 @@ function defaultData() {
   return {
     profile: Object.assign({}, DEFAULT_PROFILE),
     logs: {}, water: {}, custom: [], weights: [],
-    fav: [], videos: {}, barcodes: {}, settings: Object.assign({}, DEFAULT_SETTINGS),
+    fav: [], videos: {}, settings: Object.assign({}, DEFAULT_SETTINGS),
     plan: { split: 'ppl3_a', days: {}, cycle: 0, checkins: {}, coins: 0, weekPaid: {}, buffs: {} },
     quizDone: { poem: [], word: [] }
   };
@@ -1084,7 +1083,6 @@ const store = {
         weights: Array.isArray(d.weights) ? d.weights.filter(function (x) { return x && x.date && Number(x.weight) > 0; }) : [],
         fav: Array.isArray(d.fav) ? d.fav.filter(function (x) { return typeof x === 'string'; }) : [],
         videos: (d.videos && typeof d.videos === 'object' && !Array.isArray(d.videos)) ? d.videos : {},
-        barcodes: (d.barcodes && typeof d.barcodes === 'object' && !Array.isArray(d.barcodes)) ? d.barcodes : {},
         plan: Object.assign({ split: 'ppl3_a', days: {}, cycle: 0, checkins: {}, coins: 0, weekPaid: {}, buffs: {} },
           (d.plan && typeof d.plan === 'object') ? d.plan : {}),
         quizDone: Object.assign({ poem: [], word: [] }, (d.quizDone && typeof d.quizDone === 'object') ? d.quizDone : {}),
@@ -1230,71 +1228,10 @@ const BUFFS = [
   { id: 'pong_edge', game: 'pong', name: '边线缓冲', desc: '球撞左右墙时减速 6%，给你多一次反应（最多 2 级）', max: 2, cost: 90 },
   { id: 'whack_time', game: 'whack', name: '加时赛', desc: '每级 +8 秒（最多 3 级）', max: 3, cost: 50 },
   { id: 'whack_gold', game: 'whack', name: '金色地鼠', desc: '连中 3 只后下一只是金色，+2 分（最多 1 级）', max: 1, cost: 120 },
-  { id: 'poem_hint', game: 'poem', name: '文曲星', desc: '每级多排除一个错误选项（最多 2 级）', max: 2, cost: 70 },
   { id: 'word_reveal', game: 'word', name: '多留一个字母', desc: '每级少挖 2 个空，长单词更友好（最多 2 级）', max: 2, cost: 70 },
   { id: 'scratch_luck', game: 'scratch', name: '不空手', desc: '盘面里不再出现「空」组，这张票必中（最多 1 级）', max: 1, cost: 150 }
 ];
 
-const POEMS_RAW = `床前明月光，|疑是地上霜|疑是银河落九天|低头思故乡|举杯邀明月|李白《静夜思》
-海内存知己，|天涯若比邻|天涯共此时|海角亦相邻|千里共婵娟|王勃《送杜少府之任蜀州》
-会当凌绝顶，|一览众山小|孤帆远影碧空尽|一览无余皆小丘|更上一层楼|杜甫《望岳》
-春眠不觉晓，|处处闻啼鸟|夜来风雨声|花落知多少|梦里花落知多少|孟浩然《春晓》
-长风破浪会有时，|直挂云帆济沧海|扶摇直上九万里|乘风破浪会有时|直上云霄九万里|李白《行路难》
-大漠孤烟直，|长河落日圆|长空落日圆|孤城落日圆|长河明月圆|王维《使至塞上》
-山重水复疑无路，|柳暗花明又一村|逢山开路又一篇|峰回路转不见君|柳暗花明又一春|陆游《游山西村》
-人生自古谁无死，|留取丹心照汗青|留取丹心照古今|但愿丹心照汗青|留取声名照汗青|文天祥《过零丁洋》
-问渠那得清如许，|为有源头活水来|为有新渠活水来|缘有源头活水来|为有清泉活水来|朱熹《观书有感》
-沉舟侧畔千帆过，|病树前头万木春|枯树前头万木春|病树前头又一春|病木前头万木春|刘禹锡《酬乐天扬州初逢席上见赠》
-欲穷千里目，|更上一层楼|一览众山小|千里共婵娟|独钓寒江雪|王之涣《登鹳雀楼》
-白日依山尽，|黄河入海流|长江天际流|大江东去浪|星河落九天|王之涣《登鹳雀楼》
-两个黄鹂鸣翠柳，|一行白鹭上青天|一行白鹤上青天|数只白鹭落沙洲|一行白鹭过前川|杜甫《绝句》
-停车坐爱枫林晚，|霜叶红于二月花|霜叶红似三月花|林叶红于二月花|霜叶赤于二月花|杜牧《山行》
-人生得意须尽欢，|莫使金樽空对月|莫使金杯空对月|莫待金樽空对月|莫使金樽空对日|李白《将进酒》
-天生我材必有用，|千金散尽还复来|千金散去还复来|千金散尽终复来|万金散尽还复来|李白《将进酒》
-无边落木萧萧下，|不尽长江滚滚来|不尽黄河滚滚来|无边落叶萧萧下|不尽长江汩汩来|杜甫《登高》
-身无彩凤双飞翼，|心有灵犀一点通|心有灵犀一线通|心有情丝一点通|心有灵犀一点同|李商隐《无题》
-春蚕到死丝方尽，|蜡炬成灰泪始干|蜡炬成灰泪始流|烛炬成灰泪始干|蜡炬成灰恨始干|李商隐《无题》
-但愿人长久，|千里共婵娟|天涯若比邻|何日复归来|共看明月升|苏轼《水调歌头》
-明月几时有，|把酒问青天|举杯邀明月|把酒问明月|对酒问青天|苏轼《水调歌头》
-今宵酒醒何处，|杨柳岸晓风残月|柳岸边晨风残月|杨树下晓风明月|杨柳岸晚风新月|柳永《雨霖铃》
-衣带渐宽终不悔，|为伊消得人憔悴|为伊瘦得人憔悴|为君消得人憔悴|为伊消尽人憔悴|柳永《蝶恋花》
-落红不是无情物，|化作春泥更护花|化作春泥更养花|化做春泥更护花|化作秋泥更护花|龚自珍《己亥杂诗》
-千磨万击还坚劲，|任尔东西南北风|任尔东西南北吹|任凭东西南北风|任尔四方八方风|郑燮《竹石》
-粉身碎骨浑不怕，|要留清白在人间|只留清白在人间|要留青白在人间|要留清名在人间|于谦《石灰吟》
-莫等闲，白了少年头，|空悲切|空悲戚|徒伤悲|空叹息|岳飞《满江红》
-长风万里送秋雁，|对此可以酣高楼|对月可以饮高楼|对此可以醉高楼|对酒方能醉高楼|李白《宣州谢朓楼饯别校书叔云》
-天生丽质难自弃，|一朝选在君王侧|一朝选入君王侧|一日选在君王侧|一朝得在君王侧|白居易《长恨歌》
-回眸一笑百媚生，|六宫粉黛无颜色|六宫佳丽无颜色|三千粉黛无颜色|六宫粉黛皆失色|白居易《长恨歌》
-同是天涯沦落人，|相逢何必曾相识|相识何必曾相逢|相逢何必要相识|相遇何必曾相识|白居易《琵琶行》
-大弦嘈嘈如急雨，|小弦切切如私语|小弦细细如私语|小弦切切似私语|细弦切切如私语|白居易《琵琶行》
-日出江花红胜火，|春来江水绿如蓝|春来江水碧如蓝|春来流水绿如蓝|春来江水青如蓝|白居易《忆江南》
-独在异乡为异客，|每逢佳节倍思亲|每遇佳节倍思亲|每逢佳日倍思亲|每逢佳节更思亲|王维《九月九日忆山东兄弟》
-遥知兄弟登高处，|遍插茱萸少一人|遍插茱萸少二亲|遍插茱萸少一亲|共插茱萸少一人|王维《九月九日忆山东兄弟》
-劝君更尽一杯酒，|西出阳关无故人|西出阳关无旧人|西去阳关无故人|东出阳关无故人|王维《送元二使安西》
-桃花潭水深千尺，|不及汪伦送我情|不及汪伦赠我情|难及汪伦送我情|不及汪沦送我情|李白《赠汪伦》
-孤帆远影碧空尽，|唯见长江天际流|惟见长江天际流|唯见黄河天际流|唯见长江天外流|李白《送孟浩然之广陵》
-举头望明月，|低头思故乡|低头思故人|低头念故乡|抬头思故乡|李白《静夜思》
-飞流直下三千尺，|疑是银河落九天|疑似银河落九天|疑是星河落九天|宛是银河落九天|李白《望庐山瀑布》
-两岸猿声啼不住，|轻舟已过万重山|一叶轻舟过万山|轻舟已渡万重山|扁舟已过万重山|李白《早发白帝城》
-不知细叶谁裁出，|二月春风似剪刀|三月春风似剪刀|二月春风像剪刀|二月东风似剪刀|贺知章《咏柳》
-野火烧不尽，|春风吹又生|春风又复生|春风复又生|东风又吹生|白居易《赋得古原草送别》
-天苍苍，野茫茫，|风吹草低见牛羊|风吹草动见牛羊|风吹草低现牛羊|风过草低见牛羊|《敕勒歌》
-独怜幽草涧边生，|上有黄鹂深树鸣|上有黄莺深树鸣|上有黄鹂高树鸣|下有黄鹂深树鸣|韦应物《滁州西涧》
-日出而作，|日落而息|日入而息|日落而归|日落而眠|《击壤歌》
-结庐在人境，|而无车马喧|而无车马声|而无喧哗声|却无车马喧|陶渊明《饮酒》
-采菊东篱下，|悠然见南山|悠然望南山|悠悠见南山|闲然见南山|陶渊明《饮酒》
-羁鸟恋旧林，|池鱼思故渊|池鱼思旧渊|飞鸟思旧林|池鱼忆故渊|陶渊明《归园田居》
-晨兴理荒秽，|带月荷锄归|带月扛锄归|披月荷锄归|带月带锄归|陶渊明《归园田居》
-少壮不努力，|老大徒伤悲|老来徒伤悲|白首徒伤悲|老去徒伤悲|《长歌行》
-百川东到海，|何时复西归|何日复西归|何时再西归|几时复西归|《长歌行》
-山不在高，|有仙则名|有龙则灵|有人则名|有神则名|刘禹锡《陋室铭》
-水不在深，|有龙则灵|有仙则名|有鱼则灵|有神则灵|刘禹锡《陋室铭》
-先天下之忧而忧，|后天下之乐而乐|后天下之乐而欢|而后天下之乐|后天下人乐而乐|范仲淹《岳阳楼记》
-不以物喜，|不以己悲|不以己忧|不为己悲|不因己悲|范仲淹《岳阳楼记》
-醉翁之意不在酒，|在乎山水之间也|在乎山水之中也|在于山水之间也|在乎林泉之间也|欧阳修《醉翁亭记》
-野芳发而幽香，|佳木秀而繁阴|佳木秀而浓阴|好木秀而繁阴|佳木荣而繁阴|欧阳修《醉翁亭记》
-业精于勤，|荒于嬉|废于嬉|毁于嬉|疏于嬉|韩愈《进学解》
-千里之行，|始于足下|起于足下|始于是下|始于脚下|《老子》`;
 const WORDS_RAW = `ability|能力
 absorb|吸收
 abstract|抽象的
@@ -2834,12 +2771,6 @@ your|你的
 youth|青春
 zero|零
 zone|地带`;
-
-const POEMS = POEMS_RAW.split('\n').filter(function (l) { return l.indexOf('|') > 0; }).map(function (line, i) {
-  const c = line.split('|');
-  return { id: 'p' + i, q: c[0], a: c[1], w: [c[1], c[2], c[3], c[4]], src: c[5] || '' };
-});
-
 const WORDS = WORDS_RAW.split('\n').filter(function (l) { return l.indexOf('|') > 0; }).map(function (line, i) {
   const c = line.split('|');
   return { id: 'w' + i, en: c[0].trim(), zh: c[1].trim() };
@@ -3053,7 +2984,6 @@ function viewAdd() {
     }).join('') + '</div>' +
 
     '<div class="quickacts">' +
-    '<div class="qa" data-act="scanbarcode"><span>▣</span>' + (CAN_SCAN ? '扫码录入' : '输入条码') + '</div>' +
     '<div class="qa" data-act="newfood"><span>＋</span>自定义食物</div>' +
     '</div>' +
 
@@ -3104,8 +3034,7 @@ function sheetGrams() {
 function sheetNewFood() {
   return '<div class="mask" data-act="closefood"></div>' +
     '<div class="sheet"><h3><span>自定义食物</span><span class="x" data-act="closefood">×</span></h3>' +
-    '<div class="per100">按「每 100g」填写，保存在本机长期可用' +
-    (S.pendingBarcode ? '<br>条码 ' + S.pendingBarcode + ' 会绑定到这个食物' : '') + '</div>' +
+    '<div class="per100">按「每 100g」填写，保存在本机长期可用</div>' +
     '<div class="field"><span class="lb">名称</span><input id="nf_name" placeholder="如：自制鸡胸沙拉"></div>' +
     '<div class="field"><span class="lb">热量 kcal</span><input id="nf_kcal" type="number" inputmode="decimal" placeholder="必填"></div>' +
     '<div class="field"><span class="lb">蛋白质 g</span><input id="nf_p" type="number" inputmode="decimal" placeholder="0"></div>' +
@@ -3420,7 +3349,14 @@ function applyAppearance() {
     const b = BGS.filter(function (x) { return x.key === s.bg; })[0] || BGS[0];
     bg = theme === 'dark' ? b.dark : b.light;
   }
-  document.body.style.backgroundImage = bg || 'none';
+  // 背景放在固定层里，不会跟着页面滚动
+  const bgLayer = document.getElementById('bgfixed');
+  if (bgLayer) bgLayer.style.backgroundImage = bg || 'none';
+  document.body.style.backgroundImage = 'none';
+
+  // 卡片不透明度
+  const a = typeof s.alpha === 'number' ? s.alpha : 1;
+  root.style.setProperty('--cardA', String(Math.min(1, Math.max(0.4, a))));
 
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', theme === 'dark' ? '#0f141a' : acc.hex);
@@ -3449,6 +3385,14 @@ function viewAppearanceCard() {
     '<div class="swatches">' + Object.keys(ACCENTS).map(function (k) {
       return '<div class="sw ' + (s.accent === k ? 'on' : '') + '" data-act="accent" data-k="' + k + '" ' +
         'style="background:rgb(' + ACCENTS[k].a + ')"></div>';
+    }).join('') + '</div>' +
+
+    '<div class="xs mute" style="margin:14px 0 8px">卡片不透明度</div>' +
+    '<div class="themebar" style="margin-bottom:0">' +
+    [[1, '不透明'], [0.9, '轻微'], [0.78, '半透'], [0.62, '很透']].map(function (x) {
+      const cur = typeof s.alpha === 'number' ? s.alpha : 1;
+      return '<div class="s ' + (Math.abs(cur - x[0]) < 0.02 ? 'on' : '') +
+        '" data-act="alpha" data-v="' + x[0] + '">' + x[1] + '</div>';
     }).join('') + '</div>' +
 
     '<div class="xs mute" style="margin:14px 0 8px">背景皮肤</div>' +
@@ -3702,7 +3646,6 @@ function viewPlan() {
     '<div class="quickacts" style="margin:0">' +
     '<div class="qa" data-act="game" data-g="pong"><span>🏓</span>电子乒乓</div>' +
     '<div class="qa" data-act="game" data-g="whack"><span>🐹</span>打地鼠</div>' +
-    '<div class="qa" data-act="game" data-g="poem"><span>📜</span>古诗填空</div>' +
     '<div class="qa" data-act="game" data-g="word"><span>🔤</span>单词拼写</div>' +
     '<div class="qa" data-act="game" data-g="scratch"><span>🎟️</span>刮刮乐</div>' +
     '</div>' +
@@ -3827,7 +3770,6 @@ function buildBackup() {
     weights: store.data.weights,
     fav: store.data.fav || [],
     videos: store.data.videos || {},
-    barcodes: store.data.barcodes || {},
     plan: store.data.plan || {},
     quizDone: store.data.quizDone || { poem: [], word: [] },
     settings: store.data.settings || DEFAULT_SETTINGS,
@@ -3966,17 +3908,6 @@ function applyBackup(text) {
     touched = true;
   }
 
-  if (d.barcodes && typeof d.barcodes === 'object' && !Array.isArray(d.barcodes)) {
-    const bc = {};
-    Object.keys(d.barcodes).forEach(function (k) {
-      if (!/^\d{8,14}$/.test(k)) return;
-      if (typeof d.barcodes[k] !== 'string') return;
-      bc[k] = d.barcodes[k];
-    });
-    store.data.barcodes = bc;
-    touched = true;
-  }
-
   if (d.quizDone && typeof d.quizDone === 'object') {
     const qd = { poem: [], word: [] };
     ['poem', 'word'].forEach(function (k) {
@@ -4012,94 +3943,6 @@ function pruneFav() {
   }
 }
 
-
-/* ================= 扫码 ================= */
-let scanStream = null;
-
-function closeScanner() {
-  if (scanStream) {
-    try { scanStream.getTracks().forEach(function (t) { t.stop(); }); } catch (e) { }
-    scanStream = null;
-  }
-  const b = document.querySelector('.scanbox');
-  if (b) b.remove();
-}
-
-function manualBarcode() {
-  const code = prompt('输入商品条码（8–14 位数字）：');
-  if (!code) return;
-  handleBarcode(String(code).replace(/\D/g, ''));
-}
-
-function handleBarcode(code) {
-  if (!code || code.length < 8) { toast('条码不完整'); return; }
-  const map = store.data.barcodes || {};
-  const fid = map[code];
-  if (fid) {
-    const f = foodById(fid);
-    if (f) {
-      const wasInAdd = S.view === 'add';
-      if (!wasInAdd) S.view = 'add';
-      S.pickFood = f;
-      S.grams = (f.serving && f.serving.grams) || 100;
-      render();
-      toast('已找到：' + f.name);
-      return;
-    }
-  }
-  S.pendingBarcode = code;
-  S.view = 'add';
-  S.newFood = true;
-  render();
-  toast('这个条码还没收录，填一次就会记住');
-}
-
-function startScan() {
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !('BarcodeDetector' in window)) {
-    manualBarcode();
-    return;
-  }
-  closeScanner();
-  const box = document.createElement('div');
-  box.className = 'scanbox';
-  box.innerHTML = '<video id="scanv" playsinline muted autoplay></video>' +
-    '<div class="scanframe"></div>' +
-    '<div class="scanhint">把商品条码放进框内</div>' +
-    '<div class="scanbtns"><div class="btn gray" style="width:220px" data-act="closescan">取消 / 手动输入</div></div>';
-  document.body.appendChild(box);
-
-  navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } } })
-    .then(function (st) {
-      scanStream = st;
-      const v = document.getElementById('scanv');
-      if (!v) { closeScanner(); return; }
-      v.srcObject = st;
-      const detector = new window.BarcodeDetector({
-        formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128', 'code_39']
-      });
-      let stopped = false;
-      const tick = function () {
-        if (stopped || !document.body.contains(box)) return;
-        detector.detect(v).then(function (codes) {
-          if (codes && codes.length && codes[0].rawValue) {
-            stopped = true;
-            const val = codes[0].rawValue;
-            closeScanner();
-            handleBarcode(String(val).replace(/\D/g, ''));
-          } else {
-            setTimeout(tick, 260);
-          }
-        }).catch(function () { setTimeout(tick, 400); });
-      };
-      v.addEventListener('loadeddata', function () { tick(); }, { once: true });
-      setTimeout(tick, 1200);
-    })
-    .catch(function () {
-      closeScanner();
-      toast('打不开摄像头，改用手动输入');
-      manualBarcode();
-    });
-}
 
 /* ================= 小知识 ================= */
 function viewKnowledge() {
@@ -4155,7 +3998,6 @@ function buffLv(id) {
 const GAME_META = {
   pong: { name: '电子乒乓', hint: '拖动手指控制球拍，接到球就得分。球速会越来越快。' },
   whack: { name: '打地鼠', hint: '地鼠冒头就点它，30 秒看你能打几只。' },
-  poem: { name: '古诗填空', hint: '选出正确的下句，答错不扣分但很浪费时间。答对不再重复出现。' },
   word: { name: '单词拼写', hint: '看中文，把挖空的字母按顺序填出来。90 秒内尽量多填，答过的不再重复。' },
   scratch: { name: '刮刮乐', hint: '10 代币一张。36 格里埋着 12 组三连，刮出任意三个相同数字立即结算；先刮到三个「空」则没中。' }
 };
@@ -4177,7 +4019,6 @@ function bootGame(kind) {
   const host = document.getElementById('gamehost');
   if (!host) return;
   if (kind === 'whack') bootWhack(host);
-  else if (kind === 'poem') bootPoem(host);
   else if (kind === 'word') bootWord(host);
   else if (kind === 'scratch') bootScratch(host);
   else bootPong(host);
@@ -4352,121 +4193,6 @@ function bootWhack(host) {
   pop();
 }
 
-/* ---------- 古诗填空 ---------- */
-function quizPool(kind, all) {
-  const qd = store.data.quizDone || (store.data.quizDone = { poem: [], word: [] });
-  const done = qd[kind] || [];
-  return all.filter(function (x) { return done.indexOf(x.id) < 0; });
-}
-function markDone(kind, id) {
-  const qd = store.data.quizDone || (store.data.quizDone = { poem: [], word: [] });
-  const arr = qd[kind] || [];
-  if (arr.indexOf(id) < 0) arr.push(id);
-  qd[kind] = arr;
-  store.save();
-}
-
-function bootPoem(host) {
-  const hints = buffLv('poem_hint');
-  const pool = quizPool('poem', POEMS);
-  let total = 999, right = 0, over = false, locked = false, answered = 0;
-  const totalCount = pool.length;
-
-  if (!pool.length) {
-    host.innerHTML = '<div class="gamewrap"><div class="gres">' +
-      '<div class="sub">古诗已经全部答完了 🎉</div>' +
-      '<div class="btn gray" style="margin:16px auto 0;width:180px" data-act="resetquiz" data-k="poem">重置古诗题库</div>' +
-      '</div></div>';
-    return;
-  }
-
-  const start = Date.now();
-  host.innerHTML = '<div class="gamewrap">' +
-    '<div class="gamehead"><b>古诗填空</b><span class="gclock" id="gclock">0:00</span></div>' +
-    '<div class="gstage quiz" id="quizbox" style="padding:14px"></div>' +
-    '<div class="row between" style="margin-top:8px;font-size:12px;color:var(--mute)">' +
-    '<span>答对 <b id="gscore" style="color:var(--ink)">0</b></span>' +
-    '<span id="gprog">剩余 ' + totalCount + ' 题</span></div></div>';
-
-  const box = document.getElementById('quizbox');
-  let idx = 0;
-
-  const draw = function () {
-    if (idx >= pool.length) { finish(); return; }
-    const q = pool[idx];
-    const opts = q.w.slice().sort(function () { return Math.random() - 0.5; });
-    box.innerHTML = '<div class="qt">' + esc(q.q) + '</div>' +
-      opts.map(function (o) {
-        return '<div class="qo" data-v="' + esc(o) + '">' + esc(o) + '</div>';
-      }).join('') +
-      (hints ? '<div class="xs mute" style="margin-top:6px" id="hintbtn">排除一个错误选项（' + hints + ' 次）</div>' : '') +
-      '<div class="xs mute" style="margin-top:8px">' + esc(q.src) + '</div>';
-
-    box.querySelectorAll('.qo').forEach(function (el) {
-      el.addEventListener('click', function () {
-        if (over || locked) return;
-        locked = true;
-        const v = el.getAttribute('data-v');
-        if (v === q.a) {
-          right += 1;
-          el.classList.add('ok');
-        } else {
-          el.classList.add('bad');
-          box.querySelectorAll('.qo').forEach(function (x) {
-            if (x.getAttribute('data-v') === q.a) x.classList.add('ok');
-          });
-        }
-        markDone('poem', q.id);
-        answered += 1;
-        const se = document.getElementById('gscore');
-        if (se) se.textContent = right;
-        const pe = document.getElementById('gprog');
-        if (pe) pe.textContent = '剩余 ' + (totalCount - answered) + ' 题';
-        setTimeout(function () { locked = false; idx += 1; draw(); }, 480);
-      });
-    });
-
-    const hb = document.getElementById('hintbtn');
-    if (hb) {
-      hb.addEventListener('click', function () {
-        if (over || locked) return;
-        const wrong = [];
-        box.querySelectorAll('.qo').forEach(function (x) {
-          if (x.getAttribute('data-v') !== q.a && !x.classList.contains('gone')) wrong.push(x);
-        });
-        if (wrong[0]) {
-          wrong[0].classList.add('gone');
-          wrong[0].style.opacity = '.25';
-          wrong[0].style.textDecoration = 'line-through';
-        }
-        hb.remove();
-      });
-    }
-  };
-
-  function finish() {
-    over = true;
-    const sec = Math.round((Date.now() - start) / 1000);
-    const got = Math.max(1, right * 2);
-    addCoins(got);
-    stopGames();
-    box.innerHTML = '<div class="gres"><div class="big">' + right + '</div>' +
-      '<div class="sub">答完 ' + answered + ' 题 · 用时 ' + fmtSec(sec) + ' · 获得 ' + got + ' 代币</div></div>';
-    setTimeout(function () { toast('获得 ' + got + ' 代币'); }, 60);
-  }
-
-  GT = { timer: setInterval(function () {
-    const el2 = document.getElementById('gclock');
-    if (el2) el2.textContent = fmtSec(Math.round((Date.now() - start) / 1000));
-  }, 500) };
-  draw();
-}
-
-function fmtSec(s) {
-  const m = Math.floor(s / 60), r = s % 60;
-  return m + ':' + (r < 10 ? '0' : '') + r;
-}
-
 /* ---------- 单词拼写（挖空填字母） ---------- */
 function maskWord(en, ratio) {
   const chars = en.split('');
@@ -4507,6 +4233,20 @@ function maskWord(en, ratio) {
     }
   }
   return { html: html, answer: ans, blanks: n };
+}
+
+/* ---------- 答题进度（通用） ---------- */
+function quizPool(kind, all) {
+  const qd = store.data.quizDone || (store.data.quizDone = { poem: [], word: [] });
+  const done = qd[kind] || [];
+  return all.filter(function (x) { return done.indexOf(x.id) < 0; });
+}
+function markDone(kind, id) {
+  const qd = store.data.quizDone || (store.data.quizDone = { poem: [], word: [] });
+  const arr = qd[kind] || [];
+  if (arr.indexOf(id) < 0) arr.push(id);
+  qd[kind] = arr;
+  store.save();
 }
 
 function bootWord(host) {
@@ -4709,7 +4449,7 @@ function bootScratch(host) {
 }
 
 /* ---------- 场外商店 ---------- */
-const GAME_LABEL = { pong: '🏓 电子乒乓', whack: '🐹 打地鼠', poem: '📜 古诗填空', word: '🔤 单词拼写', scratch: '🎟️ 刮刮乐' };
+const GAME_LABEL = { pong: '🏓 电子乒乓', whack: '🐹 打地鼠', word: '🔤 单词拼写', scratch: '🎟️ 刮刮乐' };
 
 function viewShop() {
   const p = planData();
@@ -4760,7 +4500,6 @@ function renderFab() {
 
 function render() {
   // 任何一次重绘都把扫码浮层收掉，避免摄像头一直开着
-  closeScanner();
   stopGames();
   let html = '';
   if (S.view === 'today') html = viewToday();
@@ -4911,11 +4650,9 @@ document.addEventListener('click', function (e) {
     }
 
     case 'newfood':
-      S.pendingBarcode = '';
       S.newFood = true; render(); break;
 
     case 'closefood':
-      S.pendingBarcode = '';
       S.newFood = false; render(); break;
 
     case 'savenewfood': {
@@ -4929,12 +4666,6 @@ document.addEventListener('click', function (e) {
         fat: Number($('nf_f').value) || 0, fiber: Number($('nf_fb').value) || 0,
         serving: { unit: '份', grams: 100 }
       });
-      if (S.pendingBarcode) {
-        const bc = Object.assign({}, store.data.barcodes || {});
-        bc[S.pendingBarcode] = store.data.custom[0].id;
-        store.data.barcodes = bc;
-        S.pendingBarcode = '';
-      }
       store.save();
       S.newFood = false; S.cat = 'custom'; S.kw = '';
       render();
@@ -5037,6 +4768,11 @@ document.addEventListener('click', function (e) {
       store.data.settings.accent = el.dataset.k;
       store.save(); applyAppearance(); renderKeepScroll(); break;
 
+    case 'alpha':
+      store.data.settings = store.data.settings || Object.assign({}, DEFAULT_SETTINGS);
+      store.data.settings.alpha = Number(el.dataset.v) || 1;
+      store.save(); applyAppearance(); renderKeepScroll(); break;
+
     case 'bg':
       store.data.settings = store.data.settings || Object.assign({}, DEFAULT_SETTINGS);
       store.data.settings.bg = el.dataset.k;
@@ -5054,12 +4790,6 @@ document.addEventListener('click', function (e) {
 
     case 'trainkw':
       S.train = el.dataset.k; render(); break;
-
-    case 'scanbarcode':
-      startScan(); break;
-
-    case 'closescan':
-      closeScanner(); manualBarcode(); break;
 
     case 'kb': {
       const k = el.dataset.k;
