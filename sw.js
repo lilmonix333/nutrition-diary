@@ -1,10 +1,11 @@
 /* 营养日记 Service Worker
  * 策略：
- *   页面导航（HTML）→ 先用网络，失败才用缓存（保证改了代码能立刻生效）
- *   其它静态资源   → 先用缓存，没有才请求网络
- * 这样既能断网打开，又不会把旧版本永久钉死。
+ *   页面导航（HTML）→ 网络优先，失败才用缓存；只缓存成功响应
+ *   其它静态资源   → 缓存优先，同样只缓存成功响应
+ * 关键点：GitHub Pages 重新部署期间会短暂返回 404，
+ * 如果把 404 缓存下来，之后打开就会一直 404 —— 必须跳过非 2xx。
  */
-const CACHE = 'nutri-diary-v2';
+const CACHE = 'nutri-diary-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -36,6 +37,12 @@ self.addEventListener('activate', function (e) {
   );
 });
 
+function putIfOk(req, resp) {
+  if (!resp || !resp.ok) return;
+  var copy = resp.clone();
+  caches.open(CACHE).then(function (c) { c.put(req, copy); }).catch(function () { });
+}
+
 self.addEventListener('fetch', function (e) {
   const req = e.request;
   if (req.method !== 'GET') return;
@@ -45,8 +52,13 @@ self.addEventListener('fetch', function (e) {
     e.respondWith(
       fetch(req)
         .then(function (resp) {
-          const copy = resp.clone();
-          caches.open(CACHE).then(function (c) { c.put(req, copy); }).catch(function () { });
+          putIfOk(req, resp);
+          // 网络返回错误页（例如部署中的 404）时，优先给缓存里能用的页面
+          if (!resp.ok) {
+            return caches.match('./index.html').then(function (hit) {
+              return hit || resp;
+            });
+          }
           return resp;
         })
         .catch(function () {
@@ -63,8 +75,7 @@ self.addEventListener('fetch', function (e) {
     caches.match(req).then(function (hit) {
       if (hit) return hit;
       return fetch(req).then(function (resp) {
-        const copy = resp.clone();
-        caches.open(CACHE).then(function (c) { c.put(req, copy); }).catch(function () { });
+        putIfOk(req, resp);
         return resp;
       });
     })
