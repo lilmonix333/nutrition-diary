@@ -145,7 +145,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .tabbar .t{flex:1;padding:8px 0 7px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--mute);font-size:10px}
 .tabbar .t.on{color:var(--green)}
 .tabbar .t svg{width:24px;height:24px}
-.fab{position:fixed;right:16px;bottom:calc(74px + var(--safeB));z-index:41;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;font-size:28px;font-weight:300;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(18,160,91,.38)}
+.fab{position:fixed;right:16px;bottom:calc(74px + var(--safeB));z-index:41;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;font-size:28px;font-weight:300;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(var(--acc),.38)}
 .fab:active{transform:scale(.95)}
 
 /* 添加页 */
@@ -194,7 +194,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .preview .big{font-size:30px;font-weight:800;color:var(--green);line-height:1}
 .preview .big small{font-size:12px;font-weight:400;color:var(--mute);margin-left:4px}
 .preview .det{display:flex;justify-content:space-between;font-size:12px;color:var(--ink2);margin-top:8px}
-.btn{height:46px;border-radius:23px;background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(18,160,91,.3)}
+.btn{height:46px;border-radius:23px;background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(var(--acc),.3)}
 .btn:active{opacity:.86}
 .btn.gray{background:var(--el);color:var(--ink);box-shadow:none}
 .field{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}
@@ -342,6 +342,167 @@ body{background-color:var(--bg)}
 .tsearch input{flex:1;height:42px;background:var(--el2);border-radius:12px;padding:0 12px;font-size:15px}
 .tsearch .gb{width:64px;height:42px;border-radius:12px;background:var(--solid);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .note{font-size:10.5px;color:var(--mute);line-height:1.75;text-align:center;padding:4px 16px 18px}
+/* ==================== PERSONA 风格（女神异闻录 3 风） ==================== */
+[data-skin="persona"]{
+  --acc:0,229,255;
+  --green:rgb(0,229,255);
+  --green2:rgb(120,240,255);
+  --soft:rgba(0,229,255,.13);
+  --bg:#04070c;
+  --card-rgb:8,13,22;
+  --el:rgba(0,229,255,.07);
+  --el2:rgba(0,229,255,.11);
+  --line:rgba(0,229,255,.20);
+  --track:rgba(0,229,255,.16);
+  --ink:#e8f8ff;
+  --ink2:#9dc2d4;
+  --mute:#5f89a0;
+  --mute2:#3f5b6d;
+  --solid:#0b1a24;
+  --tabbar:rgba(4,7,12,.95);
+  --warn-bg:#12202a;
+  --warn-ink:#7ee8ff;
+}
+/* 背景：斜条纹 + 蓝光 */
+[data-skin="persona"] #bgfixed{
+  background-color:#04070c;
+  background-image:
+    repeating-linear-gradient(118deg, rgba(0,229,255,.05) 0 2px, transparent 2px 26px),
+    radial-gradient(130% 90% at 18% -10%, rgba(0,229,255,.16), transparent 58%),
+    radial-gradient(110% 80% at 105% 105%, rgba(0,110,190,.22), transparent 60%),
+    linear-gradient(180deg,#04070c 0%,#050b13 55%,#03060a 100%);
+}
+/* 卡片：切角 + 青色发丝边 */
+[data-skin="persona"] .card,
+[data-skin="persona"] .sumcard,
+[data-skin="persona"] .flist{
+  border-radius:0;
+  position:relative;
+  clip-path:polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  box-shadow:inset 0 0 0 1px rgba(0,229,255,.22), 0 12px 34px rgba(0,0,0,.55);
+}
+[data-skin="persona"] .card::after{
+  content:'';position:absolute;right:0;top:0;width:18px;height:18px;
+  background:rgba(0,229,255,.55);clip-path:polygon(100% 0,100% 100%,0 0);pointer-events:none;
+}
+/* 粗斜体数字 + 辉光 */
+[data-skin="persona"] .ringmid .num,
+[data-skin="persona"] .kbig b,
+[data-skin="persona"] .grid2 .v,
+[data-skin="persona"] .three .a b,
+[data-skin="persona"] .coinbar b,
+[data-skin="persona"] .kb-num,
+[data-skin="persona"] .w-num,
+[data-skin="persona"] .gres .big{
+  font-style:italic;font-weight:900;letter-spacing:-1.5px;
+  text-shadow:0 0 16px rgba(0,229,255,.55), 0 0 44px rgba(0,229,255,.22);
+}
+[data-skin="persona"] .datebar .d1,
+[data-skin="persona"] .card-title,
+[data-skin="persona"] .card > b,
+[data-skin="persona"] .sheet h3,
+[data-skin="persona"] .ptitle .tt,
+[data-skin="persona"] .grpbar b{
+  font-style:italic;letter-spacing:.5px;
+}
+/* 主按钮：平行四边形 */
+[data-skin="persona"] .btn{
+  border-radius:0;font-style:italic;font-weight:900;letter-spacing:1.5px;
+  clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);
+  background:linear-gradient(100deg,#00e5ff 0%,#0090c8 100%);
+  color:#04070c;
+  box-shadow:0 0 26px rgba(0,229,255,.45);
+}
+[data-skin="persona"] .btn.gray{
+  background:rgba(0,229,255,.10);color:var(--ink);
+  box-shadow:inset 0 0 0 1px rgba(0,229,255,.3);
+}
+/* 常见容器：去掉圆角 */
+[data-skin="persona"] .chip,
+[data-skin="persona"] .cat,
+[data-skin="persona"] .mealtabs .mt,
+[data-skin="persona"] .quick,
+[data-skin="persona"] .ptag,
+[data-skin="persona"] .kwtile,
+[data-skin="persona"] .opt,
+[data-skin="persona"] .goals .g,
+[data-skin="persona"] .qw,
+[data-skin="persona"] .kbchip,
+[data-skin="persona"] .split,
+[data-skin="persona"] .qa,
+[data-skin="persona"] .themebar,
+[data-skin="persona"] .seg3,
+[data-skin="persona"] .seg,
+[data-skin="persona"] .seg2{border-radius:0}
+[data-skin="persona"] .chip.on,
+[data-skin="persona"] .cat.on,
+[data-skin="persona"] .mealtabs .mt.on,
+[data-skin="persona"] .kwtile.on,
+[data-skin="persona"] .seg3 .s.on,
+[data-skin="persona"] .seg .s.on,
+[data-skin="persona"] .seg2 .s.on,
+[data-skin="persona"] .themebar .s.on,
+[data-skin="persona"] .split.on{
+  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
+  background:linear-gradient(100deg,rgba(0,229,255,.28),rgba(0,229,255,.06));
+  color:#bff6ff;
+}
+/* 进度条：方角 + 发光 */
+[data-skin="persona"] .bar,
+[data-skin="persona"] .bar > i,
+[data-skin="persona"] .progbar,
+[data-skin="persona"] .progbar i,
+[data-skin="persona"] .mixbar,
+[data-skin="persona"] .mixbar i{border-radius:0}
+[data-skin="persona"] .bar > i,
+[data-skin="persona"] .progbar i{box-shadow:0 0 12px rgba(0,229,255,.55)}
+/* 底部导航 */
+[data-skin="persona"] .tabbar{border-top:1px solid rgba(0,229,255,.35)}
+[data-skin="persona"] .tabbar .t.on{
+  background:linear-gradient(180deg,rgba(0,229,255,.20),transparent 80%);
+  color:#7ee8ff;text-shadow:0 0 12px rgba(0,229,255,.7);
+}
+/* 悬浮「＋」：菱形 + 外发光 */
+[data-skin="persona"] .fab{
+  border-radius:0;
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+  background:linear-gradient(135deg,#7ef4ff 0%,#00b4e6 55%,#0067a8 100%);
+  box-shadow:none;
+  filter:drop-shadow(0 0 14px rgba(0,229,255,.75));
+  font-weight:900;
+}
+/* 输入框、弹层 */
+[data-skin="persona"] .search,
+[data-skin="persona"] .ginput,
+[data-skin="persona"] .sheet,
+[data-skin="persona"] .quickacts .qa,
+[data-skin="persona"] .wrow2 input,
+[data-skin="persona"] .wrow2 .sb,
+[data-skin="persona"] .tsearch input,
+[data-skin="persona"] .tsearch .gb,
+[data-skin="persona"] .addbtn,
+[data-skin="persona"] .cup,
+[data-skin="persona"] .step,
+[data-skin="persona"] .rec .ico{border-radius:0}
+[data-skin="persona"] .sheet{
+  clip-path:polygon(0 18px,18px 0,100% 0,100% 100%,0 100%);
+  box-shadow:inset 0 0 0 1px rgba(0,229,255,.25);
+}
+[data-skin="persona"] .rec .ico{clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+[data-skin="persona"] .fab{color:#04070c}
+/* 日期条：青色斜杠装饰 */
+[data-skin="persona"] .datebar .d1::before{
+  content:'';display:inline-block;width:6px;height:16px;margin-right:8px;
+  background:var(--green);transform:skewX(-18deg);vertical-align:-2px;
+  box-shadow:0 0 12px rgba(0,229,255,.8);
+}
+/* 目标胶囊 */
+[data-skin="persona"] .pill{
+  border-radius:0;clip-path:polygon(9px 0,100% 0,calc(100% - 9px) 100%,0 100%);
+  background:rgba(0,229,255,.16);color:#8ff0ff;
+  box-shadow:inset 0 0 0 1px rgba(0,229,255,.3);
+}
+
 /* 分段 tab */
 .seg3{display:flex;background:var(--el);border-radius:12px;padding:3px;margin-bottom:12px}
 .seg3 .s{flex:1;height:34px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:13px;color:var(--mute)}
@@ -886,8 +1047,8 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.1';
-const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1 };
+const BUILD = '2026-10-21.3';
+const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
 const ACCENTS = {
@@ -3415,13 +3576,19 @@ function lighten(rgb, p) {
   }).join(',') + ')';
 }
 
+const PERSONA_ACC = { a: '0,229,255', hex: '#00e5ff' };
+
 function applyAppearance() {
   const s = store.data.settings || DEFAULT_SETTINGS;
-  const theme = resolvedTheme();
+  const skin = s.skin === 'persona' ? 'persona' : 'minimal';
   const root = document.documentElement;
+  root.setAttribute('data-skin', skin);
+
+  // PERSONA 风格固定深色
+  const theme = skin === 'persona' ? 'dark' : resolvedTheme();
   root.setAttribute('data-theme', theme);
 
-  const acc = ACCENTS[s.accent] || ACCENTS.green;
+  const acc = skin === 'persona' ? PERSONA_ACC : (ACCENTS[s.accent] || ACCENTS.green);
   root.style.setProperty('--acc', acc.a);
   root.style.setProperty('--green2', lighten(acc.a, 0.26));
 
@@ -3434,7 +3601,7 @@ function applyAppearance() {
   }
   // 背景放在固定层里，不会跟着页面滚动
   const bgLayer = document.getElementById('bgfixed');
-  if (bgLayer) bgLayer.style.backgroundImage = bg || 'none';
+  if (bgLayer) bgLayer.style.backgroundImage = skin === 'persona' ? '' : (bg || 'none');
   document.body.style.backgroundImage = 'none';
 
   // 卡片不透明度
@@ -3454,10 +3621,38 @@ function renderKeepScroll() {
 function viewAppearanceCard() {
   const s = store.data.settings || DEFAULT_SETTINGS;
   const cur = resolvedTheme();
+  const skin = s.skin === 'persona' ? 'persona' : 'minimal';
+
+  const skinBlock =
+    '<div class="xs mute" style="margin-bottom:8px">界面风格</div>' +
+    '<div class="goals" style="margin-bottom:14px">' +
+    [['minimal', '极简', '干净留白'], ['persona', 'PERSONA', '荧光青 · 斜切']].map(function (x) {
+      return '<div class="g ' + (skin === x[0] ? 'on' : '') + '" data-act="setskin" data-k="' + x[0] + '">' +
+        '<div class="n">' + x[1] + '</div><div class="d">' + x[2] + '</div></div>';
+    }).join('') + '</div>';
+
+  if (skin === 'persona') {
+    return '<div class="card">' +
+      '<div class="row between" style="margin-bottom:10px"><b style="font-size:15px">外观</b>' +
+      '<span class="xs mute">PERSONA</span></div>' +
+      skinBlock +
+      '<div class="xs mute" style="margin:0 0 8px">卡片不透明度</div>' +
+      '<div class="themebar" style="margin-bottom:0">' +
+      [[1, '不透明'], [0.9, '轻微'], [0.78, '半透'], [0.62, '很透']].map(function (x) {
+        const a0 = typeof s.alpha === 'number' ? s.alpha : 1;
+        return '<div class="s ' + (Math.abs(a0 - x[0]) < 0.02 ? 'on' : '') +
+          '" data-act="alpha" data-v="' + x[0] + '">' + x[1] + '</div>';
+      }).join('') + '</div>' +
+      '<div class="xs mute" style="margin-top:12px;line-height:1.6">' +
+      'PERSONA 风格固定深色 + 荧光青，主题与皮肤已锁定。<br>切回「极简」可自由调色。</div>' +
+      '</div>';
+  }
+
   return '<div class="card">' +
     '<div class="row between" style="margin-bottom:10px">' +
     '<b style="font-size:15px">外观</b>' +
     '<span class="xs mute">当前' + (cur === 'dark' ? '深色' : '浅色') + '</span></div>' +
+    skinBlock +
 
     '<div class="themebar">' +
     [['auto', '跟随系统'], ['light', '浅色'], ['dark', '深色']].map(function (x) {
@@ -4875,6 +5070,13 @@ document.addEventListener('click', function (e) {
     case 'setdeficit':
       store.data.profile.deficit = el.dataset.k;
       store.save(); renderKeepScroll(); break;
+
+    case 'setskin':
+      store.data.settings = store.data.settings || Object.assign({}, DEFAULT_SETTINGS);
+      store.data.settings.skin = el.dataset.k === 'persona' ? 'persona' : 'minimal';
+      store.save(); applyAppearance(); renderKeepScroll();
+      toast(store.data.settings.skin === 'persona' ? '已切到 PERSONA 风格' : '已切回极简模式');
+      break;
 
     case 'alpha':
       store.data.settings = store.data.settings || Object.assign({}, DEFAULT_SETTINGS);
