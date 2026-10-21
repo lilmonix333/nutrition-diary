@@ -756,11 +756,6 @@ body{background-color:var(--bg)}
 [data-skin="persona"] .rec:active{background:rgba(0,165,200,.14)}
 
 /* 页面切换：从左横向擦出（the-velvet 的 p3MenuReveal） */
-@keyframes p3reveal{
-  0%{opacity:0;clip-path:inset(0 100% 0 0);transform:translateX(22px) skewX(-3deg)}
-  60%{opacity:1}
-  100%{opacity:1;clip-path:inset(0 0 0 0);transform:none}
-}
 [data-skin="persona"] .p3in{animation:p3reveal .46s cubic-bezier(.22,.9,.24,1) both}
 /* 卡片错峰入场 */
 @keyframes p3card{
@@ -817,7 +812,11 @@ body{background-color:var(--bg)}
 }
 
 /* 点击涟漪 */
-[data-skin="persona"] [data-act]{position:relative;overflow:hidden}
+[data-skin="persona"] [data-act]:not(.fab){position:relative;overflow:hidden}
+[data-skin="persona"] .fab{
+  position:fixed;right:16px;bottom:calc(78px + var(--safeB));
+  width:58px;height:58px;z-index:41;
+}
 @keyframes p3ripple{
   0%{transform:scale(0);opacity:.45}
   70%{transform:scale(1);opacity:.18}
@@ -949,13 +948,15 @@ body{background-color:var(--bg)}
 
 /* ================= 补齐基础样式（第二批：此前只有 persona 规则） ================= */
 /* 代币条 */
-.coinbar{display:flex;align-items:center;justify-content:space-between;gap:12px;
-  background:var(--card);border-radius:14px;padding:12px 15px;margin-bottom:12px}
-.cb{display:flex;align-items:baseline;gap:5px}
-.cb b{font-size:26px;font-weight:900;line-height:1;color:var(--green)}
-.cl{font-size:10.5px;color:var(--mute);letter-spacing:.5px}
-.cw{font-size:10.5px;color:var(--mute);text-align:right;line-height:1.5}
-.cw b{font-size:16px;color:var(--ink)}
+.coinbar{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--card);border-radius:14px;padding:12px 15px;margin-bottom:12px;overflow:hidden}
+.coinbar > div:first-child{flex:1;min-width:0}
+.cb{display:flex;align-items:baseline;gap:5px;flex-wrap:nowrap}
+.cb b{font-size:25px;font-weight:900;line-height:1.15;color:var(--green);flex:0 0 auto}
+.cl{font-size:10.5px;color:var(--mute);letter-spacing:.5px;white-space:nowrap;flex:0 0 auto}
+.coinbar .cl[style]{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;margin-left:0 !important}
+.cw{font-size:10.5px;color:var(--mute);text-align:right;line-height:1.45;white-space:nowrap;flex:0 0 auto}
+.cw b{font-size:15px;color:var(--ink)}
 
 /* 三档切换 */
 .seg3{display:flex;gap:5px;background:var(--el2);border-radius:12px;padding:4px;margin-bottom:12px}
@@ -1050,6 +1051,74 @@ body{background-color:var(--bg)}
 [data-skin="persona"] #bgfixed::after{
   -webkit-text-stroke:1px rgba(0,105,165,.10);
 }
+
+
+/* ================= P3R 字体栈 ================= */
+[data-skin="persona"] body{
+  font-family:"Arial Black","Helvetica Neue",-apple-system,BlinkMacSystemFont,
+    "PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  letter-spacing:.1px;
+}
+[data-skin="persona"] .card > b,
+[data-skin="persona"] .card-title,
+[data-skin="persona"] .datebar .dnum,
+[data-skin="persona"] .kbig b,
+[data-skin="persona"] .sv,
+[data-skin="persona"] .ringmid .num,
+[data-skin="persona"] .coinbar .cb b,
+[data-skin="persona"] .gres .big,
+[data-skin="persona"] .three .a b,
+[data-skin="persona"] .grid2 .v{
+  font-family:"Arial Black","Helvetica Neue","PingFang SC","Hiragino Sans GB",sans-serif;
+  font-weight:900;
+  letter-spacing:-.5px;
+}
+[data-skin="persona"] .datebar .dside b,
+[data-skin="persona"] .datebar .dside i,
+[data-skin="persona"] .datebar .d2{
+  font-family:"Helvetica Neue",Arial,sans-serif;
+  letter-spacing:2px;
+}
+/* 数字等宽，避免跳动 */
+[data-skin="persona"] .sv,
+[data-skin="persona"] .kbig b,
+[data-skin="persona"] .coinbar .cb b,
+[data-skin="persona"] .gclock{font-variant-numeric:tabular-nums}
+
+/* ================= 动画柔化 ================= */
+@keyframes p3reveal{
+  0%{opacity:0;transform:translateY(12px) scale(.988)}
+  100%{opacity:1;transform:none}
+}
+[data-skin="persona"] .p3in{
+  animation:p3reveal .46s cubic-bezier(.33,.75,.15,1) both;
+  will-change:opacity,transform;
+}
+@keyframes p3card{
+  0%{opacity:0;transform:translateY(14px)}
+  100%{opacity:1;transform:none}
+}
+[data-skin="persona"] .p3in > .card,
+[data-skin="persona"] .p3in > .coinbar,
+[data-skin="persona"] .p3in > .seg3,
+[data-skin="persona"] .p3in > .datebar,
+[data-skin="persona"] .p3in > .statgrid{
+  animation:p3card .5s cubic-bezier(.33,.75,.15,1) both;
+}
+/* 卡片按下给一点物理回弹 */
+[data-skin="persona"] .card{transition:transform .28s cubic-bezier(.34,1.4,.5,1),box-shadow .28s ease}
+[data-skin="persona"] .split,
+[data-skin="persona"] .opt,
+[data-skin="persona"] .g,
+[data-skin="persona"] .qa{
+  transition:transform .26s cubic-bezier(.34,1.4,.5,1),background .2s ease,color .2s ease;
+}
+[data-skin="persona"] .split:active,
+[data-skin="persona"] .opt:active,
+[data-skin="persona"] .g:active,
+[data-skin="persona"] .qa:active{transform:scale(.965)}
 
 </style>
 </head>
@@ -1473,7 +1542,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.11';
+const BUILD = '2026-10-21.12';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
