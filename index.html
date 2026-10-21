@@ -365,12 +365,16 @@ body{background-color:var(--bg)}
 }
 /* 背景：水色斜条纹 + 两团光 */
 [data-skin="persona"] #bgfixed{
-  background-color:#e8f3f8;
+  background-color:#e9f4fb;
   background-image:
-    repeating-linear-gradient(115deg, rgba(0,165,200,.10) 0 12px, transparent 12px 34px),
-    radial-gradient(circle at 10% 6%, rgba(0,165,200,.18), transparent 42%),
-    radial-gradient(circle at 94% 96%, rgba(0,165,200,.14), transparent 42%),
-    none;
+    radial-gradient(circle at 1px 1px, rgba(0,105,165,.11) 1.1px, rgba(0,0,0,0) 1.3px),
+    repeating-linear-gradient(0deg, rgba(0,60,110,.028) 0 1px, rgba(0,0,0,0) 1px 3px),
+    radial-gradient(140% 70% at 18% -14%, rgba(255,255,255,.98), rgba(255,255,255,0) 58%),
+    radial-gradient(120% 60% at 88% 108%, rgba(12,54,140,.70), rgba(12,54,140,0) 62%),
+    radial-gradient(70% 40% at 62% 34%, rgba(120,220,250,.55), rgba(120,220,250,0) 70%),
+    linear-gradient(168deg,#ffffff 0%,#e4f5fc 22%,#b8e8f8 40%,#6cc8ea 60%,#2b93cf 78%,#0d4a96 100%);
+  background-size:7px 7px,auto,auto,auto,auto,auto;
+}
 }
 /* 卡片：白底 + 2px 黑边 + 硬投影 + 左上角水色三角 */
 [data-skin="persona"] .card,
@@ -753,10 +757,38 @@ body{background-color:var(--bg)}
 
 /* 页面切换：从左横向擦出（the-velvet 的 p3MenuReveal） */
 @keyframes p3reveal{
-  from{clip-path:inset(0 100% 0 0)}
-  to{clip-path:inset(0 0 0 0)}
+  0%{opacity:0;clip-path:inset(0 100% 0 0);transform:translateX(22px) skewX(-3deg)}
+  60%{opacity:1}
+  100%{opacity:1;clip-path:inset(0 0 0 0);transform:none}
 }
-[data-skin="persona"] .p3in{animation:p3reveal .42s cubic-bezier(.22,.9,.24,1) both}
+[data-skin="persona"] .p3in{animation:p3reveal .46s cubic-bezier(.22,.9,.24,1) both}
+/* 卡片错峰入场 */
+@keyframes p3card{
+  0%{opacity:0;transform:translateY(18px) skewX(-2deg)}
+  100%{opacity:1;transform:none}
+}
+[data-skin="persona"] .p3in > .card,
+[data-skin="persona"] .p3in > .coinbar,
+[data-skin="persona"] .p3in > .seg3,
+[data-skin="persona"] .p3in > .datebar{animation:p3card .42s cubic-bezier(.2,.8,.2,1) both}
+[data-skin="persona"] .p3in > *:nth-child(1){animation-delay:.02s}
+[data-skin="persona"] .p3in > *:nth-child(2){animation-delay:.06s}
+[data-skin="persona"] .p3in > *:nth-child(3){animation-delay:.10s}
+[data-skin="persona"] .p3in > *:nth-child(4){animation-delay:.14s}
+[data-skin="persona"] .p3in > *:nth-child(5){animation-delay:.18s}
+[data-skin="persona"] .p3in > *:nth-child(6){animation-delay:.22s}
+[data-skin="persona"] .p3in > *:nth-child(n+7){animation-delay:.26s}
+/* 切页时扫过一条青色斜带 */
+@keyframes p3flash{
+  0%{opacity:.85;transform:translateX(-120%) skewX(-16deg)}
+  100%{opacity:0;transform:translateX(220%) skewX(-16deg)}
+}
+[data-skin="persona"] .p3in::before{
+  content:'';position:fixed;top:0;left:0;width:42%;height:100%;
+  background:linear-gradient(90deg,rgba(0,165,200,0),rgba(0,165,200,.28),rgba(0,165,200,0));
+  pointer-events:none;z-index:60;
+  animation:p3flash .55s ease-out both;
+}
 
 /* 按下：位移 1px 2px + 变暗提饱和（P3R 斜轴下沉） */
 [data-skin="persona"] .btn,
@@ -913,6 +945,111 @@ body{background-color:var(--bg)}
   box-shadow:none;overflow:hidden;background:#fff;
 }
 [data-skin="persona"] .statcell{border-color:rgba(10,40,60,.12)}
+
+
+/* ================= 补齐基础样式（第二批：此前只有 persona 规则） ================= */
+/* 代币条 */
+.coinbar{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:var(--card);border-radius:14px;padding:12px 15px;margin-bottom:12px}
+.cb{display:flex;align-items:baseline;gap:5px}
+.cb b{font-size:26px;font-weight:900;line-height:1;color:var(--green)}
+.cl{font-size:10.5px;color:var(--mute);letter-spacing:.5px}
+.cw{font-size:10.5px;color:var(--mute);text-align:right;line-height:1.5}
+.cw b{font-size:16px;color:var(--ink)}
+
+/* 三档切换 */
+.seg3{display:flex;gap:5px;background:var(--el2);border-radius:12px;padding:4px;margin-bottom:12px}
+.seg3 .s{flex:1;text-align:center;padding:8px 2px;font-size:12px;color:var(--mute);
+  border-radius:9px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seg3 .s.on{background:var(--green);color:#fff;font-weight:800}
+
+/* 小游戏入口 */
+.qa{display:flex;align-items:center;gap:9px;padding:11px 13px;border-radius:12px;
+  background:var(--el2);font-size:12.5px;font-weight:600;margin-bottom:8px}
+.qa span{font-size:16px;line-height:1}
+
+/* 游戏结算 */
+.gres{text-align:center;padding:16px 8px}
+.gres .big{font-size:38px;font-weight:900;color:var(--green);line-height:1.1}
+.gres .sub{font-size:12px;color:var(--mute);margin-top:6px;line-height:1.6}
+
+/* 营养素条 */
+.progbar{height:8px;border-radius:5px;background:var(--el);overflow:hidden;margin-top:6px}
+.progbar i{display:block;height:100%;border-radius:5px;background:var(--green)}
+.mixbar{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--el);margin-top:8px}
+.mixbar i{height:100%}
+
+/* 部位标签 */
+.ptag{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:8px;
+  background:var(--el2);font-size:11px;color:var(--ink2);margin:0 6px 6px 0}
+.ptag.add{color:var(--green);font-weight:700}
+.ptag .x{color:var(--mute2);margin-left:2px}
+
+/* 知识条目 */
+.kbi{padding:11px 0;border-bottom:1px solid var(--line)}
+.kbi:last-child{border-bottom:none}
+.kbb{font-size:12px;line-height:1.85;color:var(--ink2);margin-top:5px}
+.kbchip{display:inline-block;padding:2px 8px;border-radius:7px;background:var(--el);
+  font-size:10px;color:var(--mute);margin-right:6px}
+
+/* persona 适配 */
+[data-skin="persona"] .coinbar{
+  background:#fff;border-radius:16px;
+  box-shadow:0 3px 16px rgba(10,40,60,.10);
+  border-left:4px solid rgba(0,165,200,.9);
+}
+[data-skin="persona"] .seg3{background:rgba(0,165,200,.10)}
+[data-skin="persona"] .seg3 .s.on{background:rgb(0,165,200)}
+[data-skin="persona"] .qa{background:#fff;border:1.5px solid rgba(10,40,60,.12)}
+[data-skin="persona"] .ptag{background:rgba(0,165,200,.12);border-radius:8px}
+[data-skin="persona"] .progbar{background:rgba(10,40,60,.10)}
+
+
+/* ================= P3R 图形语言补充 ================= */
+/* 日期条右侧的两枚小色块（模仿标题旁的装饰方块） */
+[data-skin="persona"] .datebar .mid{position:relative}
+[data-skin="persona"] .datebar .mid::after{
+  content:'';position:absolute;right:-2px;top:2px;width:7px;height:7px;
+  background:rgb(0,165,200);
+  box-shadow:11px 0 0 rgba(0,165,200,.45), 11px 11px 0 rgba(0,165,200,.22);
+  transform:skewX(-12deg);
+  pointer-events:none;
+}
+/* 卡片标题后的斜向短线 */
+[data-skin="persona"] .card > b::after{
+  content:'';display:inline-block;vertical-align:middle;
+  width:22px;height:6px;margin-left:8px;
+  background:repeating-linear-gradient(115deg, rgba(0,165,200,.85) 0 3px, rgba(0,0,0,0) 3px 6px);
+}
+/* 星星呼吸光 */
+@keyframes starPulse{
+  0%,100%{opacity:.55;transform:scale(.94)}
+  50%{opacity:1;transform:scale(1.06)}
+}
+[data-skin="persona"] .star.on{animation:starPulse 2.4s ease-in-out infinite}
+[data-skin="persona"] .star.on:nth-child(2){animation-delay:.18s}
+[data-skin="persona"] .star.on:nth-child(3){animation-delay:.36s}
+[data-skin="persona"] .star.on:nth-child(4){animation-delay:.54s}
+[data-skin="persona"] .star.on:nth-child(5){animation-delay:.72s}
+/* 主按钮的斜切碎片贴角 */
+[data-skin="persona"] .btn{position:relative;overflow:hidden}
+[data-skin="persona"] .btn::before{
+  content:'';position:absolute;right:0;top:0;width:0;height:0;
+  border-top:14px solid rgba(255,255,255,.55);
+  border-left:14px solid transparent;
+  pointer-events:none;
+}
+/* 数据面板数字下的斜线底纹 */
+[data-skin="persona"] .statcell::after{
+  content:'';position:absolute;right:6px;bottom:34px;width:26px;height:3px;
+  background:repeating-linear-gradient(115deg, rgba(0,165,200,.55) 0 2px, rgba(0,0,0,0) 2px 5px);
+  pointer-events:none;
+}
+[data-skin="persona"] .statcell{position:relative}
+/* 幽灵大字加一层描边质感 */
+[data-skin="persona"] #bgfixed::after{
+  -webkit-text-stroke:1px rgba(0,105,165,.10);
+}
 
 </style>
 </head>
@@ -1336,7 +1473,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.9';
+const BUILD = '2026-10-21.11';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -4607,7 +4744,7 @@ function radarSVG(items) {
       '<text x="' + x.toFixed(0) + '" y="' + (y + 12) + '" text-anchor="middle" font-size="11" font-weight="800" fill="rgb(0,165,200)">' +
       Math.round(it.pct || 0) + '%</text>';
   }).join('');
-  return '<svg class="radar" viewBox="0 0 220 236">' + ring(0.34) + ring(0.67) + ring(1) + axes +
+  return '<svg class="radar" viewBox="-16 -12 252 264">' + ring(0.34) + ring(0.67) + ring(1) + axes +
     '<polygon points="' + poly + '" fill="rgba(0,165,200,.34)" stroke="rgb(0,165,200)" stroke-width="2.5" stroke-linejoin="round"/>' +
     labels + '</svg>';
 }
