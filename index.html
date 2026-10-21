@@ -643,6 +643,186 @@ body{background-color:var(--bg)}
 [data-skin="persona"] .sbar{left:14px;right:14px;bottom:14px;height:10px;border-radius:0;background:#e2eef5;border:2px solid #0a0e14}
 [data-skin="persona"] .sbar > i{border-radius:0;background:rgb(0,165,200)}
 
+
+/* ==================== 补齐缺失的基础排版（此前完全没写样式） ==================== */
+/* 训练分化选择 */
+.splits{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.split{padding:9px 11px;border-radius:10px;background:var(--el2);cursor:pointer}
+.split b{display:block;font-size:12.5px;font-weight:700;line-height:1.35}
+.split span{display:block;font-size:10px;color:var(--mute);margin-top:3px;line-height:1.45}
+.split.on{background:var(--soft);box-shadow:inset 0 0 0 1.5px var(--green)}
+.split.on b{color:var(--green)}
+
+/* 今日推荐动作 */
+.exlist{margin-top:10px}
+.exgrp{margin-bottom:12px}
+.exgrp:last-child{margin-bottom:2px}
+.exgh{font-size:11px;font-weight:700;color:var(--green);letter-spacing:.6px;margin-bottom:5px}
+.ex{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:5px 0;border-bottom:1px solid var(--line);font-size:12px}
+.ex:last-child{border-bottom:none}
+.en{color:var(--ink2)}
+.es{color:var(--mute);font-size:11px;white-space:nowrap}
+
+/* 分化逐日安排 */
+.dayrow{padding:10px 0;border-bottom:1px solid var(--line)}
+.dayrow:last-child{border-bottom:none}
+.dh{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.dn{font-size:11px;font-weight:800;color:var(--green);min-width:20px;flex:0 0 auto}
+.dname{font-size:13px;font-weight:700;flex:1;line-height:1.35}
+.dtag{font-size:9.5px;padding:1px 6px;border-radius:6px;background:var(--green);color:#fff;font-weight:700;flex:0 0 auto}
+.dg{font-size:10.5px;color:var(--mute);margin-bottom:4px;letter-spacing:.4px}
+.dex{font-size:11px;color:var(--ink2);line-height:1.75}
+.rest{font-size:11px;color:var(--mute2)}
+
+/* 最常吃 */
+.topfood{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+.topfood:last-child{border-bottom:none}
+.rk{width:20px;height:20px;flex:0 0 20px;border-radius:5px;background:var(--el);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:var(--green)}
+.nm{flex:1;color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ct{font-size:11px;color:var(--mute);white-space:nowrap;flex:0 0 auto}
+
+/* 餐次分布图例 */
+.mixlg{display:flex;flex-wrap:wrap;gap:7px 16px;margin-top:10px}
+.mixlg > *{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--ink2)}
+.cb{width:9px;height:9px;border-radius:2px;flex:0 0 9px;display:inline-block}
+.cl{font-size:11px;color:var(--mute)}
+
+/* 小游戏通用 */
+.gamewrap{padding:2px 0 8px}
+.gamehead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:13px}
+.gamehead b{font-size:14px}
+.gstage{position:relative;margin:0 auto}
+.gclock{font-size:13px;font-weight:800;color:var(--green);font-variant-numeric:tabular-nums}
+.qt{font-size:14px;line-height:1.75;margin-bottom:10px}
+.masked{text-align:center;font-size:27px;font-weight:800;letter-spacing:4px;line-height:1.6;word-break:break-all}
+.mk{color:var(--ink)}
+.bl{color:var(--green);border-bottom:2px solid var(--green);padding:0 3px;margin:0 1px}
+.scratchgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.scratchcell{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;border-radius:5px;background:var(--el);font-size:12px;font-weight:800;color:transparent;user-select:none}
+.scratchcell.open{background:var(--soft);color:var(--green)}
+.moles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mole{aspect-ratio:1/1;border-radius:12px;background:var(--el);display:flex;align-items:center;justify-content:center;font-size:26px}
+
+/* 商店 */
+.shopitem{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.shopitem:last-child{border-bottom:none}
+.si{font-size:18px;flex:0 0 auto;line-height:1}
+.sn{font-size:12.5px;font-weight:700;line-height:1.4}
+.sd{font-size:10.5px;color:var(--mute);line-height:1.6;margin-top:2px}
+.buy{margin-left:auto;flex:0 0 auto;padding:7px 13px;border-radius:15px;background:var(--green);color:#fff;font-size:11px;font-weight:700;white-space:nowrap}
+
+/* 视频 / 知识 */
+.kbh{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:6px;line-height:1.4}
+.kbchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.plantags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.karr{color:var(--mute);flex:0 0 auto}
+
+/* 其他零散 */
+.quickacts{display:flex;gap:8px;margin-top:12px}
+.goalbox{font-size:12px;line-height:1.95;color:var(--ink2)}
+.streak{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--mute)}
+.spark{display:inline-block}
+.cw{display:inline-flex;align-items:center;gap:4px}
+.full{width:100%}
+.add{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--green);font-weight:700}
+
+/* ==================== P3R 动效与骨架 ==================== */
+/* 卡片标题：黑底斜切贴纸（替换之前的青色竖条） */
+[data-skin="persona"] .card > b{
+  display:inline-block;
+  background:#0a0e14;color:#fff;
+  padding:5px 18px 5px 12px;
+  font-size:12.5px;font-weight:800;font-style:normal;
+  clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%);
+  margin-bottom:10px;
+  padding-left:12px;
+}
+[data-skin="persona"] .card > b::before{display:none}
+[data-skin="persona"] .card-title{
+  display:inline-block;background:#0a0e14;color:#fff;
+  padding:5px 18px 5px 12px;font-size:12.5px;font-weight:800;
+  clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%);
+  margin-bottom:10px;
+}
+[data-skin="persona"] .card-title::before{display:none}
+
+/* 按下扫光 */
+@keyframes p3sweep{
+  0%{opacity:1;transform:translateX(-160%) skewX(-18deg)}
+  100%{opacity:0;transform:translateX(280%) skewX(-18deg)}
+}
+[data-skin="persona"] .btn,
+[data-skin="persona"] .split,
+[data-skin="persona"] .qa,
+[data-skin="persona"] .chip,
+[data-skin="persona"] .cat,
+[data-skin="persona"] .mt,
+[data-skin="persona"] .g,
+[data-skin="persona"] .opt,
+[data-skin="persona"] .f,
+[data-skin="persona"] .item,
+[data-skin="persona"] .kwtile,
+[data-skin="persona"] .tabbar .t{position:relative;overflow:hidden}
+[data-skin="persona"] .btn::after,
+[data-skin="persona"] .split::after,
+[data-skin="persona"] .qa::after,
+[data-skin="persona"] .chip::after,
+[data-skin="persona"] .cat::after,
+[data-skin="persona"] .mt::after,
+[data-skin="persona"] .g::after,
+[data-skin="persona"] .opt::after,
+[data-skin="persona"] .kwtile::after{
+  content:'';position:absolute;top:-30%;left:0;width:45%;height:160%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.8),transparent);
+  transform:translateX(-160%) skewX(-18deg);opacity:0;pointer-events:none;
+}
+[data-skin="persona"] .btn:active::after,
+[data-skin="persona"] .split:active::after,
+[data-skin="persona"] .qa:active::after,
+[data-skin="persona"] .chip:active::after,
+[data-skin="persona"] .cat:active::after,
+[data-skin="persona"] .mt:active::after,
+[data-skin="persona"] .g:active::after,
+[data-skin="persona"] .opt:active::after,
+[data-skin="persona"] .kwtile:active::after{animation:p3sweep .38s ease-out}
+
+/* 列表行按下：青色反白 */
+[data-skin="persona"] .f:active,
+[data-skin="persona"] .item:active,
+[data-skin="persona"] .rec:active{background:rgba(0,165,200,.14)}
+
+/* 页面切换：斜切推入 */
+@keyframes p3in{
+  0%{opacity:0;transform:translateY(16px) skewY(.8deg)}
+  100%{opacity:1;transform:none}
+}
+[data-skin="persona"] .p3in{animation:p3in .34s cubic-bezier(.22,.9,.24,1) both}
+
+/* 底部导航：选中项青色斜块 */
+[data-skin="persona"] .tabbar .t{position:relative;overflow:hidden;z-index:0}
+[data-skin="persona"] .tabbar .t.on{color:#fff;font-weight:900}
+[data-skin="persona"] .tabbar .t.on::before{
+  content:'';position:absolute;left:50%;top:0;transform:translateX(-50%);
+  width:54px;height:100%;background:rgb(0,165,200);
+  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
+  z-index:-1;
+}
+/* 底部留白，避免胶囊按钮压住最后一张卡 */
+[data-skin="persona"] .wrap{padding-bottom:104px}
+/* 分化 / 商店 / 游戏在 persona 下的黑边处理 */
+[data-skin="persona"] .splits{gap:8px}
+[data-skin="persona"] .split{padding:9px 11px}
+[data-skin="persona"] .split.on{background:rgb(0,165,200);color:#fff}
+[data-skin="persona"] .split.on b{color:#fff}
+[data-skin="persona"] .split.on span{color:rgba(255,255,255,.85)}
+[data-skin="persona"] .rk{background:#0a0e14;color:#fff;border-radius:0}
+[data-skin="persona"] .dtag{border-radius:0;background:#0a0e14}
+[data-skin="persona"] .buy{border-radius:0;border:2px solid #0a0e14;box-shadow:3px 3px 0 #0a0e14;font-weight:800}
+[data-skin="persona"] .scratchcell{border-radius:0;border:2px solid #0a0e14;background:#e6f2f8}
+[data-skin="persona"] .scratchcell.open{background:rgb(0,165,200);color:#fff}
+[data-skin="persona"] .mole{border-radius:0;border:2px solid #0a0e14;background:#e6f2f8}
+[data-skin="persona"] .exgh{color:#0a0e14;font-weight:800}
+
 </style>
 </head>
 <body>
@@ -1065,7 +1245,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.5';
+const BUILD = '2026-10-21.6';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -4274,6 +4454,8 @@ function viewKnowledge() {
 }
 
 
+let LAST_VIEW = '';
+
 /* ================= 训练日判定 ================= */
 function isTrainDay(dateStr) {
   if (S.forceTrainDay === true || S.forceTrainDay === false) return S.forceTrainDay;
@@ -4821,6 +5003,11 @@ function render() {
 
   $('root').innerHTML = html;
   try { document.body.setAttribute('data-view', S.view); } catch (e) { }
+  if (S.view !== LAST_VIEW) {
+    const w = $('root').firstElementChild;
+    if (w) w.classList.add('p3in');
+    LAST_VIEW = S.view;
+  }
   renderTabbar();
   renderFab();
 
