@@ -948,15 +948,15 @@ body{background-color:var(--bg)}
 
 /* ================= 补齐基础样式（第二批：此前只有 persona 规则） ================= */
 /* 代币条 */
-.coinbar{display:flex;align-items:center;justify-content:space-between;gap:10px;
-  background:var(--card);border-radius:14px;padding:12px 15px;margin-bottom:12px;overflow:hidden}
-.coinbar > div:first-child{flex:1;min-width:0}
-.cb{display:flex;align-items:baseline;gap:5px;flex-wrap:nowrap}
-.cb b{font-size:25px;font-weight:900;line-height:1.15;color:var(--green);flex:0 0 auto}
-.cl{font-size:10.5px;color:var(--mute);letter-spacing:.5px;white-space:nowrap;flex:0 0 auto}
-.coinbar .cl[style]{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;margin-left:0 !important}
-.cw{font-size:10.5px;color:var(--mute);text-align:right;line-height:1.45;white-space:nowrap;flex:0 0 auto}
+.coinbar{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 12px;
+  background:var(--card);border-radius:14px;padding:12px 15px;margin-bottom:12px}
+.cb{display:flex;align-items:baseline;gap:5px;min-width:0}
+.cb b{font-size:25px;font-weight:900;line-height:1.1;color:var(--green)}
+.cl{font-size:10.5px;color:var(--mute);letter-spacing:.5px;white-space:nowrap}
+.cw{font-size:10.5px;color:var(--mute);text-align:right;white-space:nowrap;line-height:1.4}
 .cw b{font-size:15px;color:var(--ink)}
+.cnote{grid-column:1 / -1;font-size:10px;color:var(--mute);line-height:1.5;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* 三档切换 */
 .seg3{display:flex;gap:5px;background:var(--el2);border-radius:12px;padding:4px;margin-bottom:12px}
@@ -1185,15 +1185,23 @@ body{background-color:var(--bg)}
 [data-skin="persona"] .sumcard,
 [data-skin="persona"] .flist,
 [data-skin="persona"] .coinbar{
-  -webkit-backdrop-filter:blur(14px) saturate(1.35);
-  backdrop-filter:blur(14px) saturate(1.35);
-  background:rgba(255,255,255,.80);
-  box-shadow:0 3px 18px rgba(10,40,60,.08), inset 0 1px 0 rgba(255,255,255,.75);
+  -webkit-backdrop-filter:blur(20px) saturate(1.6);
+  backdrop-filter:blur(20px) saturate(1.6);
+  background:linear-gradient(160deg, rgba(255,255,255,.66), rgba(226,244,252,.52));
+  border-left:3px solid rgba(0,165,200,.55);
+  box-shadow:0 6px 24px rgba(10,40,60,.07), inset 0 1px 0 rgba(255,255,255,.65);
+}
+[data-skin="persona"] .statgrid{background:rgba(255,255,255,.46)}
+[data-skin="persona"] .tabbar{
+  background:rgba(255,255,255,.72) !important;
+  -webkit-backdrop-filter:blur(20px) saturate(1.5);
+  backdrop-filter:blur(20px) saturate(1.5);
+  border-top:1px solid rgba(255,255,255,.6);
 }
 [data-skin="persona"] .statgrid{background:rgba(255,255,255,.66)}
 
 /* ================= tab 滑动块 ================= */
-.tabbar{position:relative;overflow:hidden}
+.tabbar{overflow:hidden}
 .tkslide{
   position:absolute;top:0;height:100%;z-index:0;pointer-events:none;
   display:flex;align-items:center;justify-content:center;
@@ -1207,16 +1215,19 @@ body{background-color:var(--bg)}
 [data-skin="persona"] .tabbar .t.on::before{display:none}
 
 /* ================= 每日塔罗 ================= */
-.tarotbody{position:relative;height:132px;transform-style:preserve-3d;
-  transition:transform .62s cubic-bezier(.3,.8,.2,1);cursor:pointer}
-.tarotbody.open{transform:rotateY(180deg)}
-.tarotback,.tarotfront{position:absolute;inset:0;backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:14px}
-.tarotback{background:linear-gradient(150deg,#0b4a8f,#1c8fd0 60%,#7fd8f0);color:#fff}
+.tarotbody{position:relative;height:132px;cursor:pointer;perspective:760px}
+.tarotback,.tarotfront{position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:14px;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  transition:opacity .26s ease,transform .5s cubic-bezier(.3,.8,.2,1)}
+.tarotback{background:linear-gradient(150deg,#0b4a8f,#1c8fd0 60%,#7fd8f0);color:#fff;
+  transform:rotateY(0deg) scale(1);opacity:1;z-index:2}
+.tarotfront{background:linear-gradient(160deg,#f7fdff,#dff2fb);
+  border:1.5px solid rgba(0,165,200,.45);color:#0a0e14;
+  transform:rotateY(-180deg) scale(.96);opacity:0;z-index:1}
+.tarotbody.open .tarotback{transform:rotateY(180deg) scale(.96);opacity:0;z-index:1}
+.tarotbody.open .tarotfront{transform:rotateY(0deg) scale(1);opacity:1;z-index:2}
 .tarotstar{font-size:30px;line-height:1;margin-bottom:6px}
-.tarotfront{transform:rotateY(180deg);background:linear-gradient(160deg,#ffffff,#e6f6fd);
-  border:1.5px solid rgba(0,165,200,.45);color:#0a0e14}
 .tarotnum{font-size:11px;font-weight:800;letter-spacing:2px;color:rgb(0,165,200)}
 .tarotname{font-size:19px;font-weight:900;font-style:italic;letter-spacing:-.5px}
 .taroten{font-size:9px;letter-spacing:2.5px;color:#6c8090}
@@ -1644,7 +1655,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.14';
+const BUILD = '2026-10-21.15';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -4477,9 +4488,10 @@ function viewPlan() {
       '<span class="x" data-act="deldaygrp" data-i="' + i + '">×</span></div>';
   }).join('') + '<div class="ptag add" data-act="adddaygrp">＋ 添加部位</div>';
 
-  return '<div class="coinbar"><div><div class="cb"><b>' + p.coins + '</b><span class="cl">代币</span></div>' +
-    '<div class="cl" style="margin-top:4px">打卡 +10 · 连打 +5 · 周目标 +100</div></div>' +
-    '<div class="cw">本周已练<br><b style="font-size:16px;color:var(--ink)">' + wk + '</b> / ' + goal.days + ' 次</div></div>' +
+  return '<div class="coinbar">' +
+    '<div class="cb"><b>' + p.coins + '</b><span class="cl">代币</span></div>' +
+    '<div class="cw">本周已练 <b>' + wk + '</b>/' + goal.days + ' 次</div>' +
+    '<div class="cnote">打卡 +10 · 连打 +5 · 周目标 +100</div></div>' +
 
     '<div class="card"><div class="row between" style="margin-bottom:8px">' +
     '<b style="font-size:15px">训练分化</b><span class="xs mute">改分化不会清空打卡</span></div>' +
