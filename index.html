@@ -822,6 +822,98 @@ body{background-color:var(--bg)}
 [data-skin="persona"] .mole{border-radius:0;border:2px solid #0a0e14;background:#e6f2f8}
 [data-skin="persona"] .exgh{color:#0a0e14;font-weight:800}
 
+
+/* ================= 面板式统计（雷达） ================= */
+.radar{display:block;width:100%;max-width:270px;margin:4px auto 0;color:var(--ink2)}
+
+/* ================= 排版向 the-velvet 靠拢 ================= */
+[data-skin="persona"] .datebar .d1{
+  font-size:29px;font-style:italic;font-weight:900;letter-spacing:-1.2px;
+  color:#0a0e14;
+  text-shadow:2px 2px 0 #ffffff, 4px 4px 0 rgba(0,165,200,.95);
+}
+[data-skin="persona"] .datebar .d1::before{display:none}
+[data-skin="persona"] .datebar .d2{font-size:10.5px;letter-spacing:2.5px;color:#6c8090;margin-top:2px}
+[data-skin="persona"] #bgfixed::before{
+  content:'营养日记';
+  position:absolute;left:2.4vw;top:16vh;
+  writing-mode:vertical-rl;
+  font-size:11vw;font-weight:900;font-style:italic;line-height:1;
+  letter-spacing:.6vw;color:rgba(0,165,200,.07);pointer-events:none;
+}
+
+
+/* ================= 日期模块（the-velvet 排版） ================= */
+.datebar .dblock{display:flex;align-items:center;justify-content:center;gap:7px;line-height:1}
+.datebar .dnum{font-size:21px;font-weight:900;line-height:1;letter-spacing:-.5px}
+.datebar .dside{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
+.datebar .dside b{font-size:8.5px;font-weight:800;letter-spacing:1.2px}
+.datebar .dside i{font-style:normal;font-size:8px;color:var(--mute);letter-spacing:1.2px;margin-top:1px}
+[data-skin="persona"] .datebar .dnum{
+  font-size:33px;font-style:italic;letter-spacing:-2px;color:#0a0e14;
+  text-shadow:2px 2px 0 #ffffff, 3px 3px 0 rgba(0,165,200,.9);
+}
+[data-skin="persona"] .datebar .dside b{font-size:10px;color:#0a0e14}
+[data-skin="persona"] .datebar .dside i{font-size:9px;color:#6c8090}
+[data-skin="persona"] .datebar .d2{font-size:10px;letter-spacing:1.2px;color:#8aa0ad}
+
+/* ================= 星形 ================= */
+.starrow{display:flex;align-items:center;justify-content:center;gap:6px;margin:2px 0 10px}
+.star{fill:none;stroke:var(--mute2);stroke-width:1.8;stroke-linejoin:round}
+.star.on{fill:var(--green);stroke:var(--green)}
+[data-skin="persona"] .star{stroke:rgba(10,40,60,.22)}
+[data-skin="persona"] .star.on{fill:rgb(0,165,200);stroke:rgb(0,165,200);filter:drop-shadow(0 1px 2px rgba(0,165,200,.55))}
+[data-skin="persona"] .btn .star{vertical-align:-2px;margin-left:4px}
+
+/* ================= 卡片软化：去黑边、柔阴影、左侧蓝线 ================= */
+[data-skin="persona"] .card,
+[data-skin="persona"] .sumcard,
+[data-skin="persona"] .flist{
+  border:none;
+  border-radius:16px;
+  border-left:4px solid rgba(0,165,200,.9);
+  box-shadow:0 3px 16px rgba(10,40,60,.09), 0 1px 3px rgba(10,40,60,.06);
+}
+[data-skin="persona"] .card::before{display:none}
+[data-skin="persona"] .card > b{
+  background:none;color:#0a0e14;clip-path:none;
+  padding:0 0 0 13px;font-size:13.5px;font-weight:800;position:relative;
+  margin-bottom:10px;display:inline-block;font-style:normal;
+}
+[data-skin="persona"] .card > b::before{
+  content:'';position:absolute;left:0;top:50%;margin-top:-7px;
+  width:4px;height:14px;background:rgb(0,165,200);display:block;
+}
+[data-skin="persona"] .card-title{
+  background:none;color:#0a0e14;clip-path:none;
+  padding:0 0 0 13px;position:relative;display:inline-block;font-weight:800;margin-bottom:10px;
+}
+[data-skin="persona"] .card-title::before{
+  content:'';position:absolute;left:0;top:50%;margin-top:-7px;
+  width:4px;height:14px;background:rgb(0,165,200);
+}
+[data-skin="persona"] .btn{border:none;border-radius:12px;box-shadow:0 4px 12px rgba(0,165,200,.35)}
+[data-skin="persona"] .btn.gray{background:rgba(0,165,200,.10);box-shadow:none;color:#2c3d49}
+[data-skin="persona"] .split,
+[data-skin="persona"] .opt,
+[data-skin="persona"] .goals .g,
+[data-skin="persona"] .qa,
+[data-skin="persona"] .kwtile{
+  border:1.5px solid rgba(10,40,60,.12);border-radius:12px;box-shadow:none;background:#fff;
+}
+[data-skin="persona"] .split.on,
+[data-skin="persona"] .opt.on,
+[data-skin="persona"] .goals .g.on,
+[data-skin="persona"] .kwtile.on{background:rgb(0,165,200);border-color:rgb(0,165,200);color:#fff}
+[data-skin="persona"] .split.on b,
+[data-skin="persona"] .split.on span{color:#fff}
+[data-skin="persona"] .tabbar{border-top:1px solid rgba(10,40,60,.10);background:rgba(255,255,255,.96)}
+[data-skin="persona"] .statgrid{
+  border:1.5px solid rgba(10,40,60,.12);border-radius:14px;
+  box-shadow:none;overflow:hidden;background:#fff;
+}
+[data-skin="persona"] .statcell{border-color:rgba(10,40,60,.12)}
+
 </style>
 </head>
 <body>
@@ -1244,7 +1336,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.7';
+const BUILD = '2026-10-21.9';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -3322,7 +3414,11 @@ function viewToday() {
   return '<div class="wrap">' +
     '<div class="datebar">' +
     '<div class="nav" data-act="prevday">‹</div>' +
-    '<div class="mid" data-act="tab" data-v="report"><div class="d1">' + dayLabel(d) + '</div><div class="d2">' + d + '</div></div>' +
+    '<div class="mid" data-act="tab" data-v="report">' +
+    '<div class="dblock"><span class="dnum">' + (parseInt(d.slice(8, 10), 10) || '') + '</span>' +
+    '<span class="dside"><b>' + ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'][(parseInt(d.slice(5, 7), 10) || 1) - 1] + '</b>' +
+    '<i>' + ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'][new Date(d + 'T00:00:00').getDay()] + '</i></span></div>' +
+    '<div class="d2">' + dayLabel(d) + ' · ' + d + '</div></div>' +
     (d === todayStr() ? '<div class="nav off">›</div>' : '<div class="nav" data-act="nextday">›</div>') +
     '</div>' +
 
@@ -3629,6 +3725,16 @@ function viewReport() {
 
     '<div class="card"><div class="row between" style="margin-bottom:6px">' +
     '<b style="font-size:15px">记录日均</b><span class="sm mute">' + logged.length + ' 天有记录</span></div>' +
+    '<div class="card"><div class="row between" style="margin-bottom:2px">' +
+    '<b style="font-size:15px">营养达成</b><span class="xs mute">日均 / 目标</span></div>' +
+    radarSVG([
+      { label: '热量', pct: (t.kcal ? avg.kcal / t.kcal : 0) * 100 },
+      { label: '蛋白', pct: (t.protein ? avg.protein / t.protein : 0) * 100 },
+      { label: '碳水', pct: (t.carb ? avg.carb / t.carb : 0) * 100 },
+      { label: '脂肪', pct: (t.fat ? avg.fat / t.fat : 0) * 100 },
+      { label: '纤维', pct: (t.fiber ? (avg.fiber || 0) / t.fiber : 0) * 100 }
+    ]) + '</div>' +
+
     '<div class="statgrid">' +
     [['热量', avg.kcal, 'kcal', t.kcal], ['蛋白质', avg.protein, 'g', t.protein],
      ['碳水', avg.carb, 'g', t.carb], ['脂肪', avg.fat, 'g', t.fat]].map(function (c) {
@@ -4109,8 +4215,18 @@ function viewPlan() {
             }).join('') + '</div>';
         }).join('') + '</div>'
       : '') +
+    '<div class="starrow">' + (function () {
+      let n = 0;
+      try {
+        const wk = weekKey(todayStr());
+        n = Object.keys(planData().checkins).filter(function (k) { return weekKey(k) === wk; }).length;
+      } catch (e) { }
+      let out = '';
+      for (let i = 0; i < 5; i++) out += starSVG(i < n);
+      return out + '<span class="xs mute" style="margin-left:6px">本周 ' + n + '/5</span>';
+    })() + '</div>' +
     '<div class="btn ' + (doneToday ? 'gray' : '') + '" data-act="checkin" style="' + (doneToday ? 'background:var(--el2);color:var(--mute);box-shadow:none' : '') + '">' +
-    (doneToday ? '今天已打卡 ✓' : '完成训练，打卡 +10') + '</div></div>' +
+    (doneToday ? '今天已打卡 ' + starSVG(true, 13) : '完成训练，打卡 +10') + '</div></div>' +
 
     '<div class="card"><div class="row between" style="margin-bottom:6px">' +
     '<b style="font-size:15px">' + goal.title + '</b><span class="xs mute">' + wk + '/' + goal.days + ' 次</span></div>' +
@@ -4454,6 +4570,47 @@ function viewKnowledge() {
 
 
 let LAST_VIEW = '';
+
+/* ================= 星形图形 ================= */
+function starSVG(on, size) {
+  const s = size || 15;
+  return '<svg class="star' + (on ? ' on' : '') + '" width="' + s + '" height="' + s +
+    '" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l2.95 6.05 6.65.95-4.83 4.68 1.16 6.62L12 17.55 6.07 20.7l1.16-6.62L2.4 9.4l6.65-.95z"/></svg>';
+}
+
+/* ================= 营养雷达（面板式统计） ================= */
+function radarSVG(items) {
+  const N = items.length;
+  const R = 82, cx = 110, cy = 108;
+  const ang = function (i) { return -Math.PI / 2 + i * 2 * Math.PI / N; };
+  const ring = function (k) {
+    return '<polygon points="' + items.map(function (_, i) {
+      const a = ang(i);
+      return (cx + Math.cos(a) * R * k).toFixed(1) + ',' + (cy + Math.sin(a) * R * k).toFixed(1);
+    }).join(' ') + '" fill="none" stroke="rgba(10,14,20,.16)" stroke-width="1"/>';
+  };
+  const axes = items.map(function (_, i) {
+    const a = ang(i);
+    return '<line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + Math.cos(a) * R).toFixed(1) +
+      '" y2="' + (cy + Math.sin(a) * R).toFixed(1) + '" stroke="rgba(10,14,20,.16)" stroke-width="1"/>';
+  }).join('');
+  const poly = items.map(function (it, i) {
+    const a = ang(i);
+    const r = R * Math.max(0.05, Math.min(1, (it.pct || 0) / 100));
+    return (cx + Math.cos(a) * r).toFixed(1) + ',' + (cy + Math.sin(a) * r).toFixed(1);
+  }).join(' ');
+  const labels = items.map(function (it, i) {
+    const a = ang(i);
+    const x = cx + Math.cos(a) * (R + 26), y = cy + Math.sin(a) * (R + 24);
+    return '<text x="' + x.toFixed(0) + '" y="' + y.toFixed(0) + '" text-anchor="middle" font-size="10" fill="currentColor" opacity=".75">' +
+      esc(it.label) + '</text>' +
+      '<text x="' + x.toFixed(0) + '" y="' + (y + 12) + '" text-anchor="middle" font-size="11" font-weight="800" fill="rgb(0,165,200)">' +
+      Math.round(it.pct || 0) + '%</text>';
+  }).join('');
+  return '<svg class="radar" viewBox="0 0 220 236">' + ring(0.34) + ring(0.67) + ring(1) + axes +
+    '<polygon points="' + poly + '" fill="rgba(0,165,200,.34)" stroke="rgb(0,165,200)" stroke-width="2.5" stroke-linejoin="round"/>' +
+    labels + '</svg>';
+}
 
 /* ================= P3R 涟漪 ================= */
 if (typeof document !== 'undefined' && document.addEventListener) {
