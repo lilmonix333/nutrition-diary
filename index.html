@@ -1120,6 +1120,52 @@ body{background-color:var(--bg)}
 [data-skin="persona"] .g:active,
 [data-skin="persona"] .qa:active{transform:scale(.965)}
 
+
+/* ================= 交互增强 ================= */
+[data-skin="persona"] html{scroll-behavior:smooth}
+[data-skin="persona"] .datebar{
+  position:sticky;top:0;z-index:30;
+  background:rgba(255,255,255,.80);
+  -webkit-backdrop-filter:blur(12px) saturate(1.4);
+  backdrop-filter:blur(12px) saturate(1.4);
+  padding-top:6px;padding-bottom:6px;
+  border-bottom:1px solid rgba(10,40,60,.06);
+}
+/* 环形入场 */
+@keyframes ringIn{
+  0%{opacity:0;transform:scale(.9) rotate(-14deg)}
+  100%{opacity:1;transform:none}
+}
+[data-skin="persona"] .ringmid,
+[data-skin="persona"] .ring{animation:ringIn .62s cubic-bezier(.28,.8,.2,1) both}
+/* 进度条增长 */
+@keyframes barGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+[data-skin="persona"] .progbar i,
+[data-skin="persona"] .sbar > i{
+  transform-origin:left center;
+  animation:barGrow .7s cubic-bezier(.28,.8,.2,1) both;
+}
+[data-skin="persona"] .p3in .progbar i,
+[data-skin="persona"] .p3in .sbar > i{animation-delay:.12s}
+/* tab 选中块滑入 */
+@keyframes tabSlide{
+  0%{transform:translateX(-50%) scaleX(.35);opacity:.35}
+  100%{transform:translateX(-50%) scaleX(1);opacity:1}
+}
+[data-skin="persona"] .tabbar .t.on::before{
+  animation:tabSlide .36s cubic-bezier(.3,.9,.2,1) both;
+}
+/* 可点行按下反馈更明显 */
+[data-skin="persona"] .f:active,
+[data-skin="persona"] .item:active,
+[data-skin="persona"] .rec:active{
+  background:rgba(0,165,200,.14);
+  transform:scale(.994);
+}
+[data-skin="persona"] .f,
+[data-skin="persona"] .item,
+[data-skin="persona"] .rec{transition:background .18s ease,transform .22s ease}
+
 </style>
 </head>
 <body>
@@ -1542,7 +1588,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.12';
+const BUILD = '2026-10-21.13';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -4777,6 +4823,31 @@ function viewKnowledge() {
 
 let LAST_VIEW = '';
 
+/* ================= 数字滚动 ================= */
+function countUp(el, dur) {
+  if (!el || !el.textContent) return;
+  const raw = String(el.textContent).trim();
+  const to = parseFloat(raw.replace(/[^\d.-]/g, ''));
+  if (!isFinite(to) || to === 0) return;
+  const suffix = raw.replace(/[\d.,-]/g, '').trim();
+  const dec = (raw.split('.')[1] || '').replace(/[^\d]/g, '').length;
+  const nowFn = function (t) {
+    if (typeof t === 'number' && isFinite(t)) return t;
+    return (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+  };
+  const t0 = nowFn();
+  const step = function (t) {
+    const now = nowFn(t);
+    const p = Math.min(1, (now - t0) / dur);
+    const e = 1 - Math.pow(1 - p, 3);
+    const v = to * e;
+    el.textContent = (dec ? v.toFixed(dec) : String(Math.round(v))) + (suffix ? suffix : '');
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = raw;
+  };
+  requestAnimationFrame(step);
+}
+
 /* ================= 星形图形 ================= */
 function starSVG(on, size) {
   const s = size || 15;
@@ -5390,6 +5461,12 @@ function render() {
     const w = $('root').firstElementChild;
     if (w) w.classList.add('p3in');
     LAST_VIEW = S.view;
+    try {
+      if ((store.data.settings || {}).skin === 'persona') {
+        countUp(document.querySelector('.ringmid .num'), 640);
+        countUp(document.querySelector('.kbig b'), 520);
+      }
+    } catch (e) { }
   }
   renderTabbar();
   renderFab();
