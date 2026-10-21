@@ -1537,6 +1537,111 @@ body{background-color:var(--bg)}
 [data-skin="persona"] .tabbar .t.on svg,
 [data-skin="persona"] .tabbar .t.on span{animation:tabIn .4s cubic-bezier(.2,.9,.25,1) both}
 
+
+/* ================= P3R：卡片挖空融合 ================= */
+[data-skin="persona"] .card{
+  -webkit-mask-image:radial-gradient(circle 30px at calc(100% - 30px) 30px, transparent 97%, #000 100%);
+  mask-image:radial-gradient(circle 30px at calc(100% - 30px) 30px, transparent 97%, #000 100%);
+}
+[data-skin="persona"] .card::after{
+  content:'';position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;
+  border:2px solid rgba(0,165,200,.75);pointer-events:none;
+  box-shadow:0 0 10px rgba(0,165,200,.45), inset 0 0 8px rgba(0,165,200,.35);
+}
+[data-skin="persona"] .card > b{z-index:1}
+/* 底部导航挖空露出背景 */
+[data-skin="persona"] .tabbar{
+  -webkit-mask-image:linear-gradient(#000 0 62%, rgba(0,0,0,.65) 100%);
+  mask-image:linear-gradient(#000 0 62%, rgba(0,0,0,.65) 100%);
+}
+
+/* ================= LOL：海克斯科技风 ================= */
+[data-skin="lol"] .card{
+  position:relative;
+  background:
+    linear-gradient(180deg,rgba(200,170,110,.10),rgba(0,0,0,0) 22%),
+    repeating-linear-gradient(90deg, rgba(200,170,110,.045) 0 1px, transparent 1px 26px),
+    linear-gradient(160deg,rgba(18,34,56,.96),rgba(8,18,32,.96));
+}
+[data-skin="lol"] .card::before{
+  content:'';position:absolute;left:0;top:0;width:100%;height:2px;
+  background:linear-gradient(90deg,rgba(200,170,110,0),#c8aa6e 22%,#f0dca0 50%,#c8aa6e 78%,rgba(200,170,110,0));
+  pointer-events:none;
+}
+[data-skin="lol"] .card::after{
+  content:'';position:absolute;right:10px;bottom:10px;width:12px;height:12px;
+  background:linear-gradient(135deg,#f0dca0,#8a6d2a);
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  opacity:.7;pointer-events:none;
+}
+[data-skin="lol"] .card > b{
+  font-family:"Songti SC","Noto Serif SC",serif;letter-spacing:1.5px;
+  text-shadow:0 0 14px rgba(200,170,110,.35)
+}
+[data-skin="lol"] .btn{
+  background:linear-gradient(180deg,#1b3f66,#0a1e35);
+  border:1px solid #c8aa6e;color:#f0dca0;letter-spacing:2px;font-weight:800;
+  box-shadow:inset 0 1px 0 rgba(240,220,160,.35), 0 2px 10px rgba(0,0,0,.5);
+}
+[data-skin="lol"] .tabbar .t.on{
+  color:#f0dca0;
+  filter:drop-shadow(0 0 6px rgba(200,170,110,.7));
+}
+[data-skin="lol"] .ringmid .num{color:#f0dca0;font-family:"Songti SC",serif;
+  text-shadow:0 0 22px rgba(200,170,110,.5)}
+[data-skin="lol"] .split.on,[data-skin="lol"] .g.on{
+  background:linear-gradient(160deg,#1b3f66,#0b2338);border-color:#c8aa6e;color:#f0dca0;
+}
+/* 海克斯卡：金色描边 + 双层内框 */
+[data-skin="lol"] .hexbox{
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(200,170,110,.16), transparent 60%),
+    linear-gradient(165deg,#132a46,#08111f);
+  border:1px solid #c8aa6e;
+  box-shadow:inset 0 0 0 1px rgba(240,220,160,.22), 0 0 26px rgba(200,170,110,.16);
+}
+[data-skin="lol"] .hexrank{color:#c8aa6e;letter-spacing:6px;font-weight:700}
+[data-skin="lol"] .hexname{
+  font-family:"Songti SC","Noto Serif SC",serif;letter-spacing:3px;
+  text-shadow:0 0 20px rgba(240,220,160,.55), 0 0 2px #000
+}
+
+/* ================= DDLC：粉点 + META ================= */
+[data-skin="doki"] #bgfixed{
+  background-color:#fff6f9;
+  background-image:
+    radial-gradient(circle at 18px 18px, rgba(255,176,205,.55) 6px, transparent 7px),
+    radial-gradient(circle at 0 0, rgba(255,214,232,.9), transparent 60%),
+    linear-gradient(170deg,#fffafc,#fdeaf2 100%);
+  background-size:52px 52px, auto, auto;
+}
+[data-skin="doki"] #bgfixed::after{
+  content:'JUST MONIKA';
+  position:absolute;right:-2vw;top:22vh;transform:rotate(90deg);transform-origin:right top;
+  font-family:"Helvetica Neue",Arial,sans-serif;font-size:13px;letter-spacing:8px;
+  color:rgba(224,87,140,.22);pointer-events:none;white-space:nowrap;
+}
+[data-skin="doki"] .card{
+  border:1.5px solid rgba(224,120,160,.4);border-radius:18px;
+  background:rgba(255,255,255,.82);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  box-shadow:0 8px 22px rgba(224,120,160,.14), 0 0 0 4px rgba(255,255,255,.55);
+}
+[data-skin="doki"] .btn{
+  background:linear-gradient(100deg,#ff9ec6,#e0578c);color:#fff;border-radius:999px;
+  font-weight:800;letter-spacing:1px;
+}
+[data-skin="doki"] .tabbar .t.on{color:#e0578c}
+[data-skin="doki"] .tabbar .t.on svg{animation:moniBounce .5s ease both}
+@keyframes moniBounce{0%{transform:scale(.8)}55%{transform:scale(1.18)}100%{transform:scale(1)}}
+[data-skin="doki"] .diarycard::after{
+  content:'only you';position:absolute;right:12px;top:10px;
+  font-size:9px;letter-spacing:2px;color:rgba(224,87,140,.5);
+  font-family:"Songti SC",serif;
+}
+[data-skin="doki"] .diarycard{position:relative}
+[data-skin="doki"] .ringmid .num{color:#e0578c;font-family:"Songti SC",serif}
+
 </style>
 </head>
 <body>
@@ -1959,7 +2064,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.22';
+const BUILD = '2026-10-21.23';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -4513,12 +4618,9 @@ const PERSONA_ACC = { a: '0,165,200', hex: '#00a5c8' };
 const SKINS = [
   { k: 'minimal', name: '极简', tag: '干净留白', force: null, acc: null },
   { k: 'persona', name: 'P3R', tag: '蓝白水色', force: 'light', acc: '0,165,200' },
-  { k: 'dreamcore', name: '梦核', tag: '朦胧乳白', force: 'light', acc: '196,150,200' },
-  { k: 'miku', name: '初音', tag: '青绿数码', force: 'light', acc: '57,197,187' },
   { k: 'doki', name: 'DDLC', tag: '粉色日记', force: 'light', acc: '240,120,170' },
   { k: 'lol', name: 'LOL', tag: '深蓝鎏金', force: 'dark', acc: '200,170,110' },
-  { k: 'zelda', name: '塞尔达', tag: '海拉鲁', force: 'light', acc: '94,124,58' },
-  { k: 'hp', name: '魔法', tag: '羊皮纸', force: 'dark', acc: '186,140,72' }
+  { k: 'hp', name: '复古', tag: '羊皮纸', force: 'dark', acc: '186,140,72' }
 ];
 
 function applyAppearance() {
