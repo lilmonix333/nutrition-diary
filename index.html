@@ -746,11 +746,19 @@ body{background-color:var(--bg)}
 }
 [data-skin="persona"] .card-title::before{display:none}
 
-/* 按下扫光 */
-@keyframes p3sweep{
-  0%{opacity:1;transform:translateX(-160%) skewX(-18deg)}
-  100%{opacity:0;transform:translateX(280%) skewX(-18deg)}
+/* 列表行按下：青色反白 */
+[data-skin="persona"] .f:active,
+[data-skin="persona"] .item:active,
+[data-skin="persona"] .rec:active{background:rgba(0,165,200,.14)}
+
+/* 页面切换：从左横向擦出（the-velvet 的 p3MenuReveal） */
+@keyframes p3reveal{
+  from{clip-path:inset(0 100% 0 0)}
+  to{clip-path:inset(0 0 0 0)}
 }
+[data-skin="persona"] .p3in{animation:p3reveal .42s cubic-bezier(.22,.9,.24,1) both}
+
+/* 按下：位移 1px 2px + 变暗提饱和（P3R 斜轴下沉） */
 [data-skin="persona"] .btn,
 [data-skin="persona"] .split,
 [data-skin="persona"] .qa,
@@ -759,44 +767,35 @@ body{background-color:var(--bg)}
 [data-skin="persona"] .mt,
 [data-skin="persona"] .g,
 [data-skin="persona"] .opt,
-[data-skin="persona"] .f,
-[data-skin="persona"] .item,
 [data-skin="persona"] .kwtile,
-[data-skin="persona"] .tabbar .t{position:relative;overflow:hidden}
-[data-skin="persona"] .btn::after,
-[data-skin="persona"] .split::after,
-[data-skin="persona"] .qa::after,
-[data-skin="persona"] .chip::after,
-[data-skin="persona"] .cat::after,
-[data-skin="persona"] .mt::after,
-[data-skin="persona"] .g::after,
-[data-skin="persona"] .opt::after,
-[data-skin="persona"] .kwtile::after{
-  content:'';position:absolute;top:-30%;left:0;width:45%;height:160%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.8),transparent);
-  transform:translateX(-160%) skewX(-18deg);opacity:0;pointer-events:none;
+[data-skin="persona"] [data-act]{
+  transition:translate .22s cubic-bezier(.16,1,.3,1),filter .22s cubic-bezier(.16,1,.3,1);
 }
-[data-skin="persona"] .btn:active::after,
-[data-skin="persona"] .split:active::after,
-[data-skin="persona"] .qa:active::after,
-[data-skin="persona"] .chip:active::after,
-[data-skin="persona"] .cat:active::after,
-[data-skin="persona"] .mt:active::after,
-[data-skin="persona"] .g:active::after,
-[data-skin="persona"] .opt:active::after,
-[data-skin="persona"] .kwtile:active::after{animation:p3sweep .38s ease-out}
-
-/* 列表行按下：青色反白 */
-[data-skin="persona"] .f:active,
-[data-skin="persona"] .item:active,
-[data-skin="persona"] .rec:active{background:rgba(0,165,200,.14)}
-
-/* 页面切换：斜切推入 */
-@keyframes p3in{
-  0%{opacity:0;transform:translateY(16px) skewY(.8deg)}
-  100%{opacity:1;transform:none}
+[data-skin="persona"] .btn:active,
+[data-skin="persona"] .split:active,
+[data-skin="persona"] .qa:active,
+[data-skin="persona"] .chip:active,
+[data-skin="persona"] .cat:active,
+[data-skin="persona"] .mt:active,
+[data-skin="persona"] .g:active,
+[data-skin="persona"] .opt:active,
+[data-skin="persona"] .kwtile:active{
+  translate:1px 2px;
+  filter:brightness(.93) saturate(1.15);
 }
-[data-skin="persona"] .p3in{animation:p3in .34s cubic-bezier(.22,.9,.24,1) both}
+
+/* 点击涟漪 */
+[data-skin="persona"] [data-act]{position:relative;overflow:hidden}
+@keyframes p3ripple{
+  0%{transform:scale(0);opacity:.45}
+  70%{transform:scale(1);opacity:.18}
+  100%{opacity:0}
+}
+[data-skin="persona"] .ripple{
+  position:absolute;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(0,165,200,.75),rgba(0,165,200,.15) 70%);
+  animation:p3ripple .5s ease-out forwards;
+}
 
 /* 底部导航：选中项青色斜块 */
 [data-skin="persona"] .tabbar .t{position:relative;overflow:hidden;z-index:0}
@@ -1245,7 +1244,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.6';
+const BUILD = '2026-10-21.7';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -4455,6 +4454,27 @@ function viewKnowledge() {
 
 
 let LAST_VIEW = '';
+
+/* ================= P3R 涟漪 ================= */
+if (typeof document !== 'undefined' && document.addEventListener) {
+  document.addEventListener('pointerdown', function (e) {
+    try {
+      if (document.documentElement.getAttribute('data-skin') !== 'persona') return;
+      const t = e.target && e.target.closest ? e.target.closest('[data-act]') : null;
+      if (!t || !t.getBoundingClientRect) return;
+      const r = t.getBoundingClientRect();
+      const d = Math.max(r.width, r.height) * 1.15 || 40;
+      const s = document.createElement('span');
+      s.className = 'ripple';
+      s.style.width = d + 'px';
+      s.style.height = d + 'px';
+      s.style.left = ((e.clientX || 0) - r.left - d / 2) + 'px';
+      s.style.top = ((e.clientY || 0) - r.top - d / 2) + 'px';
+      t.appendChild(s);
+      setTimeout(function () { if (s.remove) s.remove(); }, 520);
+    } catch (err) { }
+  });
+}
 
 /* ================= 训练日判定 ================= */
 function isTrainDay(dateStr) {
