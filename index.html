@@ -342,289 +342,208 @@ body{background-color:var(--bg)}
 .tsearch input{flex:1;height:42px;background:var(--el2);border-radius:12px;padding:0 12px;font-size:15px}
 .tsearch .gb{width:64px;height:42px;border-radius:12px;background:var(--solid);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .note{font-size:10.5px;color:var(--mute);line-height:1.75;text-align:center;padding:4px 16px 18px}
-/* ==================== PERSONA 风格（女神异闻录 3 风） ==================== */
+/* ==================== PERSONA 风格（P3R：白 · 黑 · 水色） ==================== */
 [data-skin="persona"]{
-  --acc:0,229,255;
-  --green:rgb(0,229,255);
-  --green2:rgb(120,240,255);
-  --soft:rgba(0,229,255,.13);
-  --bg:#04070c;
-  --card-rgb:8,13,22;
-  --el:rgba(0,229,255,.07);
-  --el2:rgba(0,229,255,.11);
-  --line:rgba(0,229,255,.20);
-  --track:rgba(0,229,255,.16);
-  --ink:#e8f8ff;
-  --ink2:#9dc2d4;
-  --mute:#5f89a0;
-  --mute2:#3f5b6d;
-  --solid:#0b1a24;
-  --tabbar:rgba(4,7,12,.95);
-  --warn-bg:#12202a;
-  --warn-ink:#7ee8ff;
+  --acc:0,165,200;
+  --green:rgb(0,165,200);
+  --green2:rgb(86,214,236);
+  --soft:rgba(0,165,200,.16);
+  --bg:#e8f3f8;
+  --card-rgb:255,255,255;
+  --el:#dceef6;
+  --el2:#e9f4f9;
+  --line:#0a0e14;
+  --track:#cfe4ee;
+  --ink:#0a0e14;
+  --ink2:#31424e;
+  --mute:#7b8f9c;
+  --mute2:#a8b9c4;
+  --solid:#0a0e14;
+  --tabbar:rgba(255,255,255,.98);
+  --warn-bg:#fff3c4;
+  --warn-ink:#7a5a00;
 }
-/* 背景：斜条纹 + 蓝光 */
+/* 背景：水色斜条纹 + 两团光 */
 [data-skin="persona"] #bgfixed{
-  background-color:#04070c;
+  background-color:#e8f3f8;
   background-image:
-    repeating-linear-gradient(118deg, rgba(0,229,255,.05) 0 2px, transparent 2px 26px),
-    radial-gradient(130% 90% at 18% -10%, rgba(0,229,255,.16), transparent 58%),
-    radial-gradient(110% 80% at 105% 105%, rgba(0,110,190,.22), transparent 60%),
-    linear-gradient(180deg,#04070c 0%,#050b13 55%,#03060a 100%);
+    repeating-linear-gradient(115deg, rgba(0,165,200,.10) 0 12px, transparent 12px 34px),
+    radial-gradient(circle at 10% 6%, rgba(0,165,200,.18), transparent 42%),
+    radial-gradient(circle at 94% 96%, rgba(0,165,200,.14), transparent 42%),
+    none;
 }
-/* 卡片：切角 + 青色发丝边 */
+/* 卡片：白底 + 2px 黑边 + 硬投影 + 左上角水色三角 */
 [data-skin="persona"] .card,
 [data-skin="persona"] .sumcard,
 [data-skin="persona"] .flist{
+  border:2px solid #0a0e14;
   border-radius:0;
+  background:rgba(var(--card-rgb),var(--cardA));
+  box-shadow:5px 5px 0 #0a0e14;
   position:relative;
-  clip-path:polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
-  box-shadow:inset 0 0 0 1px rgba(0,229,255,.22), 0 12px 34px rgba(0,0,0,.55);
 }
-[data-skin="persona"] .card::after{
-  content:'';position:absolute;right:0;top:0;width:18px;height:18px;
-  background:rgba(0,229,255,.55);clip-path:polygon(100% 0,100% 100%,0 0);pointer-events:none;
+[data-skin="persona"] .card::before{
+  content:'';position:absolute;left:-2px;top:-2px;width:0;height:0;
+  border-left:20px solid rgb(0,165,200);
+  border-bottom:20px solid transparent;
+  pointer-events:none;
 }
-/* 粗斜体数字 + 辉光 */
+/* 数字：黑体斜 + 水色偏移硬阴影 */
 [data-skin="persona"] .ringmid .num,
 [data-skin="persona"] .kbig b,
 [data-skin="persona"] .grid2 .v,
 [data-skin="persona"] .three .a b,
 [data-skin="persona"] .coinbar b,
-[data-skin="persona"] .kb-num,
 [data-skin="persona"] .w-num,
-[data-skin="persona"] .gres .big{
+[data-skin="persona"] .gres .big,
+[data-skin="persona"] .ring-num{
   font-style:italic;font-weight:900;letter-spacing:-1.5px;
-  text-shadow:0 0 16px rgba(0,229,255,.55), 0 0 44px rgba(0,229,255,.22);
+  color:#0a0e14;
+  text-shadow:3px 3px 0 rgba(0,165,200,.9);
 }
+[data-skin="persona"] .ringmid .num.over{color:#c8102e;text-shadow:3px 3px 0 rgba(200,16,46,.55)}
+/* 标题：粗斜体 + 水色高亮条 */
 [data-skin="persona"] .datebar .d1,
 [data-skin="persona"] .card-title,
 [data-skin="persona"] .card > b,
 [data-skin="persona"] .sheet h3,
 [data-skin="persona"] .ptitle .tt,
 [data-skin="persona"] .grpbar b{
-  font-style:italic;letter-spacing:.5px;
+  font-style:italic;font-weight:900;letter-spacing:.3px;color:#0a0e14;
 }
-/* 主按钮：平行四边形 */
+[data-skin="persona"] .datebar .d1{
+  position:relative;display:inline-block;z-index:0;
+}
+[data-skin="persona"] .datebar .d1::before{
+  content:'';position:absolute;left:-10px;right:-10px;bottom:1px;height:12px;
+  background:rgba(0,165,200,.55);transform:skewX(-14deg);z-index:-1;
+}
+/* 主按钮：水色实底 + 黑边 + 硬投影 */
 [data-skin="persona"] .btn{
-  border-radius:0;font-style:italic;font-weight:900;letter-spacing:1.5px;
-  clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);
-  background:linear-gradient(100deg,#00e5ff 0%,#0090c8 100%);
-  color:#04070c;
-  box-shadow:0 0 26px rgba(0,229,255,.45);
+  border:2px solid #0a0e14;border-radius:0;
+  background:rgb(0,165,200);color:#fff;
+  font-weight:900;font-style:italic;letter-spacing:1.5px;
+  box-shadow:4px 4px 0 #0a0e14;
 }
-[data-skin="persona"] .btn.gray{
-  background:rgba(0,229,255,.10);color:var(--ink);
-  box-shadow:inset 0 0 0 1px rgba(0,229,255,.3);
-}
-/* 常见容器：去掉圆角 */
+[data-skin="persona"] .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #0a0e14}
+[data-skin="persona"] .btn.gray{background:#fff;color:#0a0e14}
+/* 胶囊 / 标签 / 分类：平行四边形 */
+[data-skin="persona"] .pill,
 [data-skin="persona"] .chip,
 [data-skin="persona"] .cat,
 [data-skin="persona"] .mealtabs .mt,
 [data-skin="persona"] .quick,
 [data-skin="persona"] .ptag,
-[data-skin="persona"] .kwtile,
-[data-skin="persona"] .opt,
-[data-skin="persona"] .goals .g,
-[data-skin="persona"] .qw,
 [data-skin="persona"] .kbchip,
-[data-skin="persona"] .split,
-[data-skin="persona"] .qa,
-[data-skin="persona"] .themebar,
+[data-skin="persona"] .awk,
 [data-skin="persona"] .seg3,
 [data-skin="persona"] .seg,
-[data-skin="persona"] .seg2{border-radius:0}
+[data-skin="persona"] .seg2,
+[data-skin="persona"] .themebar{
+  border-radius:0;
+  clip-path:polygon(9px 0,100% 0,calc(100% - 9px) 100%,0 100%);
+}
+[data-skin="persona"] .pill,
 [data-skin="persona"] .chip.on,
 [data-skin="persona"] .cat.on,
 [data-skin="persona"] .mealtabs .mt.on,
-[data-skin="persona"] .kwtile.on,
 [data-skin="persona"] .seg3 .s.on,
 [data-skin="persona"] .seg .s.on,
 [data-skin="persona"] .seg2 .s.on,
-[data-skin="persona"] .themebar .s.on,
-[data-skin="persona"] .split.on{
-  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
-  background:linear-gradient(100deg,rgba(0,229,255,.28),rgba(0,229,255,.06));
-  color:#bff6ff;
+[data-skin="persona"] .themebar .s.on{
+  background:rgb(0,165,200);color:#fff;
 }
-/* 进度条：方角 + 发光 */
-[data-skin="persona"] .bar,
-[data-skin="persona"] .bar > i,
-[data-skin="persona"] .progbar,
-[data-skin="persona"] .progbar i,
-[data-skin="persona"] .mixbar,
-[data-skin="persona"] .mixbar i{border-radius:0}
-[data-skin="persona"] .bar > i,
-[data-skin="persona"] .progbar i{box-shadow:0 0 12px rgba(0,229,255,.55)}
-/* 底部导航 */
-[data-skin="persona"] .tabbar{border-top:1px solid rgba(0,229,255,.35)}
-[data-skin="persona"] .tabbar .t.on{
-  background:linear-gradient(180deg,rgba(0,229,255,.20),transparent 80%);
-  color:#7ee8ff;text-shadow:0 0 12px rgba(0,229,255,.7);
-}
-/* 悬浮「＋」：菱形 + 外发光 */
-[data-skin="persona"] .fab{
-  border-radius:0;
-  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
-  background:linear-gradient(135deg,#7ef4ff 0%,#00b4e6 55%,#0067a8 100%);
-  box-shadow:none;
-  filter:drop-shadow(0 0 14px rgba(0,229,255,.75));
-  font-weight:900;
-}
-/* 输入框、弹层 */
-[data-skin="persona"] .search,
-[data-skin="persona"] .ginput,
-[data-skin="persona"] .sheet,
-[data-skin="persona"] .quickacts .qa,
-[data-skin="persona"] .wrow2 input,
-[data-skin="persona"] .wrow2 .sb,
-[data-skin="persona"] .tsearch input,
-[data-skin="persona"] .tsearch .gb,
+[data-skin="persona"] .chip.on,
+[data-skin="persona"] .cat.on,
+[data-skin="persona"] .mealtabs .mt.on,
+[data-skin="persona"] .seg3 .s.on,
+[data-skin="persona"] .seg .s.on,
+[data-skin="persona"] .seg2 .s.on,
+[data-skin="persona"] .themebar .s.on{font-weight:900}
+/* 卡片内的小方块：黑底白字 / 白底黑边 */
 [data-skin="persona"] .addbtn,
 [data-skin="persona"] .cup,
 [data-skin="persona"] .step,
-[data-skin="persona"] .rec .ico{border-radius:0}
+[data-skin="persona"] .rec .ico,
+[data-skin="persona"] .kwtile .ki,
+[data-skin="persona"] .opt,
+[data-skin="persona"] .goals .g,
+[data-skin="persona"] .kwtile,
+[data-skin="persona"] .qa,
+[data-skin="persona"] .split{
+  border-radius:0;border:2px solid #0a0e14;
+  background:#fff;box-shadow:3px 3px 0 #0a0e14;
+}
+[data-skin="persona"] .addbtn,
+[data-skin="persona"] .rec .ico{background:#0a0e14;color:#fff;box-shadow:none;border:none}
+[data-skin="persona"] .kwtile.on,
+[data-skin="persona"] .opt.on,
+[data-skin="persona"] .goals .g.on,
+[data-skin="persona"] .split.on{
+  background:rgb(0,165,200);border-color:#0a0e14;color:#fff;
+}
+[data-skin="persona"] .kwtile.on .kn,
+[data-skin="persona"] .kwtile.on .kc{color:#fff}
+[data-skin="persona"] .kwtile.on .ki{background:#fff;color:#0a0e14}
+/* 进度条：黑边 + 水色填充 */
+[data-skin="persona"] .bar,
+[data-skin="persona"] .progbar,
+[data-skin="persona"] .mixbar,
+[data-skin="persona"] .bar > i,
+[data-skin="persona"] .progbar i,
+[data-skin="persona"] .mixbar i{border-radius:0}
+[data-skin="persona"] .bar,
+[data-skin="persona"] .progbar{background:#fff;border:2px solid #0a0e14;height:14px}
+[data-skin="persona"] .bar > i,
+[data-skin="persona"] .progbar i{background:rgb(0,165,200) !important}
+/* 底部导航：白底 + 黑顶线，选中水色块 */
+[data-skin="persona"] .tabbar{border-top:3px solid #0a0e14;background:#fff}
+[data-skin="persona"] .tabbar .t.on{color:#0a0e14;font-weight:900;font-style:italic}
+[data-skin="persona"] .tabbar .t.on::before{
+  content:'';position:absolute;left:50%;top:2px;transform:translateX(-50%) skewX(-12deg);
+  width:46px;height:26px;background:rgba(0,165,200,.35);z-index:-1;
+}
+[data-skin="persona"] .tabbar .t{position:relative;z-index:0}
+/* 悬浮「＋」：菱形 + 黑硬投影 */
+[data-skin="persona"] .fab{
+  border-radius:0;
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+  background:rgb(0,165,200);color:#fff;
+  box-shadow:none;
+  filter:drop-shadow(4px 4px 0 #0a0e14);
+  font-weight:900;
+}
+/* 输入 / 弹层 / 搜索 */
+[data-skin="persona"] .search,
+[data-skin="persona"] .ginput,
+[data-skin="persona"] .wrow2 input,
+[data-skin="persona"] .tsearch input,
+[data-skin="persona"] .tsearch .gb,
+[data-skin="persona"] .wrow2 .sb,
+[data-skin="persona"] .back,
+[data-skin="persona"] .datebar .nav{
+  border-radius:0;border:2px solid #0a0e14;background:#fff;box-shadow:3px 3px 0 #0a0e14;
+}
+[data-skin="persona"] .tsearch .gb,
+[data-skin="persona"] .wrow2 .sb{background:#0a0e14;color:#fff;box-shadow:3px 3px 0 rgba(0,165,200,.9)}
 [data-skin="persona"] .sheet{
-  clip-path:polygon(0 18px,18px 0,100% 0,100% 100%,0 100%);
-  box-shadow:inset 0 0 0 1px rgba(0,229,255,.25);
+  border-radius:0;border-top:4px solid #0a0e14;
+  background:#fff;box-shadow:0 -6px 0 rgba(0,165,200,.25);
 }
-[data-skin="persona"] .rec .ico{clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
-[data-skin="persona"] .fab{color:#04070c}
-/* 日期条：青色斜杠装饰 */
-[data-skin="persona"] .datebar .d1::before{
-  content:'';display:inline-block;width:6px;height:16px;margin-right:8px;
-  background:var(--green);transform:skewX(-18deg);vertical-align:-2px;
-  box-shadow:0 0 12px rgba(0,229,255,.8);
-}
-/* 目标胶囊 */
-[data-skin="persona"] .pill{
-  border-radius:0;clip-path:polygon(9px 0,100% 0,calc(100% - 9px) 100%,0 100%);
-  background:rgba(0,229,255,.16);color:#8ff0ff;
-  box-shadow:inset 0 0 0 1px rgba(0,229,255,.3);
-}
-
-/* 分段 tab */
-.seg3{display:flex;background:var(--el);border-radius:12px;padding:3px;margin-bottom:12px}
-.seg3 .s{flex:1;height:34px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:13px;color:var(--mute)}
-.seg3 .s.on{background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 1px 6px rgba(0,0,0,.1)}
-
-/* 代币条 */
-.coinbar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(var(--acc),.14),rgba(var(--acc),.05));border-radius:14px;padding:12px 14px;margin-bottom:12px}
-.coinbar .cb{display:flex;align-items:baseline;gap:5px}
-.coinbar b{font-size:22px;font-weight:800;color:var(--green);line-height:1}
-.coinbar .cl{font-size:11px;color:var(--mute)}
-.coinbar .cw{font-size:11px;color:var(--ink2);text-align:right;line-height:1.5}
-
-/* 分化选择 */
-.splits{display:flex;gap:8px;margin-bottom:6px}
-.split{flex:1;padding:10px;border-radius:12px;background:var(--el2);text-align:center;border:1.5px solid transparent}
-.split.on{background:var(--soft);border-color:rgba(var(--acc),.4)}
-.split b{display:block;font-size:14px}
-.split span{display:block;font-size:10px;color:var(--mute);margin-top:2px}
-
-/* 计划卡 */
-.plantags{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 12px}
-.ptag{display:flex;align-items:center;gap:5px;padding:7px 11px;border-radius:99px;background:rgba(var(--acc),.12);color:var(--green);font-size:12.5px;font-weight:600}
-.ptag .x{font-size:14px;opacity:.55;padding:0 1px}
-.ptag.add{background:var(--el2);color:var(--mute);font-weight:400}
-.goalbox{background:var(--el2);border-radius:12px;padding:11px 13px;margin-bottom:12px}
-.goalbox .gt{font-size:13px;font-weight:700;margin-bottom:6px}
-.goalbox li{font-size:11.5px;color:var(--ink2);line-height:1.85;margin-left:14px}
-.progbar{height:8px;border-radius:8px;background:var(--el);overflow:hidden;margin:8px 0 4px}
-.progbar i{display:block;height:100%;background:var(--green);border-radius:8px;transition:width .3s}
-
-/* 推荐动作 */
-.exlist{margin-bottom:12px;border-top:1px solid var(--line);padding-top:10px}
-.exgrp{margin-bottom:9px}
-.exgrp:last-child{margin-bottom:0}
-.exgh{font-size:11px;color:var(--green);font-weight:700;margin-bottom:4px}
-.ex{display:flex;align-items:center;justify-content:space-between;padding:3px 0;font-size:12.5px}
-.ex .en{color:var(--ink2)}
-.ex .es{color:var(--mute);font-size:11px;font-variant-numeric:tabular-nums}
-.dayrow{padding:10px 0;border-bottom:1px solid var(--line)}
-.dayrow:last-child{border-bottom:none;padding-bottom:0}
-.dayrow.on{background:rgba(var(--acc),.06);margin:0 -10px;padding-left:10px;padding-right:10px;border-radius:10px}
-.dh{display:flex;align-items:center;gap:7px}
-.dn{font-size:10px;font-weight:800;color:var(--mute);background:var(--el2);border-radius:5px;padding:1px 5px}
-.dname{font-size:13.5px;font-weight:600}
-.dtag{font-size:9.5px;color:var(--green);background:rgba(var(--acc),.14);border-radius:4px;padding:1px 5px;margin-left:auto}
-.dg{display:flex;gap:5px;flex-wrap:wrap;margin:5px 0 0}
-.dg span{font-size:10.5px;color:var(--ink2);background:var(--el2);border-radius:5px;padding:2px 7px}
-.dg .rest{color:var(--mute)}
-.dex{font-size:10.5px;color:var(--mute);margin-top:5px;line-height:1.6}
-
-/* 游戏 */
-.gamewrap{background:var(--card);border-radius:16px;padding:14px;margin-bottom:12px;position:relative}
-.gamehead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.gamehead b{font-size:14px}
-.gclock{font-size:12px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums}
-.gstage{position:relative;width:100%;border-radius:12px;overflow:hidden;background:var(--el2)}
-#pongcv{display:block;width:100%;height:300px;touch-action:none}
-.moles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.mole{aspect-ratio:1/1;border-radius:12px;background:var(--el);display:flex;align-items:center;justify-content:center;font-size:26px;user-select:none}
-.mole.up{background:rgba(var(--acc),.22)}
-.quiz .qt{font-size:15px;line-height:1.7;margin:6px 0 12px;font-weight:600}
-.quiz .qo{padding:11px 13px;border-radius:11px;background:var(--el2);font-size:14px;margin-bottom:8px;border:1.5px solid transparent}
-.quiz .qo:active{background:var(--soft)}
-.quiz .qo.ok{background:rgba(16,185,129,.18);border-color:#10b981}
-.quiz .qo.bad{background:rgba(239,68,68,.16);border-color:var(--red)}
-.gres{text-align:center;padding:16px 0}
-.gres .big{font-size:34px;font-weight:800;color:var(--green);line-height:1}
-.gres .sub{font-size:12px;color:var(--mute);margin-top:6px}
-.masked{text-align:center;font-size:26px;font-weight:800;letter-spacing:3px;line-height:1.5;word-break:break-all}
-.masked .mk{color:var(--ink)}
-.masked .bl{color:var(--green);border-bottom:2px solid rgba(var(--acc),.45);padding:0 3px;margin:0 1px}
-.scratchgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
-.scratchcell{aspect-ratio:1/1;border-radius:8px;background:var(--el);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--mute);user-select:none}
-.scratchcell.open{background:rgba(var(--acc),.2);color:var(--green)}
-.scratchcell.blank{background:var(--el2);color:var(--mute2)}
-.gtag{font-size:9.5px;color:var(--mute);margin-bottom:2px}
-.mixbar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:8px 0 6px}
-.mixbar i{display:block;height:100%}
-.mixlg{display:flex;flex-wrap:wrap;gap:10px;font-size:10.5px;color:var(--mute)}
-.mixlg b{font-weight:600;color:var(--ink2)}
-.topfood{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:12.5px;border-bottom:1px solid var(--line)}
-.topfood:last-child{border-bottom:none}
-.topfood .rk{width:18px;height:18px;border-radius:5px;background:var(--el2);color:var(--mute);font-size:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
-.topfood .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.topfood .ct{color:var(--mute);font-size:11px;flex:0 0 auto}
-.streak{display:flex;align-items:baseline;gap:6px}
-.streak b{font-size:26px;font-weight:800;color:var(--green);line-height:1}
-
-/* 商店 */
-.shopitem{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
-.shopitem:last-child{border-bottom:none}
-.shopitem .si{flex:1;min-width:0}
-.shopitem .sn{font-size:13.5px;font-weight:600}
-.shopitem .sd{font-size:10.5px;color:var(--mute);margin-top:2px}
-.shopitem .buy{padding:6px 12px;border-radius:99px;background:var(--soft);color:var(--green);font-size:12px;font-weight:700;flex:0 0 auto}
-.shopitem .buy.full{background:var(--el2);color:var(--mute)}
-.shopitem .buy:active{opacity:.7}
-
-
-/* 体重迷你趋势 */
-.spark{width:100%;height:48px;display:block;margin-top:8px}
-
-/* 添加页快捷操作 */
-.quickacts{display:flex;gap:8px;margin-bottom:10px}
-.qa{flex:1;height:58px;background:var(--card);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;color:var(--ink2);border:1.5px solid transparent}
-.qa span{font-size:17px;line-height:1}
-.qa:active{background:var(--soft);border-color:rgba(var(--acc),.3)}
-
-
-
-/* 小知识 */
-.kbchips{display:flex;gap:6px;margin:8px 0 10px;overflow-x:auto;scrollbar-width:none}
-.kbchips::-webkit-scrollbar{display:none}
-.kbchip{flex:0 0 auto;padding:5px 12px;border-radius:99px;background:var(--el2);color:var(--mute);font-size:12px}
-.kbchip.on{background:var(--soft);color:var(--green);font-weight:700}
-.kbi{border-bottom:1px solid var(--line);padding:11px 0}
-.kbi:last-child{border-bottom:none;padding-bottom:0}
-.kbh{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;line-height:1.4}
-.kbh .kc2{font-size:9.5px;padding:1px 5px;border-radius:4px;background:var(--el2);color:var(--mute);font-weight:400;flex:0 0 auto}
-.kbh .karr{margin-left:auto;color:var(--mute2);font-size:15px;flex:0 0 auto;transition:transform .15s}
-.kbh.open .karr{transform:rotate(90deg)}
-.kbb{margin:7px 0 0;font-size:12.5px;line-height:1.8;color:var(--ink2)}
+[data-skin="persona"] .sheet .x{color:#0a0e14}
+/* 列表分隔线：黑色细线 */
+[data-skin="persona"] .item,
+[data-skin="persona"] .f,
+[data-skin="persona"] .rec,
+[data-skin="persona"] .rbtn,
+[data-skin="persona"] .field,
+[data-skin="persona"] .kbi,
+[data-skin="persona"] .dayrow,
+[data-skin="persona"] .topfood{border-color:rgba(10,14,20,.35)}
+/* 时钟 / 分数等小数字 */
+[data-skin="persona"] .gclock{color:#0a0e14;font-weight:900;font-style:italic}
+[data-skin="persona"] .tag,
+[data-skin="persona"] .tag.q{border-radius:0;background:rgba(0,165,200,.18);color:#0a0e14;font-weight:700}
 </style>
 </head>
 <body>
@@ -1047,7 +966,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.3';
+const BUILD = '2026-10-21.4';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -3083,7 +3002,9 @@ function viewToday() {
   const remain = Math.abs(t.kcal - in_.kcal);
   const ratio = t.kcal > 0 ? Math.min(1, in_.kcal / t.kcal) : 0;
   const C = 2 * Math.PI * 46;
-  const accRgb = (ACCENTS[(store.data.settings || {}).accent] || ACCENTS.green).a;
+  const accRgb = ((store.data.settings || {}).skin === 'persona')
+    ? PERSONA_ACC.a
+    : (ACCENTS[(store.data.settings || {}).accent] || ACCENTS.green).a;
   const ringFrom = over ? 'rgb(252,165,165)' : lighten(accRgb, 0.34);
   const ringTo = over ? 'rgb(220,38,38)' : 'rgb(' + accRgb + ')';
 
@@ -3576,7 +3497,7 @@ function lighten(rgb, p) {
   }).join(',') + ')';
 }
 
-const PERSONA_ACC = { a: '0,229,255', hex: '#00e5ff' };
+const PERSONA_ACC = { a: '0,165,200', hex: '#00a5c8' };
 
 function applyAppearance() {
   const s = store.data.settings || DEFAULT_SETTINGS;
@@ -3584,8 +3505,8 @@ function applyAppearance() {
   const root = document.documentElement;
   root.setAttribute('data-skin', skin);
 
-  // PERSONA 风格固定深色
-  const theme = skin === 'persona' ? 'dark' : resolvedTheme();
+  // PERSONA 风格固定浅色（P3R 是白底 + 黑边 + 水色）
+  const theme = skin === 'persona' ? 'light' : resolvedTheme();
   root.setAttribute('data-theme', theme);
 
   const acc = skin === 'persona' ? PERSONA_ACC : (ACCENTS[s.accent] || ACCENTS.green);
@@ -3626,7 +3547,7 @@ function viewAppearanceCard() {
   const skinBlock =
     '<div class="xs mute" style="margin-bottom:8px">界面风格</div>' +
     '<div class="goals" style="margin-bottom:14px">' +
-    [['minimal', '极简', '干净留白'], ['persona', 'PERSONA', '荧光青 · 斜切']].map(function (x) {
+    [['minimal', '极简', '干净留白'], ['persona', 'PERSONA', '白黑水色 · 硬边']].map(function (x) {
       return '<div class="g ' + (skin === x[0] ? 'on' : '') + '" data-act="setskin" data-k="' + x[0] + '">' +
         '<div class="n">' + x[1] + '</div><div class="d">' + x[2] + '</div></div>';
     }).join('') + '</div>';
@@ -3644,7 +3565,7 @@ function viewAppearanceCard() {
           '" data-act="alpha" data-v="' + x[0] + '">' + x[1] + '</div>';
       }).join('') + '</div>' +
       '<div class="xs mute" style="margin-top:12px;line-height:1.6">' +
-      'PERSONA 风格固定深色 + 荧光青，主题与皮肤已锁定。<br>切回「极简」可自由调色。</div>' +
+      'PERSONA 风格固定「白 + 黑 + 水色」，主题与皮肤已锁定。<br>切回「极简」可自由调色。</div>' +
       '</div>';
   }
 
