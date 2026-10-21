@@ -1166,6 +1166,62 @@ body{background-color:var(--bg)}
 [data-skin="persona"] .item,
 [data-skin="persona"] .rec{transition:background .18s ease,transform .22s ease}
 
+
+/* ================= 环的质感 ================= */
+[data-skin="persona"] .ringbox svg circle[stroke^="url"]{filter:drop-shadow(0 0 7px rgba(0,165,200,.55))}
+[data-skin="persona"] .ringbox{position:relative}
+[data-skin="persona"] .ringbox::after{
+  content:'';position:absolute;inset:13%;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg, rgba(0,165,200,.28) 0deg 1.1deg, transparent 1.1deg 6deg);
+  -webkit-mask:radial-gradient(circle, transparent 61%, #000 62%, #000 69%, transparent 70%);
+  mask:radial-gradient(circle, transparent 61%, #000 62%, #000 69%, transparent 70%);
+  pointer-events:none;animation:ringSpin 46s linear infinite;
+}
+@keyframes ringSpin{to{transform:rotate(360deg)}}
+
+/* ================= 主题透明度（卡片融入背景） ================= */
+[data-skin="persona"]{--cardA:.72}
+[data-skin="persona"] .card,
+[data-skin="persona"] .sumcard,
+[data-skin="persona"] .flist,
+[data-skin="persona"] .coinbar{
+  -webkit-backdrop-filter:blur(14px) saturate(1.35);
+  backdrop-filter:blur(14px) saturate(1.35);
+  background:rgba(255,255,255,.80);
+  box-shadow:0 3px 18px rgba(10,40,60,.08), inset 0 1px 0 rgba(255,255,255,.75);
+}
+[data-skin="persona"] .statgrid{background:rgba(255,255,255,.66)}
+
+/* ================= tab 滑动块 ================= */
+.tabbar{position:relative;overflow:hidden}
+.tkslide{
+  position:absolute;top:0;height:100%;z-index:0;pointer-events:none;
+  display:flex;align-items:center;justify-content:center;
+  transition:left .38s cubic-bezier(.3,.9,.2,1);
+}
+.tkslide::after{
+  content:'';width:54px;height:100%;background:rgb(0,165,200);
+  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
+}
+[data-skin="persona"] .tabbar .t.on{background:none;color:#fff}
+[data-skin="persona"] .tabbar .t.on::before{display:none}
+
+/* ================= 每日塔罗 ================= */
+.tarotbody{position:relative;height:132px;transform-style:preserve-3d;
+  transition:transform .62s cubic-bezier(.3,.8,.2,1);cursor:pointer}
+.tarotbody.open{transform:rotateY(180deg)}
+.tarotback,.tarotfront{position:absolute;inset:0;backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:14px}
+.tarotback{background:linear-gradient(150deg,#0b4a8f,#1c8fd0 60%,#7fd8f0);color:#fff}
+.tarotstar{font-size:30px;line-height:1;margin-bottom:6px}
+.tarotfront{transform:rotateY(180deg);background:linear-gradient(160deg,#ffffff,#e6f6fd);
+  border:1.5px solid rgba(0,165,200,.45);color:#0a0e14}
+.tarotnum{font-size:11px;font-weight:800;letter-spacing:2px;color:rgb(0,165,200)}
+.tarotname{font-size:19px;font-weight:900;font-style:italic;letter-spacing:-.5px}
+.taroten{font-size:9px;letter-spacing:2.5px;color:#6c8090}
+.tarotmsg{font-size:11px;color:#2c3d49;margin-top:5px;padding:0 14px;text-align:center;line-height:1.6}
+
 </style>
 </head>
 <body>
@@ -1588,7 +1644,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.13';
+const BUILD = '2026-10-21.14';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -3678,7 +3734,7 @@ function viewToday() {
     '<div class="herohead"><span class="pill" data-act="toggleTrainDay">' +
     t.goalName + ' · ' + (t.trainDay ? '训练日' : '休息日') + ' ' + t.kcal + ' kcal ↺</span>' +
     '<span class="link" data-act="tab" data-v="profile">调整目标</span></div>' +
-    '<div class="ringbox"><svg viewBox="0 0 100 100">' +
+    '<div class="ringbox"><svg viewBox="-4 -4 108 108">' +
     '<defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">' +
     '<stop offset="0" stop-color="' + ringFrom + '"/>' +
     '<stop offset="1" stop-color="' + ringTo + '"/></linearGradient></defs>' +
@@ -4822,6 +4878,55 @@ function viewKnowledge() {
 
 
 let LAST_VIEW = '';
+let LAST_TAB = 0;
+
+/* ================= 每日塔罗 ================= */
+const TAROT = [
+  [0, '愚者', 'THE FOOL', '放下计划，允许自己笨拙地出发一次'],
+  [1, '魔术师', 'THE MAGICIAN', '手上的工具已经够了，缺的只是开始'],
+  [2, '女祭司', 'THE HIGH PRIESTESS', '今天少说，多听身体的信号'],
+  [3, '皇后', 'THE EMPRESS', '好好吃饭是今天最重要的事'],
+  [4, '皇帝', 'THE EMPEROR', '把规则定下来，别靠意志力硬撑'],
+  [5, '教皇', 'THE HIEROPHANT', '跟着成熟的方案练，别自己发明'],
+  [6, '恋人', 'THE LOVERS', '选一个，然后不回头地做下去'],
+  [7, '战车', 'THE CHARIOT', '冲劲在，配上节奏就能推很远'],
+  [8, '力量', 'STRENGTH', '不是压住欲望，是驯服它'],
+  [9, '隐者', 'THE HERMIT', '一个人练也很好，安静自有力量'],
+  [10, '命运之轮', 'WHEEL OF FORTUNE', '平台期会过去，别在这周放弃'],
+  [11, '正义', 'JUSTICE', '吃进去的和练出来的，账迟早要平'],
+  [12, '倒吊人', 'THE HANGED MAN', '停一天不算退步，是换角度'],
+  [13, '死神', 'DEATH', '旧的习惯该结束了'],
+  [14, '节制', 'TEMPERANCE', '别走极端，七分饱刚好'],
+  [15, '恶魔', 'THE DEVIL', '看清今天最想偷懒的借口'],
+  [16, '高塔', 'THE TOWER', '打乱一次日程，未必是坏事'],
+  [17, '星星', 'THE STAR', '慢一点，但方向对'],
+  [18, '月亮', 'THE MOON', '情绪起伏大，别在晚上做决定'],
+  [19, '太阳', 'THE SUN', '今天状态好，加一组'],
+  [20, '审判', 'JUDGEMENT', '回头看看，你比上个月强了'],
+  [21, '世界', 'THE WORLD', '一个循环走完了，奖励自己']
+];
+
+function dailyTarot(dateStr) {
+  let h = 0;
+  for (let i = 0; i < dateStr.length; i++) h = (h * 31 + dateStr.charCodeAt(i)) % 9973;
+  return TAROT[h % TAROT.length];
+}
+
+function viewTarot() {
+  const d = todayStr();
+  const card = dailyTarot(d);
+  const open = S.tarotOpen === d;
+  return '<div class="card tarotcard"><div class="row between" style="margin-bottom:2px">' +
+    '<b style="font-size:15px">今日塔罗</b><span class="xs mute">' + d + '</span></div>' +
+    '<div class="tarotbody' + (open ? ' open' : '') + '" data-act="flipTarot">' +
+    '<div class="tarotback"><span class="tarotstar">&#10022;</span><span class="xs">轻触翻开</span></div>' +
+    '<div class="tarotfront">' +
+    '<div class="tarotnum">' + card[0] + '</div>' +
+    '<div class="tarotname">' + card[1] + '</div>' +
+    '<div class="taroten">' + card[2] + '</div>' +
+    '<div class="tarotmsg">' + card[3] + '</div>' +
+    '</div></div></div>';
+}
 
 /* ================= 数字滚动 ================= */
 function countUp(el, dur) {
@@ -5432,7 +5537,11 @@ function renderTabbar() {
     { v: 'report', name: '报告', icon: 'report' },
     { v: 'profile', name: '我的', icon: 'me' }
   ];
-  $('tabbar').innerHTML = items.map(function (it) {
+  const cur = items.map(function (it) { return it.v; }).indexOf(S.view);
+  if (cur >= 0) LAST_TAB = cur;
+  $('tabbar').innerHTML =
+    '<i class="tkslide" style="width:' + (100 / items.length) + '%;left:' + (LAST_TAB * (100 / items.length)) + '%"></i>' +
+    items.map(function (it) {
     return '<div class="t ' + (S.view === it.v ? 'on' : '') + '" data-act="tab" data-v="' + it.v + '">' +
       ICON[it.icon] + '<span>' + it.name + '</span></div>';
   }).join('');
@@ -5455,6 +5564,18 @@ function render() {
   else if (S.view === 'shop') html = viewShop();
   else html = viewProfile();
 
+  if (S.view === 'today' && html) {
+    try {
+      const card = viewTarot();
+      const k = html.indexOf('class="mealhead"');
+      if (k > -1) {
+        const cut = html.lastIndexOf('<div class="card"', k);
+        html = cut > -1 ? (html.slice(0, cut) + card + html.slice(cut)) : (html + card);
+      } else {
+        html = html + card;
+      }
+    } catch (e) { }
+  }
   $('root').innerHTML = html;
   try { document.body.setAttribute('data-view', S.view); } catch (e) { }
   if (S.view !== LAST_VIEW) {
@@ -5729,6 +5850,10 @@ document.addEventListener('click', function (e) {
       store.data.settings = store.data.settings || Object.assign({}, DEFAULT_SETTINGS);
       store.data.settings.accent = el.dataset.k;
       store.save(); applyAppearance(); renderKeepScroll(); break;
+
+    case 'flipTarot':
+      S.tarotOpen = (S.tarotOpen === todayStr()) ? '' : todayStr();
+      render(); break;
 
     case 'toggleTrainDay':
       S.forceTrainDay = !isTrainDay();
