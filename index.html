@@ -1233,6 +1233,33 @@ body{background-color:var(--bg)}
 .taroten{font-size:9px;letter-spacing:2.5px;color:#6c8090}
 .tarotmsg{font-size:11px;color:#2c3d49;margin-top:5px;padding:0 14px;text-align:center;line-height:1.6}
 
+
+/* ================= 主题隔离修正 ================= */
+[data-skin="persona"] .tabbar{overflow:hidden}
+.tkslide{transition:left .38s cubic-bezier(.3,.9,.2,1),opacity .3s ease}
+
+/* P3R 底部导航选中项渐入 */
+@keyframes tabIn{
+  0%{opacity:0;transform:translateY(7px) scale(.92)}
+  100%{opacity:1;transform:none}
+}
+[data-skin="persona"] .tabbar .t.on svg{animation:tabIn .34s cubic-bezier(.3,.9,.2,1) both}
+[data-skin="persona"] .tabbar .t.on span{animation:tabIn .34s cubic-bezier(.3,.9,.2,1) .05s both}
+
+/* 塔罗翻开光暴 */
+@keyframes tarotGlow{
+  0%{opacity:0;transform:scale(.95)}
+  35%{opacity:1}
+  100%{opacity:0;transform:scale(1.05)}
+}
+.tarotbody.open::after{
+  content:'';position:absolute;inset:-5px;border-radius:18px;pointer-events:none;
+  box-shadow:0 0 0 2px rgba(0,165,200,.55), 0 0 26px rgba(0,165,200,.5);
+  animation:tarotGlow .9s ease-out both;
+}
+.tarotbody.open{cursor:default}
+.tarotbody.open .tarotback{transition:opacity .22s ease, transform .46s cubic-bezier(.3,.8,.2,1)}
+
 </style>
 </head>
 <body>
@@ -1655,7 +1682,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.16';
+const BUILD = '2026-10-21.17';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -4927,7 +4954,7 @@ function dailyTarot(dateStr) {
 function viewTarot() {
   const d = todayStr();
   const card = dailyTarot(d);
-  const open = S.tarotOpen === d;
+  const open = store.data.tarotDay === d;
   return '<div class="card tarotcard"><div class="row between" style="margin-bottom:2px">' +
     '<b style="font-size:15px">今日塔罗</b><span class="xs mute">' + d + '</span></div>' +
     '<div class="tarotbody' + (open ? ' open' : '') + '" data-act="flipTarot">' +
@@ -5551,8 +5578,10 @@ function renderTabbar() {
   ];
   const cur = items.map(function (it) { return it.v; }).indexOf(S.view);
   if (cur >= 0) LAST_TAB = cur;
-  $('tabbar').innerHTML =
-    '<i class="tkslide" style="width:' + (100 / items.length) + '%;left:' + (LAST_TAB * (100 / items.length)) + '%"></i>' +
+  const slider = (store.data.settings || {}).skin === 'persona'
+    ? '<i class="tkslide" style="width:' + (100 / items.length) + '%;left:' + (LAST_TAB * (100 / items.length)) + '%"></i>'
+    : '';
+  $('tabbar').innerHTML = slider +
     items.map(function (it) {
     return '<div class="t ' + (S.view === it.v ? 'on' : '') + '" data-act="tab" data-v="' + it.v + '">' +
       ICON[it.icon] + '<span>' + it.name + '</span></div>';
@@ -5576,7 +5605,7 @@ function render() {
   else if (S.view === 'shop') html = viewShop();
   else html = viewProfile();
 
-  if (S.view === 'today' && html) {
+  if (S.view === 'today' && html && (store.data.settings || {}).skin === 'persona') {
     try {
       const card = viewTarot();
       const k = html.indexOf('class="mealhead"');
@@ -5864,8 +5893,12 @@ document.addEventListener('click', function (e) {
       store.save(); applyAppearance(); renderKeepScroll(); break;
 
     case 'flipTarot':
-      S.tarotOpen = (S.tarotOpen === todayStr()) ? '' : todayStr();
-      render(); break;
+      if (store.data.tarotDay === todayStr()) break;
+      store.data.tarotDay = todayStr();
+      store.save();
+      render();
+      toast('今日牌面已揭晓');
+      break;
 
     case 'toggleTrainDay':
       S.forceTrainDay = !isTrainDay();
