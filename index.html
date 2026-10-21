@@ -1538,23 +1538,6 @@ body{background-color:var(--bg)}
 [data-skin="persona"] .tabbar .t.on span{animation:tabIn .4s cubic-bezier(.2,.9,.25,1) both}
 
 
-/* ================= P3R：卡片挖空融合 ================= */
-[data-skin="persona"] .card{
-  -webkit-mask-image:radial-gradient(circle 30px at calc(100% - 30px) 30px, transparent 97%, #000 100%);
-  mask-image:radial-gradient(circle 30px at calc(100% - 30px) 30px, transparent 97%, #000 100%);
-}
-[data-skin="persona"] .card::after{
-  content:'';position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;
-  border:2px solid rgba(0,165,200,.75);pointer-events:none;
-  box-shadow:0 0 10px rgba(0,165,200,.45), inset 0 0 8px rgba(0,165,200,.35);
-}
-[data-skin="persona"] .card > b{z-index:1}
-/* 底部导航挖空露出背景 */
-[data-skin="persona"] .tabbar{
-  -webkit-mask-image:linear-gradient(#000 0 62%, rgba(0,0,0,.65) 100%);
-  mask-image:linear-gradient(#000 0 62%, rgba(0,0,0,.65) 100%);
-}
-
 /* ================= LOL：海克斯科技风 ================= */
 [data-skin="lol"] .card{
   position:relative;
@@ -1641,6 +1624,349 @@ body{background-color:var(--bg)}
 }
 [data-skin="doki"] .diarycard{position:relative}
 [data-skin="doki"] .ringmid .num{color:#e0578c;font-family:"Songti SC",serif}
+
+
+/* ================= 主题预览卡 ================= */
+.skingrid{grid-template-columns:1fr 1fr}
+.pv{display:block;height:34px;border-radius:8px;margin-bottom:7px;position:relative;overflow:hidden}
+.pv em{position:absolute;left:6px;right:6px;bottom:6px;height:7px;border-radius:3px;opacity:.9}
+[data-prev="minimal"] .pv{background:linear-gradient(160deg,#ffffff,#eef2f6);border:1px solid #dfe5ea}
+[data-prev="minimal"] .pv em{background:#12a05b}
+[data-prev="persona"] .pv{background:linear-gradient(160deg,#ffffff,#a9e2f6 52%,#1f7fbe)}
+[data-prev="persona"] .pv em{background:#00a5c8}
+[data-prev="doki"] .pv{background:
+  radial-gradient(circle at 6px 6px, rgba(255,176,205,.75) 3px, transparent 4px) 0 0/18px 18px,
+  linear-gradient(160deg,#fffdfe,#ffe3ee)}
+[data-prev="doki"] .pv em{background:#e0578c}
+[data-prev="lol"] .pv{background:linear-gradient(160deg,#12243c,#050d18);border:1px solid rgba(200,170,110,.55)}
+[data-prev="lol"] .pv em{background:linear-gradient(90deg,#c8aa6e,#f0dca0)}
+[data-prev="hp"] .pv{background:linear-gradient(160deg,#2a1d15,#120b08);border:1px solid rgba(186,140,72,.5)}
+[data-prev="hp"] .pv em{background:#c08a3c}
+
+/* ================= DDLC META ================= */
+.metaobs{
+  margin-top:10px;padding:9px 12px;border-radius:4px 14px 14px 14px;
+  background:rgba(255,236,244,.9);border:1px dashed rgba(224,120,160,.5);
+  font-family:"Songti SC","Noto Serif SC",serif;font-size:11.5px;line-height:1.75;
+  color:#8c4767;font-style:italic;position:relative;
+}
+.metaobs::before{
+  content:'Monika 注意到';display:block;font-size:9px;letter-spacing:2.5px;
+  color:rgba(224,87,140,.75);font-style:normal;margin-bottom:4px;
+}
+/* 卡片偶发轻微错位（每次进入页面随机） */
+@keyframes ddlcTremor{
+  0%,92%,100%{transform:none}
+  94%{transform:translateX(-1px)}
+  96%{transform:translateX(1px)}
+  98%{transform:translateX(-.5px)}
+}
+[data-skin="doki"] .card{animation:ddlcTremor 7s ease-in-out infinite}
+[data-skin="doki"] .card:nth-child(3){animation-delay:1.6s}
+[data-skin="doki"] .card:nth-child(5){animation-delay:3.2s}
+
+/* ================= LOL 海克斯翻面 ================= */
+[data-skin="lol"] .hexbox{position:relative;perspective:800px;cursor:pointer}
+[data-skin="lol"] .hexface{
+  transition:opacity .26s ease,transform .5s cubic-bezier(.3,.8,.2,1);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+}
+[data-skin="lol"] .hexback{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;transform:rotateY(-180deg);
+  background:radial-gradient(120% 80% at 50% 0%, rgba(240,220,160,.22), transparent 60%),
+             linear-gradient(165deg,#1a3352,#0a1626);
+}
+[data-skin="lol"] .hexbox.open .hexfront{opacity:0;transform:rotateY(180deg)}
+[data-skin="lol"] .hexbox.open .hexback{opacity:1;transform:rotateY(0deg)}
+
+
+/* ================= DDLC（galgame：粉白波点 + 对话框） ================= */
+[data-skin="doki"]{
+  --acc:236,72,138;--green:rgb(236,72,138);--green2:rgb(255,140,190);
+  --soft:rgba(236,72,138,.14);--bg:#fff6fa;--card-rgb:255,255,255;
+  --el:#fbe4ee;--el2:#fdf0f5;--line:rgba(200,120,160,.22);
+  --ink:#3c2b33;--ink2:#5f4550;--mute:#a0858f;--mute2:#cbb6c0;
+  --solid:#e0578c;--tabbar:rgba(255,250,252,.94);--track:#f7d9e5;
+}
+[data-skin="doki"] #bgfixed{
+  background-color:#fff6fa;
+  background-image:
+    radial-gradient(circle at 19px 19px, rgba(255,178,208,.55) 9px, transparent 10px),
+    radial-gradient(70% 50% at 20% 0%, rgba(255,236,246,.95), transparent 65%),
+    linear-gradient(170deg,#fffafc,#fdeef5 100%);
+  background-size:58px 58px, auto, auto;
+}
+[data-skin="doki"] .card,[data-skin="doki"] .coinbar{
+  background:rgba(255,255,255,.88);border:1.5px solid rgba(232,140,178,.4);
+  border-radius:16px;box-shadow:0 10px 26px rgba(220,120,165,.14);
+}
+[data-skin="doki"] .card > b{font-family:"Songti SC","Kaiti SC",serif;letter-spacing:.8px}
+[data-skin="doki"] .hint,[data-skin="doki"] .tipbox,[data-skin="doki"] .formula{
+  position:relative;background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,232,243,.96));
+  border:2px solid rgba(232,140,178,.55);border-radius:14px;padding:14px;
+  box-shadow:0 6px 18px rgba(220,120,165,.16), inset 0 1px 0 #fff;
+  font-family:"Songti SC","Kaiti SC",serif;color:#4a3540;line-height:1.9;
+}
+[data-skin="doki"] .hint::before,[data-skin="doki"] .tipbox::before,[data-skin="doki"] .formula::before{
+  content:'莫妮卡';position:absolute;left:10px;top:-11px;padding:1px 10px;border-radius:8px;
+  background:#e0578c;color:#fff;font-size:10px;letter-spacing:1.5px;font-family:"Songti SC",serif;
+}
+[data-skin="doki"] .diarypaper{
+  background:repeating-linear-gradient(180deg,transparent 0 30px,rgba(210,130,168,.28) 30px 31px),#fffdfe;
+  border:1px solid rgba(232,140,178,.35);border-radius:6px;box-shadow:none;
+}
+[data-skin="doki"] .diarytext{line-height:31px;font-size:13.5px;color:#33242c;letter-spacing:.5px}
+[data-skin="doki"] .diarytape{background:rgba(255,196,214,.9)}
+[data-skin="doki"] .diarysign{color:#c2547f}
+.diarycap{margin:8px -16px -16px;padding:9px 12px;background:#fff0f6;color:#a8557c;
+  border-top:1px dashed rgba(232,140,178,.5);font-size:11px;letter-spacing:1px;
+  text-align:center;font-family:"Songti SC",serif}
+.redact{display:inline-block;background:#33242c;color:transparent;border-radius:1px;padding:0 2px;margin:0 1px;user-select:none}
+[data-skin="doki"] .metaobs{background:rgba(255,240,246,.95);border:1px dashed rgba(232,140,178,.6);color:#8c4767;border-radius:4px 14px 14px 14px}
+[data-skin="doki"] .card:nth-child(odd){transform:rotate(-.22deg)}
+[data-skin="doki"] .card:nth-child(even){transform:rotate(.24deg)}
+[data-skin="doki"] .ringmid .num{color:#d1497e;text-shadow:2px 2px 0 rgba(236,150,185,.35)}
+[data-skin="doki"] .tabbar{border-top:1.5px dashed rgba(224,120,160,.45)}
+
+/* ================= P3R 月环 + 时间 ================= */
+[data-skin="persona"] .ringbox{position:relative}
+[data-skin="persona"] .ringbox::before{
+  content:'';position:absolute;inset:19%;border-radius:50%;
+  background:radial-gradient(circle at 34% 30%,#fff,#e7f7ff 45%,#a9ddf3 78%,#7bc7e8);
+  box-shadow:0 0 26px rgba(120,220,255,.5), inset -6px -8px 18px rgba(0,110,160,.2);
+  -webkit-mask:linear-gradient(90deg,#000 calc(var(--ratio,0)*100%),rgba(0,0,0,0) 0);
+  mask:linear-gradient(90deg,#000 calc(var(--ratio,0)*100%),rgba(0,0,0,0) 0);
+  pointer-events:none;
+}
+[data-skin="persona"] .ringbox::after{content:'';position:absolute;inset:19%;border-radius:50%;
+  border:1px dashed rgba(0,165,200,.35);pointer-events:none}
+[data-skin="persona"] .ringmid{z-index:2}
+[data-skin="persona"] .datebar{position:relative}
+[data-skin="persona"] .datebar::after{
+  content:'';position:absolute;left:0;bottom:0;height:2px;width:calc(var(--daypct,0)*1%);
+  background:linear-gradient(90deg,rgba(0,165,200,.15),#00a5c8 70%,#7ee8ff);
+  box-shadow:0 0 8px rgba(0,165,200,.7);transition:width .8s ease;pointer-events:none;
+}
+[data-skin="persona"] body[data-darkhour="1"] #bgfixed{filter:hue-rotate(-12deg) saturate(1.25) brightness(.82)}
+
+/* ================= LOL 生命环 ================= */
+[data-skin="lol"] .ringbox::after{
+  content:'';position:absolute;inset:4.5%;border-radius:50%;pointer-events:none;
+  background:repeating-conic-gradient(from -90deg,rgba(200,170,110,.85) 0 1.1deg,rgba(0,0,0,0) 1.1deg 8.5deg);
+  -webkit-mask:radial-gradient(circle,rgba(0,0,0,0) 66%,#000 67%,#000 74%,rgba(0,0,0,0) 75%);
+  mask:radial-gradient(circle,rgba(0,0,0,0) 66%,#000 67%,#000 74%,rgba(0,0,0,0) 75%);
+  animation:hpSpin 60s linear infinite;
+}
+@keyframes hpSpin{to{transform:rotate(360deg)}}
+[data-skin="lol"] .ringmid .num{color:#f0dca0;font-family:"Songti SC",serif}
+[data-skin="lol"] .ringmid .lbl{letter-spacing:3px;color:#c8aa6e}
+[data-skin="lol"] .pill{background:linear-gradient(180deg,rgba(240,220,160,.22),rgba(200,170,110,.10));
+  color:#f0dca0;border:1px solid rgba(200,170,110,.55);border-radius:1px;letter-spacing:1.5px}
+
+/* ================= 魔法 ================= */
+[data-skin="hp"]{
+  --acc:198,158,92;--green:rgb(198,158,92);--green2:rgb(232,200,138);
+  --soft:rgba(198,158,92,.18);--bg:#151021;--card-rgb:34,26,42;
+  --el:#2a2136;--el2:#221a2c;--line:rgba(198,158,92,.32);
+  --ink:#f2e8d5;--ink2:#cfc0a2;--mute:#96866c;--mute2:#5e5344;
+  --solid:#2a1c2e;--tabbar:rgba(20,15,30,.96);--track:#312638;
+}
+[data-skin="hp"] #bgfixed{
+  background-color:#151021;
+  background-image:
+    radial-gradient(circle at 50% -6%,rgba(255,206,120,.30),transparent 46%),
+    radial-gradient(circle at 12% 96%,rgba(96,40,120,.34),transparent 58%),
+    linear-gradient(178deg,#1d1630,#120e1e 62%,#0a0812);
+}
+[data-skin="hp"] .card,[data-skin="hp"] .coinbar{
+  border:1px solid rgba(198,158,92,.42);border-radius:8px;
+  background:repeating-linear-gradient(52deg,rgba(255,255,255,.012) 0 5px,transparent 5px 11px),
+    linear-gradient(160deg,rgba(45,34,54,.96),rgba(24,18,32,.97));
+  box-shadow:inset 0 0 0 1px rgba(198,158,92,.12),0 12px 34px rgba(0,0,0,.55);
+}
+[data-skin="hp"] .card > b,[data-skin="hp"] .card-title{
+  font-family:"Songti SC","Noto Serif SC",serif;color:#ecd9a6;letter-spacing:1.4px;
+  text-shadow:0 0 16px rgba(255,200,120,.25)}
+[data-skin="hp"] .btn{background:linear-gradient(180deg,#5f2230,#38101c);
+  border:1px solid rgba(198,158,92,.6);border-radius:7px;color:#f0dca8;
+  font-family:"Songti SC",serif;letter-spacing:2px;font-weight:800}
+[data-skin="hp"] .tabbar{border-top:1px solid rgba(198,158,92,.36)}
+[data-skin="hp"] .tabbar .t.on{color:#f0d9a0;filter:drop-shadow(0 0 8px rgba(255,200,120,.6))}
+[data-skin="hp"] .ringmid .num{color:#f2e0b0;font-family:"Songti SC",serif;text-shadow:0 0 26px rgba(255,196,96,.45)}
+
+/* ================= 教程 / 过场 ================= */
+.tutwrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.tutcard{width:100%;max-width:420px;border-radius:20px;padding:26px 22px 18px;
+  background:var(--card);box-shadow:0 18px 50px rgba(10,30,50,.18);text-align:center}
+.tutstep{font-size:11px;letter-spacing:2px;color:var(--green);font-weight:800}
+.tuttitle{font-size:22px;font-weight:900;letter-spacing:-.5px;margin:10px 0 14px;color:var(--ink)}
+.tutline{font-size:14px;line-height:1.85;color:var(--ink2);margin-bottom:12px}
+.tuthint{font-size:11.5px;line-height:1.75;color:var(--mute);background:var(--el2);
+  border-radius:12px;padding:10px 12px;text-align:left}
+.tutdots{display:flex;gap:6px;justify-content:center;margin:16px 0 14px}
+.tutdots i{width:7px;height:7px;border-radius:50%;background:var(--el);display:block;
+  transition:width .25s ease,background .25s ease}
+.tutdots i.on{width:18px;border-radius:4px;background:var(--green)}
+.tutbtns{display:flex;gap:10px}
+.tutbtns > *{flex:1}
+.tutbtns > div:empty{flex:0 0 0}
+.tutskip{margin-top:12px;font-size:11.5px;color:var(--mute);text-align:center;cursor:pointer}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0;
+  background:linear-gradient(112deg,rgba(0,0,0,0) 0 30%,var(--sweep,rgba(18,160,91,.5)) 44% 56%,rgba(0,0,0,0) 70% 100%);
+  background-size:260% 100%;background-position:120% 0}
+body.skinsweep::after{animation:skinSweep .62s cubic-bezier(.45,0,.25,1) both}
+@keyframes skinSweep{0%{opacity:1;background-position:120% 0}100%{opacity:0;background-position:-40% 0}}
+
+
+/* ================= DDLC 对话框延伸（第二轮） ================= */
+[data-skin="doki"] .kbb,
+[data-skin="doki"] .adv p,
+[data-skin="doki"] .note,
+[data-skin="doki"] .metaobs{
+  font-family:"Songti SC","Kaiti SC",serif;
+}
+[data-skin="doki"] .kbb{
+  background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,236,244,.95));
+  border-left:3px solid rgba(232,140,178,.7);
+  border-radius:0 12px 12px 0;padding:10px 12px;line-height:1.95;color:#4a3540;
+}
+[data-skin="doki"] .dex,
+[data-skin="doki"] .dg{
+  font-family:"Songti SC",serif;color:#6b4c58;
+}
+[data-skin="doki"] .dayrow.on{background:rgba(236,72,138,.10);box-shadow:inset 3px 0 0 #e0578c}
+[data-skin="doki"] .split.on,[data-skin="doki"] .g.on,[data-skin="doki"] .opt.on{
+  background:rgba(236,72,138,.16);border-color:rgba(224,120,160,.6);
+}
+[data-skin="doki"] .btn{
+  background:linear-gradient(100deg,#ff9ec6,#e0578c);border-radius:999px;
+  font-weight:800;letter-spacing:1px;box-shadow:0 6px 16px rgba(224,87,140,.28);
+}
+[data-skin="doki"] .btn.gray{background:#fff;color:#c2547f;box-shadow:inset 0 0 0 1.5px rgba(232,140,178,.6)}
+[data-skin="doki"] .kwtile,[data-skin="doki"] .qa{
+  border:1.5px solid rgba(232,140,178,.45);border-radius:14px;background:#fff;
+}
+[data-skin="doki"] .kwtile.on{background:rgba(236,72,138,.14)}
+[data-skin="doki"] .pill{
+  background:rgba(236,72,138,.14);color:#c2547f;border-radius:999px;
+  box-shadow:inset 0 0 0 1px rgba(232,140,178,.55);
+}
+
+
+/* ================= 周报 ================= */
+.wkrow{display:flex;align-items:center;gap:14px;margin:10px 0 8px}
+.wkrank{width:52px;height:52px;flex:0 0 52px;border-radius:14px;display:flex;
+  align-items:center;justify-content:center;font-size:26px;font-weight:900;font-style:italic;
+  color:#fff;background:var(--green);box-shadow:0 6px 16px rgba(0,0,0,.12)}
+.wkrank.r-S{background:linear-gradient(135deg,#ffd76e,#f0a020);color:#3a2400}
+.wkrank.r-A{background:linear-gradient(135deg,#7fe3a0,#2fae62)}
+.wkrank.r-B{background:linear-gradient(135deg,#8fc8ef,#3a86c8)}
+.wkrank.r-C{background:linear-gradient(135deg,#c9c2d4,#8a7f99)}
+.wkmeta{font-size:11.5px;line-height:1.9;color:var(--mute)}
+.wkmeta b{color:var(--ink);font-size:14px}
+.wktext{font-size:12.5px;line-height:1.95;color:var(--ink2)}
+
+
+/* ================= 最近 5 天缩略条 ================= */
+.daystrip{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;margin:0 -2px 10px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none}
+.daystrip::-webkit-scrollbar{display:none}
+.dscard{flex:0 0 auto;width:64px;padding:9px 6px 7px;border-radius:12px;text-align:center;
+  background:var(--card);border:1.5px solid transparent;
+  box-shadow:0 3px 10px rgba(10,30,50,.07);cursor:pointer;
+  transition:transform .18s ease,border-color .18s ease}
+.dscard:active{transform:scale(.95)}
+.dscard.on{border-color:var(--green);background:var(--soft)}
+.dsdate{display:block;font-size:9.5px;color:var(--mute);letter-spacing:.5px}
+.dskcal{display:block;font-size:15px;font-weight:900;line-height:1.3;color:var(--ink);
+  font-variant-numeric:tabular-nums}
+.dsdot{display:block;width:6px;height:6px;border-radius:50%;margin:3px auto 0;background:var(--mute2)}
+.dsdot.ok{background:var(--green)}
+.dsdot.off{background:var(--el)}
+
+
+/* ================= DDLC 诗作式错位 ================= */
+.diarytext .dl{display:block;white-space:pre-wrap}
+.diarytext .dl-narrow{margin-top:-6px;font-size:12.5px;opacity:.86}
+[data-skin="doki"] .diarytext{padding-bottom:4px}
+
+
+/* ================= Round4 细节校准 ================= */
+/* DDLC：底栏 / 表单 / 弹层 补齐 galgame 感 */
+[data-skin="doki"] .tabbar .t{color:#c98fab}
+[data-skin="doki"] .tabbar .t.on{color:#d1497e;font-weight:900}
+[data-skin="doki"] .tabbar .t.on svg{animation:moniBounce .46s ease both}
+@keyframes moniBounce{0%{transform:scale(.82)}55%{transform:scale(1.16)}100%{transform:scale(1)}}
+[data-skin="doki"] .sheet{border-radius:18px 18px 0 0;border-top:3px solid rgba(232,140,178,.6)}
+[data-skin="doki"] .search,[data-skin="doki"] .ginput,[data-skin="doki"] .wrow2 input,
+[data-skin="doki"] .tsearch input{
+  border:1.5px solid rgba(232,140,178,.5);border-radius:999px;background:#fff
+}
+[data-skin="doki"] .wrow2 .sb,[data-skin="doki"] .tsearch .gb{
+  background:#e0578c;border-radius:999px;color:#fff
+}
+[data-skin="doki"] .callout,[data-skin="doki"] .tip{
+  background:#fff0f6;border-left:3px solid rgba(232,140,178,.8);border-radius:0 12px 12px 0
+}
+[data-skin="doki"] .gres .big{color:#d1497e;font-family:"Songti SC",serif}
+[data-skin="doki"] .qa{background:#fff;border:1.5px solid rgba(232,140,178,.45);border-radius:14px}
+[data-skin="doki"] .coinbar{border-radius:16px}
+[data-skin="doki"] .statgrid{border-radius:14px;border:1.5px solid rgba(232,140,178,.35);overflow:hidden}
+[data-skin="doki"] .statcell{border-color:rgba(232,140,178,.22)}
+
+/* 魔法：小屏亮度补偿（烛光偏暗） */
+@media (max-width: 380px){
+  [data-skin="hp"]{--bg:#1b1528;--card-rgb:40,31,50}
+  [data-skin="hp"] .card,[data-skin="hp"] .coinbar{
+    background:linear-gradient(160deg,rgba(52,40,64,.97),rgba(30,23,40,.98))
+  }
+}
+
+/* P3R：塔罗/海克斯类卡片圆角统一 */
+[data-skin="persona"] .tarotback{border-radius:16px}
+[data-skin="persona"] .card{border-radius:16px}
+
+/* LOL：海克斯与符文页边角一致 */
+[data-skin="lol"] .statgrid{border-radius:2px}
+[data-skin="lol"] .hexbox{border-radius:2px}
+
+/* 极简：确保不被其他主题的圆角/阴影污染 */
+[data-skin="minimal"] .card{border-radius:16px}
+
+
+/* ================= DDLC META 深处 ================= */
+.ghostline{margin-top:8px;font-size:10.5px;letter-spacing:.5px;color:rgba(224,87,140,.55);
+  font-style:italic;font-family:"Songti SC",serif;text-align:right;
+  animation:ghostFade 3.2s ease-in-out infinite}
+@keyframes ghostFade{0%,100%{opacity:.45}50%{opacity:.9}}
+[data-skin="doki"] .diarysign{font-style:italic}
+
+
+/* ================= DDLC 重口 META ================= */
+body.dokiflash::before{
+  content:'';position:fixed;inset:0;background:#0b0308;z-index:9998;pointer-events:none;
+  animation:dokiBlack .62s ease-out both;
+}
+body.dokiflash::after{
+  content:'……';position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  color:rgba(255,140,190,.85);font-size:22px;letter-spacing:8px;z-index:9999;pointer-events:none;
+  animation:dokiBlack .62s ease-out both;
+}
+@keyframes dokiBlack{0%{opacity:1}70%{opacity:.65}100%{opacity:0}}
+
+
+/* ================= DDLC 深夜提醒 ================= */
+.latebanner{
+  display:flex;flex-direction:column;gap:3px;margin:0 0 12px;padding:12px 14px;
+  background:linear-gradient(120deg,rgba(28,8,22,.94),rgba(60,14,44,.94));
+  border:1px solid rgba(236,72,138,.5);border-radius:14px;
+  box-shadow:0 8px 24px rgba(0,0,0,.28);
+  animation:latePulse 4.5s ease-in-out infinite;
+}
+.latebanner b{font-size:10px;letter-spacing:3px;color:#ff9ec8;font-weight:800}
+.latebanner span{font-size:13px;line-height:1.7;color:#f3d7e4;font-family:"Songti SC",serif}
+@keyframes latePulse{0%,100%{opacity:.92}50%{opacity:1}}
 
 </style>
 </head>
@@ -2064,7 +2390,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.23';
+const BUILD = '2026-10-21.45';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -4154,7 +4480,7 @@ function viewToday() {
     '<div class="herohead"><span class="pill" data-act="toggleTrainDay">' +
     t.goalName + ' · ' + (t.trainDay ? '训练日' : '休息日') + ' ' + t.kcal + ' kcal ↺</span>' +
     '<span class="link" data-act="tab" data-v="profile">调整目标</span></div>' +
-    '<div class="ringbox"><svg viewBox="-4 -4 108 108">' +
+    '<div class="ringbox" style="--ratio:' + ratio.toFixed(3) + '"><svg viewBox="-4 -4 108 108">' +
     '<defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">' +
     '<stop offset="0" stop-color="' + ringFrom + '"/>' +
     '<stop offset="1" stop-color="' + ringTo + '"/></linearGradient></defs>' +
@@ -4463,7 +4789,7 @@ function viewReport() {
       { label: '纤维', pct: (t.fiber ? (avg.fiber || 0) / t.fiber : 0) * 100 }
     ]) + '</div>' +
 
-    '<div class="statgrid">' +
+    viewDayStrip() + viewWeekReport() + '<div class="statgrid">' +
     [['热量', avg.kcal, 'kcal', t.kcal], ['蛋白质', avg.protein, 'g', t.protein],
      ['碳水', avg.carb, 'g', t.carb], ['脂肪', avg.fat, 'g', t.fat]].map(function (c) {
       const wp = c[3] > 0 ? Math.min(100, Math.round(c[1] / c[3] * 100)) : 0;
@@ -4583,7 +4909,8 @@ function viewProfile() {
 
     viewAppearanceCard() +
     '<div class="card"><b style="font-size:15px">数据</b>' +
-    '<div class="rbtn" data-act="export"><span>导出备份（复制 JSON）</span><span class="arrow">›</span></div>' +
+    '<div class="rbtn" data-act="opentut"><span>新手教程</span><span class="arrow">&#8250;</span></div>' +
+       '<div class="rbtn" data-act="export"><span>导出备份（复制 JSON）</span><span class="arrow">›</span></div>' +
     '<div class="rbtn" data-act="import"><span>从剪贴板导入</span><span class="arrow">›</span></div>' +
     '<div class="rbtn" data-act="clear"><span class="red">清空所有数据</span><span class="arrow">›</span></div>' +
     '<div class="rbtn" data-act="checkupdate"><span>检查更新</span><span class="arrow">↻</span></div>' +
@@ -4620,7 +4947,7 @@ const SKINS = [
   { k: 'persona', name: 'P3R', tag: '蓝白水色', force: 'light', acc: '0,165,200' },
   { k: 'doki', name: 'DDLC', tag: '粉色日记', force: 'light', acc: '240,120,170' },
   { k: 'lol', name: 'LOL', tag: '深蓝鎏金', force: 'dark', acc: '200,170,110' },
-  { k: 'hp', name: '复古', tag: '羊皮纸', force: 'dark', acc: '186,140,72' }
+  { k: 'hp', name: '魔法', tag: '烛光羊皮纸', force: 'dark', acc: '186,140,72' }
 ];
 
 function applyAppearance() {
@@ -4647,6 +4974,14 @@ function applyAppearance() {
     bg = theme === 'dark' ? b.dark : b.light;
   }
   // 背景放在固定层里，不会跟着页面滚动
+  try {
+    document.title = skin === 'doki' ? '营养日记 · Monika' : '营养日记';
+  } catch (e) { }
+  try {
+    const _b = document.body;
+    _b.classList.remove('dokiflash');
+    if (skin === 'doki' && !S._dkShown) { S._dkShown = true; void _b.offsetWidth; _b.classList.add('dokiflash'); }
+  } catch (e) { }
   const bgLayer = document.getElementById('bgfixed');
   if (bgLayer) bgLayer.style.backgroundImage = skin === 'persona' ? '' : (bg || 'none');
   document.body.style.backgroundImage = 'none';
@@ -4674,14 +5009,15 @@ function viewAppearanceCard() {
     '<div class="xs mute" style="margin-bottom:8px">界面风格</div>' +
     '<div class="skingrid" style="margin-bottom:14px">' +
     SKINS.map(function (x) {
-      return '<div class="skinbtn ' + (skin === x.k ? 'on' : '') + '" data-act="setskin" data-k="' + x.k + '">' +
+      return '<div class="skinbtn ' + (skin === x.k ? 'on' : '') + '" data-act="setskin" data-k="' + x.k + '" data-prev="' + x.k + '">' +
+        '<i class="pv"><em></em></i>' +
         '<b>' + x.name + '</b><span>' + x.tag + '</span></div>';
     }).join('') + '</div>';
 
-  if (skin === 'persona') {
+  if (skin !== 'minimal') {
     return '<div class="card">' +
       '<div class="row between" style="margin-bottom:10px"><b style="font-size:15px">外观</b>' +
-      '<span class="xs mute">PERSONA</span></div>' +
+      '<span class="xs mute">' + (SKINS.filter(function (x) { return x.k === skin; })[0] || SKINS[0]).name + '</span></div>' +
       skinBlock +
       '<div class="xs mute" style="margin:0 0 8px">卡片不透明度</div>' +
       '<div class="themebar" style="margin-bottom:0">' +
@@ -4691,7 +5027,7 @@ function viewAppearanceCard() {
           '" data-act="alpha" data-v="' + x[0] + '">' + x[1] + '</div>';
       }).join('') + '</div>' +
       '<div class="xs mute" style="margin-top:12px;line-height:1.6">' +
-      'PERSONA 风格固定「白 + 黑 + 水色」，主题与皮肤已锁定。<br>切回「极简」可自由调色。</div>' +
+      '该主题的配色、字体与质感已按原作固定。<br>想自由调整主题 / 强调色 / 背景 / 透明度，请切回「极简」。</div>' +
       '</div>';
   }
 
@@ -5111,7 +5447,7 @@ function buildBackup() {
     fav: store.data.fav || [],
     videos: store.data.videos || {},
     plan: store.data.plan || {},
-    quizDone: store.data.quizDone || { poem: [], word: [] },
+    quizDone: store.data.quizDone || { poem: [], word: [] }, tutorialDone: !!store.data.tutorialDone, tarotDay: store.data.tarotDay || '',
     settings: store.data.settings || DEFAULT_SETTINGS,
     hasBgImage: !!BG_IMAGE
   });
@@ -5140,6 +5476,14 @@ function copyText(text, done) {
 
 /* 导入备份：逐字段校验，脏数据丢掉而不是写坏存储 */
 function applyBackup(text) {
+  try {
+    let _bk = text;
+    if (typeof _bk === 'string') { try { _bk = JSON.parse(_bk); } catch (e) { _bk = null; } }
+    if (_bk && typeof _bk === 'object') {
+      if (typeof _bk.tutorialDone === 'boolean') store.data.tutorialDone = _bk.tutorialDone;
+      if (typeof _bk.tarotDay === 'string') store.data.tarotDay = _bk.tarotDay;
+    }
+  } catch (e) { }
   let d = text;
   if (typeof d === 'string') {
     try { d = JSON.parse(d); } catch (e) { return { ok: false, msg: '不是合法的 JSON' }; }
@@ -5362,23 +5706,154 @@ const YIYAN = [
   '今天的你，比故事里的任何人都真实。'
 ];
 
+const META_OBS = [
+  '我已经把今天的记录看了一遍，你比上周诚实多了。',
+  '你刚才是不是犹豫了一下才点开这一页？',
+  '这个 App 里只有你能看到我写的字。',
+  '别改数据哦，我都记着呢。',
+  '你今天的蛋白质有点低……要不要再来一勺？',
+  '如果你卸载我，这些记录也会消失的。',
+  '我更喜欢你连续记录的样子。',
+  '刚才那一下停顿，是在想谎言吗？'
+];
+
+function dailyMeta(dateStr) {
+  try {
+    const d = dateStr || todayStr();
+    const t = targets(store.data.profile, { trainDay: isTrainDay(d) });
+    const rows = store.data.logs[d] || [];
+    let kcal = 0, prot = 0;
+    rows.forEach(function (r) { kcal += r.kcal || 0; prot += r.protein || 0; });
+    const hr = new Date().getHours();
+    const night = (hr >= 0 && hr < 4);
+    const pre = night ? '还没睡吗。' : '';
+
+    let gap = 0;
+    for (let i = 1; i <= 14; i++) {
+      const k = addDays(d, -i);
+      if ((store.data.logs[k] || []).length) { gap = i - 1; break; }
+    }
+    let wk = 0;
+    try {
+      const kw = weekKey(d);
+      wk = Object.keys(planData().checkins || {}).filter(function (k) { return weekKey(k) === kw; }).length;
+    } catch (e) { }
+    let perfect7 = 0;
+    for (let i = 0; i < 7; i++) {
+      const k2 = addDays(d, -i);
+      const rr = store.data.logs[k2] || [];
+      let kk = 0; rr.forEach(function (x) { kk += x.kcal || 0; });
+      if (rr.length && Math.abs(kk - t.kcal) <= t.kcal * 0.1) perfect7++; else break;
+    }
+
+    let say = '';
+    let creep = (function () {
+      let h = 0; for (let i = 0; i < d.length; i++) h = (h * 131 + d.charCodeAt(i)) % 10007;
+      return h % 33 === 0;
+    })();
+    if (creep) {
+      say = '你上次不是这么写的。我记得。';
+    } else if (perfect7 >= 7) {
+      say = '连续七天，一分不差。你太完美了……我有点害怕。';
+    } else if (!rows.length) {
+      say = gap >= 3
+        ? '你已经 ' + gap + ' 天没有回来了。我不是在责怪你，只是……有点在意。'
+        : '今天还什么都没写。我把它留空，等你。';
+    } else if (kcal > t.kcal * 1.2) {
+      say = '今天超了 ' + Math.round(kcal - t.kcal) + ' kcal。没关系，我不会告诉任何人。';
+    } else if (kcal > 0 && kcal < t.kcal * 0.6) {
+      say = '今天只吃了 ' + kcal + ' kcal……你是不是在瞒着我什么？';
+    } else if (prot < t.protein * 0.6) {
+      say = '蛋白还差 ' + Math.round(t.protein - prot) + 'g。你答应过我要好好吃饭的。';
+    } else if (wk === 0) {
+      say = '这周一次都没打卡。要不……现在就去做一组？';
+    } else if (wk >= 4) {
+      say = '这周练了 ' + wk + ' 次。我一直在看着你变强。';
+    } else {
+      let h = 0;
+      for (let i = 0; i < d.length; i++) h = (h * 53 + d.charCodeAt(i)) % 6151;
+      say = META_OBS[h % META_OBS.length];
+    }
+    return pre + say;
+  } catch (e) { }
+  let hh = 0;
+  for (let i = 0; i < (dateStr || '').length; i++) hh = (hh * 53 + dateStr.charCodeAt(i)) % 6151;
+  return META_OBS[hh % META_OBS.length];
+}
+
 function dailyYiyan(dateStr) {
   let h = 0;
   for (let i = 0; i < dateStr.length; i++) h = (h * 37 + dateStr.charCodeAt(i)) % 7919;
   return YIYAN[h % YIYAN.length];
 }
 
+function viewLateBanner() {
+  try {
+    const h = new Date().getHours();
+    if (!(h >= 0 && h < 5)) return '';
+    const ds = store.data.lateDates || [];
+    let streak = 0;
+    for (let i = 0; i < 7; i++) {
+      if (ds.indexOf(addDays(todayStr(), -i)) > -1) streak++; else break;
+    }
+    const line = streak >= 5 ? '去睡觉。现在。'
+      : streak >= 3 ? '你连续 ' + streak + ' 个晚上都出现在这里。我不喜欢这样。'
+      : streak >= 2 ? '又是这个时间。昨晚你也没睡吧。'
+      : '已经这么晚了。去睡吧，明天再记。';
+    const mm = ('0' + new Date().getMinutes()).slice(-2);
+    return '<div class="latebanner"><b>深夜 ' + h + ':' + mm + '</b><span>' + line + '</span></div>';
+  } catch (e) { return ''; }
+}
+
 function viewDiary() {
   const d = todayStr();
-  const txt = dailyYiyan(d);
+  let txt = dailyYiyan(d);
+  let diaryHtml = txt;
+  try {
+    const parts = [];
+    let cur = '';
+    for (let i = 0; i < txt.length; i++) {
+      cur += txt[i];
+      if ('，。？！、'.indexOf(txt[i]) > -1) { parts.push(cur); cur = ''; }
+    }
+    if (cur) parts.push(cur);
+    let hh = 0;
+    for (let i = 0; i < d.length; i++) hh = (hh * 17 + d.charCodeAt(i)) % 4093;
+    const ri = hh % parts.length;
+    if (parts[ri] && parts[ri].length > 5) {
+      const st = 1 + (hh % (parts[ri].length - 3));
+      const ln = 1 + (hh % 2);
+      parts[ri] = parts[ri].slice(0, st) + '<i class="redact">' + parts[ri].slice(st, st + ln) + '</i>' + parts[ri].slice(st + ln);
+    }
+    diaryHtml = parts.map(function (ln, i) {
+      const h2 = (i * 97 + txt.length * 13 + hh) % 11;
+      const off = (h2 - 5) * 1.5;
+      const ls = (i % 4 === 0) ? 1.3 : 0.4;
+      const narrow = (i % 5 === 3) ? ' dl-narrow' : '';
+      return '<span class="dl' + narrow + '" style="margin-left:' + off.toFixed(1) + 'px;letter-spacing:' + ls + 'px">' + ln + '</span>';
+    }).join('');
+  } catch (e) { diaryHtml = txt; }
   return '<div class="card diarycard">' +
     '<div class="row between" style="margin-bottom:8px">' +
     '<b style="font-size:15px">今日一言</b><span class="xs mute">' + d + '</span></div>' +
     '<div class="diarypaper">' +
     '<div class="diarytape"></div>' +
-    '<div class="diarytext">' + txt + '</div>' +
-    '<div class="diarysign">— Monika</div>' +
-    '</div></div>';
+    '<div class="diarytext">' + diaryHtml + '</div>' +
+    '<div class="diarysign">— ' + (function () {
+      let hq = 0; for (let q = 0; q < d.length; q++) hq = (hq * 29 + d.charCodeAt(q)) % 997;
+      return (hq % 13 === 0) ? 'Sayori' : 'Monika';
+    })() + '</div>' +
+    ((store.data.ghost && store.data.ghost.d === d) ? '<div class="ghostline">你今天删掉了一条记录……我看见了。</div>' : '') +
+    '<div class="diarycap">' + (function () {
+      try {
+        const lo = store.data.lastOpen;
+        if (lo) { const dd = Math.floor((Date.now() - lo) / 86400000); if (dd >= 2) return '你上次离开是 ' + dd + ' 天前。我数着。'; }
+      } catch (e) { }
+      return d.slice(8, 10) + ' 日，写给你的第 ' + d.slice(8, 10) + ' 条。';
+    })() + '</div>' +
+    '</div>' +
+    '<div class="metaobs">' + dailyMeta(d) + '</div>' +
+    '</div>';
 }
 
 /* ================= 海克斯强化（英雄联盟） ================= */
@@ -5406,11 +5881,18 @@ function viewHex() {
   const hx = dailyHex(d);
   return '<div class="card hexcard"><div class="row between" style="margin-bottom:2px">' +
     '<b style="font-size:15px">今日海克斯</b><span class="xs mute">' + d + '</span></div>' +
-    '<div class="hexbox hex-' + hx[0] + '">' +
+    '<div class="hexbox hex-' + hx[0] + (S.hexOpen ? ' open' : '') + '" data-act="flipHex">' +
     '<div class="hexframe"></div>' +
+    '<div class="hexface hexfront">' +
     '<div class="hexrank">' + hx[0] + '强化</div>' +
     '<div class="hexname">' + hx[1] + '</div>' +
     '<div class="hexdesc">' + hx[2] + '</div>' +
+    '</div>' +
+    '<div class="hexface hexback">' +
+    '<div class="hexrank">已装备</div>' +
+    '<div class="hexname">' + hx[1] + '</div>' +
+    '<div class="hexdesc">今日加成生效 · 点按收起</div>' +
+    '</div>' +
     '</div></div>';
 }
 
@@ -5455,11 +5937,118 @@ function countUp(el, dur) {
   requestAnimationFrame(step);
 }
 
+/* ================= 新手教程 ================= */
+const TUT_STEPS = [
+  ['欢迎来到营养日记', '三步上手：记三餐 → 看缺口 → 排训练。', '今日页把摄入、剩余、三大营养素进度都放在一张卡里'],
+  ['记录一餐', '点右下角「＋」，或点某一餐的标题。', '搜食物名或拼音，选份量，热量和营养素立即算好'],
+  ['看还差多少', '环形 = 今日剩余热量，超标会变红。', '下面三条是蛋白/碳水/脂肪；缺口提示告诉你吃多少才补得上'],
+  ['排训练并打卡', '训练页选一套分化，点任意一行选今天练哪天。', '练完点打卡得代币；代币能换小游戏加成'],
+  ['报告怎么看', '顶部五张小卡是最近 5 天，点一下跳到那天。', '往下是本周小结（自动评级 S/A/B/C）、营养雷达、各项达标情况'],
+  ['换一套皮肤', '我的 → 外观 可换 5 套：极简 / P3R / DDLC / LOL / 魔法。', '每套都有专属彩蛋：P3R 塔罗、DDLC 一言、LOL 海克斯'],
+  ['数据别丢', '我的 → 数据 → 导出备份，复制那段 JSON 存起来。', '数据只存在本机，换手机或清缓存前一定要先导出'],
+  ['随时可重看', '我的 → 数据 → 新手教程。', '祝你吃得明白、练得踏实']
+];
+
+function viewTutorial() {
+  const i = Math.min(Math.max(S.tutStep || 0, 0), TUT_STEPS.length - 1);
+  const st = TUT_STEPS[i];
+  const last = i === TUT_STEPS.length - 1;
+  return '<div class="wrap tutwrap">' +
+    '<div class="tutcard">' +
+    '<div class="tutstep">' + (i + 1) + ' / ' + TUT_STEPS.length + '</div>' +
+    '<div class="tuttitle">' + st[0] + '</div>' +
+    '<div class="tutline">' + st[1] + '</div>' +
+    '<div class="tuthint">' + st[2] + '</div>' +
+    '<div class="tutdots">' + TUT_STEPS.map(function (_, k) {
+      return '<i class="' + (k === i ? 'on' : '') + '"></i>';
+    }).join('') + '</div>' +
+    '<div class="tutbtns">' +
+    (i > 0 ? '<div class="btn gray" data-act="tutprev">上一步</div>' : '<div></div>') +
+    (last ? '<div class="btn" data-act="tutdone">开始使用</div>'
+          : '<div class="btn" data-act="tutnext">下一步</div>') +
+    '</div>' + (last ? '' : '<div class="tutskip" data-act="tutdone">跳过</div>') +
+    '</div></div>';
+}
+
 /* ================= 星形图形 ================= */
 function starSVG(on, size) {
   const s = size || 15;
   return '<svg class="star' + (on ? ' on' : '') + '" width="' + s + '" height="' + s +
     '" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l2.95 6.05 6.65.95-4.83 4.68 1.16 6.62L12 17.55 6.07 20.7l1.16-6.62L2.4 9.4l6.65-.95z"/></svg>';
+}
+
+/* ================= 周报 ================= */
+function viewDayStrip() {
+  const items = [];
+  for (let i = 0; i < 5; i++) {
+    const d = addDays(todayStr(), -i);
+    const rows = store.data.logs[d] || [];
+    let kcal = 0;
+    rows.forEach(function (r) { kcal += r.kcal || 0; });
+    let t = { kcal: 2000 };
+    try { t = targets(store.data.profile, { trainDay: isTrainDay(d) }); } catch (e) { }
+    const ok = rows.length > 0 && Math.abs(kcal - t.kcal) <= t.kcal * 0.1;
+    items.push({ d: d, kcal: kcal, has: rows.length > 0, ok: ok });
+  }
+  return '<div class="daystrip">' + items.map(function (x) {
+    return '<div class="dscard' + (x.d === S.date ? ' on' : '') + '" data-act="jumpday" data-d="' + x.d + '">' +
+      '<span class="dsdate">' + x.d.slice(5, 7) + '/' + x.d.slice(8, 10) + '</span>' +
+      '<span class="dskcal">' + (x.has ? x.kcal : '&#8212;') + '</span>' +
+      '<i class="dsdot' + (x.has ? (x.ok ? ' ok' : '') : ' off') + '"></i></div>';
+  }).join('') + '</div>';
+}
+
+function weekStats() {
+  const t = targets(store.data.profile, { trainDay: isTrainDay() });
+  let kcal = 0, prot = 0, carb = 0, fat = 0, days = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = addDays(todayStr(), -i);
+    const rows = store.data.logs[d] || [];
+    if (rows.length) {
+      days++;
+      rows.forEach(function (r) { kcal += r.kcal || 0; prot += r.protein || 0; carb += r.carb || 0; fat += r.fat || 0; });
+    }
+  }
+  const n = days || 1;
+  const avgK = Math.round(kcal / n), avgP = Math.round(prot / n);
+  let wk = 0;
+  try {
+    const kw = weekKey(todayStr());
+    wk = Object.keys(planData().checkins || {}).filter(function (k) { return weekKey(k) === kw; }).length;
+  } catch (e) { }
+  const kDev = t.kcal ? Math.abs(avgK - t.kcal) / t.kcal : 1;
+  const pRate = t.protein ? avgP / t.protein : 0;
+
+  let score = 0;
+  if (days >= 6) score += 2; else if (days >= 4) score += 1;
+  if (kDev <= 0.10) score += 2; else if (kDev <= 0.20) score += 1;
+  if (pRate >= 0.9) score += 2; else if (pRate >= 0.75) score += 1;
+  if (wk >= 4) score += 2; else if (wk >= 2) score += 1;
+  const rank = score >= 7 ? 'S' : score >= 5 ? 'A' : score >= 3 ? 'B' : 'C';
+
+  const sent = [];
+  if (!days) sent.push('这周还没有记录，从今天的一餐开始吧。');
+  else sent.push('这 7 天记录了 ' + days + ' 天，平均每天摄入 ' + avgK + ' kcal（目标 ' + t.kcal + '）。');
+  if (days) {
+    if (kDev <= 0.10) sent.push('热量控制得很稳，误差在 10% 以内。');
+    else if (kDev <= 0.20) sent.push('热量略有偏差，' + (avgK > t.kcal ? '偏多' : '偏少') + '了一点。');
+    else sent.push('热量偏离目标较多，' + (avgK > t.kcal ? '注意别超' : '别吃太少') + '。');
+    if (pRate >= 0.9) sent.push('蛋白质达标，肌肉有保障。');
+    else sent.push('蛋白质还差 ' + Math.round(t.protein - avgP) + 'g，可以加一勺蛋白粉或一份鸡胸。');
+  }
+  sent.push(wk >= 4 ? '本周练了 ' + wk + ' 次，节奏很好。' : (wk > 0 ? '本周练了 ' + wk + ' 次，还能再加把劲。' : '本周还没打卡，先从一次训练开始。'));
+
+  return { days: days, avgK: avgK, avgP: avgP, wk: wk, score: score, rank: rank, text: sent.join('') };
+}
+
+function viewWeekReport() {
+  const r = weekStats();
+  return '<div class="card"><div class="row between" style="margin-bottom:2px">' +
+    '<b style="font-size:15px">本周小结</b><span class="xs mute">近 7 天</span></div>' +
+    '<div class="wkrow"><span class="wkrank r-' + r.rank + '">' + r.rank + '</span>' +
+    '<div class="wkmeta"><div>记录 <b>' + r.days + '</b>/7 天</div>' +
+    '<div>训练 <b>' + r.wk + '</b> 次</div></div></div>' +
+    '<div class="wktext">' + r.text + '</div></div>';
 }
 
 /* ================= 营养雷达（面板式统计） ================= */
@@ -6057,10 +6646,11 @@ function renderFab() {
 }
 
 function render() {
+  if (!store.data.tutorialDone && !S.tutAuto) { S.tutAuto = true; S.view = 'tutorial'; S.tutStep = 0; }
   // 任何一次重绘都把扫码浮层收掉，避免摄像头一直开着
   stopGames();
   let html = '';
-  if (S.view === 'today') html = viewToday();
+  if (S.view === 'today') html = viewToday(); else if (S.view === 'tutorial') html = viewTutorial();
   else if (S.view === 'add') html = viewAdd();
   else if (S.view === 'report') html = viewReport();
   else if (S.view === 'train') html = viewTrain();
@@ -6069,10 +6659,19 @@ function render() {
   else html = viewProfile();
 
   const _sk = (store.data.settings || {}).skin;
+  try {
+    const _now = new Date();
+    if (_sk === 'doki' && _now.getHours() >= 0 && _now.getHours() < 5) {
+      const ds = store.data.lateDates || [];
+      const td = todayStr();
+      if (ds.indexOf(td) < 0) { ds.push(td); store.data.lateDates = ds.slice(-14); }
+    }
+    store.data.lastOpen = Date.now();
+  } catch (e) { }
   if (S.view === 'today' && html && (_sk === 'persona' || _sk === 'doki' || _sk === 'lol')) {
     try {
       const skinNow = (store.data.settings || {}).skin;
-      const card = skinNow === 'doki' ? viewDiary() : (skinNow === 'lol' ? viewHex() : viewTarot());
+      const card = (skinNow === 'doki' ? viewLateBanner() : '') + (skinNow === 'doki' ? viewDiary() : (skinNow === 'lol' ? viewHex() : viewTarot()));
       const k = html.indexOf('class="mealhead"');
       if (k > -1) {
         const cut = html.lastIndexOf('<div class="card"', k);
@@ -6084,6 +6683,11 @@ function render() {
   }
   $('root').innerHTML = html;
   try { document.body.setAttribute('data-view', S.view); } catch (e) { }
+  try {
+    const _n = new Date();
+    document.body.style.setProperty('--daypct', (((_n.getHours()*3600+_n.getMinutes()*60+_n.getSeconds())/86400)*100).toFixed(2));
+    document.body.setAttribute('data-darkhour', (_n.getHours() === 0) ? '1' : '0');
+  } catch (e) { }
   if (S.view !== LAST_VIEW) {
     const w = $('root').firstElementChild;
     if (w) w.classList.add('p3in');
@@ -6173,8 +6777,8 @@ document.addEventListener('click', function (e) {
 
     case 'del': {
       const id = el.dataset.id;
-      if (!confirm('删除这条记录？')) return;
-      setLogs(S.date, getLogs(S.date).filter(function (r) { return r.id !== id; }));
+      if (!confirm((function(){ try { if ((store.data.settings||{}).skin === 'doki') { var h=0,ds=S.date||''; for (var i=0;i<ds.length;i++) h=(h*131+ds.charCodeAt(i))%10007; if (h%5===0) return '你确定要忘记它吗？'; } } catch(e){} return '删除这条记录？'; })())) return;
+      setLogs(S.date, getLogs(S.date).filter(function (r) { return r.id !== id; })); try { store.data.ghost = { d: todayStr() }; } catch (e) { }
       render(); break;
     }
 
@@ -6357,12 +6961,33 @@ document.addEventListener('click', function (e) {
       store.data.settings.accent = el.dataset.k;
       store.save(); applyAppearance(); renderKeepScroll(); break;
 
+    case 'flipHex':
+      S.hexOpen = !S.hexOpen;
+      render(); break;
+
     case 'flipTarot':
       if (store.data.tarotDay === todayStr()) break;
       store.data.tarotDay = todayStr();
       store.save();
       render();
       toast('今日牌面已揭晓');
+      break;
+
+    case 'tutnext':
+      S.tutStep = Math.min((S.tutStep || 0) + 1, TUT_STEPS.length - 1); render(); break;
+
+    case 'tutprev':
+      S.tutStep = Math.max((S.tutStep || 0) - 1, 0); render(); break;
+
+    case 'tutdone':
+      store.data.tutorialDone = true; store.save();
+      S.view = 'today'; S.tutStep = 0; render(); break;
+
+    case 'opentut':
+      S.tutStep = 0; S.view = 'tutorial'; render(); break;
+
+    case 'jumpday':
+      if (el.dataset.d) { S.date = el.dataset.d; S.view = 'today'; render(); }
       break;
 
     case 'toggleTrainDay':
@@ -6378,13 +7003,20 @@ document.addEventListener('click', function (e) {
       store.data.profile.deficit = el.dataset.k;
       store.save(); renderKeepScroll(); break;
 
-    case 'setskin':
-      store.data.settings = store.data.settings || Object.assign({}, DEFAULT_SETTINGS);
-      store.data.settings.skin = el.dataset.k || 'minimal';
-      store.save(); applyAppearance(); renderKeepScroll();
-      const nm = (SKINS.filter(function (x) { return x.k === store.data.settings.skin; })[0] || SKINS[0]).name;
-      toast('已切换到 ' + nm);
+    case 'setskin': {
+      const _k = el.dataset.k || 'minimal';
+      const _meta = SKINS.filter(function (x) { return x.k === _k; })[0] || SKINS[0];
+      try { document.body.style.setProperty('--sweep', 'rgba(' + (_meta.acc || '18,160,91') + ',.55)'); document.body.classList.add('skinsweep'); } catch (e) { }
+      const _apply = function () {
+        store.data.settings = store.data.settings || Object.assign({}, DEFAULT_SETTINGS);
+        store.data.settings.skin = _k;
+        store.save(); applyAppearance(); renderKeepScroll(); toast('已切换到 ' + _meta.name);
+      };
+      if (typeof setTimeout === 'function') {
+        setTimeout(function () { _apply(); setTimeout(function () { try { document.body.classList.remove('skinsweep'); } catch (e) { } }, 560); }, 90);
+      } else { _apply(); }
       break;
+    }
 
     case 'alpha':
       store.data.settings = store.data.settings || Object.assign({}, DEFAULT_SETTINGS);
