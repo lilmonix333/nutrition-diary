@@ -544,6 +544,105 @@ body{background-color:var(--bg)}
 [data-skin="persona"] .gclock{color:#0a0e14;font-weight:900;font-style:italic}
 [data-skin="persona"] .tag,
 [data-skin="persona"] .tag.q{border-radius:0;background:rgba(0,165,200,.18);color:#0a0e14;font-weight:700}
+
+/* ---------- 可读性修正：中文不用合成斜体 ---------- */
+[data-skin="persona"] .card > b,
+[data-skin="persona"] .card-title,
+[data-skin="persona"] .ptitle .tt,
+[data-skin="persona"] .sheet h3,
+[data-skin="persona"] .grpbar b,
+[data-skin="persona"] .dtag,
+[data-skin="persona"] .dn{
+  font-style:normal;
+  font-weight:800;
+}
+/* 标题用「青色斜条」代替斜体，保住风格又不累眼 */
+[data-skin="persona"] .card > b,
+[data-skin="persona"] .card-title{
+  position:relative;
+  padding-left:14px;
+}
+[data-skin="persona"] .card > b::before,
+[data-skin="persona"] .card-title > *:first-child::before,
+[data-skin="persona"] .card-title::before{
+  content:'';position:absolute;left:0;top:50%;margin-top:-8px;
+  width:7px;height:16px;background:rgb(0,165,200);
+  transform:skewX(-14deg);
+}
+/* 正文：加大行高与字距，长文更耐看 */
+[data-skin="persona"] .kbb,
+[data-skin="persona"] .adv p,
+[data-skin="persona"] .note,
+[data-skin="persona"] .tipbox .tr,
+[data-skin="persona"] .dex,
+[data-skin="persona"] .formula{
+  line-height:1.9;
+  font-size:12.8px;
+  letter-spacing:.2px;
+  color:#2c3d49;
+}
+[data-skin="persona"] .mute,
+[data-skin="persona"] .xs.mute{color:#6c8090}
+/* 分隔线柔化，dense 列表不再像表格 */
+[data-skin="persona"] .item,
+[data-skin="persona"] .f,
+[data-skin="persona"] .rec,
+[data-skin="persona"] .rbtn,
+[data-skin="persona"] .field,
+[data-skin="persona"] .kbi,
+[data-skin="persona"] .dayrow,
+[data-skin="persona"] .topfood{border-color:rgba(10,14,20,.16)}
+/* 卡片右上角水色三角（原左上会让标题条挤在一起） */
+[data-skin="persona"] .card::before{
+  left:auto;right:-2px;
+  border-left:0;
+  border-right:20px solid rgb(0,165,200);
+  border-bottom:20px solid transparent;
+}
+
+/* ---------- 背景幽灵英文大字 ---------- */
+[data-skin="persona"] #bgfixed{overflow:hidden}
+[data-skin="persona"] #bgfixed::after{
+  content:'TODAY';
+  position:absolute;right:-6vw;bottom:8vh;
+  font-size:33vw;font-weight:900;font-style:italic;line-height:.8;
+  letter-spacing:-1.5vw;
+  color:rgba(0,165,200,.085);
+  white-space:nowrap;pointer-events:none;
+}
+[data-skin="persona"] body[data-view="report"] #bgfixed::after{content:'STATUS'}
+[data-skin="persona"] body[data-view="train"] #bgfixed::after{content:'TRAINING'}
+[data-skin="persona"] body[data-view="profile"] #bgfixed::after{content:'PROFILE'}
+[data-skin="persona"] body[data-view="game"] #bgfixed::after{content:'MINIGAME'}
+[data-skin="persona"] body[data-view="shop"] #bgfixed::after{content:'SHOP'}
+[data-skin="persona"] body[data-view="add"] #bgfixed::after{content:'SELECT'}
+
+/* ---------- P3R 数据面板 ---------- */
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.statcell{position:relative;padding:12px 12px 30px}
+.sk{display:block;font-size:11px;color:var(--mute);letter-spacing:.5px}
+.sv{display:block;font-size:26px;font-weight:800;line-height:1.1;margin:2px 0 1px}
+.sv i{font-size:11px;font-style:normal;font-weight:600;color:var(--mute);margin-left:3px}
+.st{display:block;font-size:10px;color:var(--mute)}
+.sbar{position:absolute;left:12px;right:12px;bottom:12px;height:8px;border-radius:4px;background:var(--el);overflow:hidden;display:block}
+.sbar > i{display:block;height:100%;border-radius:4px;background:var(--green)}
+
+[data-skin="persona"] .statgrid{gap:0;border:2px solid #0a0e14;background:#fff;box-shadow:5px 5px 0 #0a0e14}
+[data-skin="persona"] .statcell{padding:14px 14px 34px;border-right:2px solid #0a0e14;border-bottom:2px solid #0a0e14}
+[data-skin="persona"] .statcell:nth-child(2n){border-right:none}
+[data-skin="persona"] .statcell:nth-last-child(-n+2){border-bottom:none}
+[data-skin="persona"] .sk{
+  font-size:10px;font-weight:800;letter-spacing:1.5px;color:#0a0e14;
+  text-transform:uppercase;
+}
+[data-skin="persona"] .sv{
+  font-size:30px;font-style:italic;font-weight:900;letter-spacing:-1.5px;color:#0a0e14;
+  text-shadow:2px 2px 0 rgba(0,165,200,.85);
+}
+[data-skin="persona"] .st{font-size:10px;color:#6c8090;letter-spacing:.3px}
+[data-skin="persona"] .sbar{left:14px;right:14px;bottom:14px;height:10px;border-radius:0;background:#e2eef5;border:2px solid #0a0e14}
+[data-skin="persona"] .sbar > i{border-radius:0;background:rgb(0,165,200)}
+
 </style>
 </head>
 <body>
@@ -966,7 +1065,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.4';
+const BUILD = '2026-10-21.5';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -3351,12 +3450,16 @@ function viewReport() {
 
     '<div class="card"><div class="row between" style="margin-bottom:6px">' +
     '<b style="font-size:15px">记录日均</b><span class="sm mute">' + logged.length + ' 天有记录</span></div>' +
-    '<div class="grid2">' +
-    '<div class="gi"><div class="v">' + avg.kcal + '</div><div class="n">热量 kcal</div><div class="t">目标 ' + t.kcal + '</div></div>' +
-    '<div class="gi"><div class="v">' + avg.protein + '</div><div class="n">蛋白 g</div><div class="t">目标 ' + t.protein + '</div></div>' +
-    '<div class="gi"><div class="v">' + avg.carb + '</div><div class="n">碳水 g</div><div class="t">目标 ' + t.carb + '</div></div>' +
-    '<div class="gi"><div class="v">' + avg.fat + '</div><div class="n">脂肪 g</div><div class="t">目标 ' + t.fat + '</div></div>' +
-    '</div></div>' +
+    '<div class="statgrid">' +
+    [['热量', avg.kcal, 'kcal', t.kcal], ['蛋白质', avg.protein, 'g', t.protein],
+     ['碳水', avg.carb, 'g', t.carb], ['脂肪', avg.fat, 'g', t.fat]].map(function (c) {
+      const wp = c[3] > 0 ? Math.min(100, Math.round(c[1] / c[3] * 100)) : 0;
+      return '<div class="statcell">' +
+        '<span class="sk">' + c[0] + '</span>' +
+        '<span class="sv">' + c[1] + '<i>' + c[2] + '</i></span>' +
+        '<span class="st">目标 ' + c[3] + ' · ' + wp + '%</span>' +
+        '<i class="sbar"><i style="width:' + wp + '%"></i></i></div>';
+    }).join('') + '</div></div>' +
 
     '<div class="card"><b style="font-size:15px">达成情况</b>' +
     '<div class="three" style="margin-top:10px">' +
@@ -4717,6 +4820,7 @@ function render() {
   else html = viewProfile();
 
   $('root').innerHTML = html;
+  try { document.body.setAttribute('data-view', S.view); } catch (e) { }
   renderTabbar();
   renderFab();
 
