@@ -1507,6 +1507,36 @@ body{background-color:var(--bg)}
   margin-top:2px;
 }
 
+
+/* ================= 每日点选 ================= */
+.dayrow{cursor:pointer;border-radius:10px;transition:background .18s ease,transform .18s ease}
+.dayrow:active{background:rgba(0,165,200,.10);transform:scale(.995)}
+.dayrow.on{background:rgba(0,165,200,.12);padding-left:8px;padding-right:8px;
+  box-shadow:inset 3px 0 0 var(--green)}
+.dayrow.on .dname{color:var(--green)}
+
+
+/* ================= 底栏晕开 ================= */
+@keyframes tabBloom{
+  0%{opacity:0;transform:scale(.5)}
+  55%{opacity:1;transform:scale(1.07)}
+  100%{opacity:1;transform:scale(1)}
+}
+@keyframes tabHalo{
+  0%{opacity:.95;transform:translate(-50%,-50%) scale(.25)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.7)}
+}
+[data-skin="persona"] .tkslide::after{animation:tabBloom .46s cubic-bezier(.2,.9,.25,1) both}
+[data-skin="persona"] .tkslide::before{
+  content:'';position:absolute;left:50%;top:50%;width:86px;height:86px;border-radius:50%;
+  background:radial-gradient(circle, rgba(0,165,200,.6), rgba(0,165,200,0) 70%);
+  transform:translate(-50%,-50%) scale(.25);opacity:0;pointer-events:none;
+  animation:tabHalo .6s ease-out both;
+}
+[data-skin="persona"] .tkslide{transition:left .46s cubic-bezier(.3,.9,.2,1)}
+[data-skin="persona"] .tabbar .t.on svg,
+[data-skin="persona"] .tabbar .t.on span{animation:tabIn .4s cubic-bezier(.2,.9,.25,1) both}
+
 </style>
 </head>
 <body>
@@ -1929,7 +1959,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.20';
+const BUILD = '2026-10-21.22';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -4486,7 +4516,7 @@ const SKINS = [
   { k: 'dreamcore', name: '梦核', tag: '朦胧乳白', force: 'light', acc: '196,150,200' },
   { k: 'miku', name: '初音', tag: '青绿数码', force: 'light', acc: '57,197,187' },
   { k: 'doki', name: 'DDLC', tag: '粉色日记', force: 'light', acc: '240,120,170' },
-  { k: 'lol', name: '英雄', tag: '深蓝鎏金', force: 'dark', acc: '200,170,110' },
+  { k: 'lol', name: 'LOL', tag: '深蓝鎏金', force: 'dark', acc: '200,170,110' },
   { k: 'zelda', name: '塞尔达', tag: '海拉鲁', force: 'light', acc: '94,124,58' },
   { k: 'hp', name: '魔法', tag: '羊皮纸', force: 'dark', acc: '186,140,72' }
 ];
@@ -4700,6 +4730,7 @@ function planData() {
   const p = store.data.plan;
   p.coins = p.coins || 0;
   p.checkins = p.checkins || {};
+  p.pick = p.pick || {};
   p.days = p.days || {};
   p.buffs = p.buffs || {};
   p.weekPaid = p.weekPaid || {};
@@ -4720,7 +4751,10 @@ function weekCheckins() {
 function todayDayIndex() {
   const p = planData();
   const sp = SPLITS[p.split] || SPLITS.ppl3_a;
-  return p.cycle % sp.days.length;
+  const n = sp.days.length;
+  const pk = p.pick[todayStr()];
+  if (typeof pk === "number" && pk >= 0 && pk < n) return pk;
+  return p.cycle % n;
 }
 function dayGroups(idx) {
   const p = planData();
@@ -4787,11 +4821,11 @@ function viewPlan() {
     '<div class="card">' +
     '<div class="row between" style="margin-bottom:6px">' +
     '<b style="font-size:15px">' + sp.name + ' · 安排</b>' +
-    '<span class="xs mute">' + sp.days.length + ' 日循环</span></div>' +
+    '<span class="xs mute">' + sp.days.length + ' 日循环 · 点一行选今天</span></div>' +
     sp.days.map(function (day, i) {
       const gs = (p.days[p.split + '#' + i] || day.g);
       const isToday = i === idx;
-      return '<div class="dayrow ' + (isToday ? 'on' : '') + '">' +
+      return '<div class="dayrow ' + (isToday ? 'on' : '') + '" data-act="pickday" data-i="' + i + '" data-act="pickday" data-i="' + i + '">' +
         '<div class="dh"><span class="dn">D' + (i + 1) + '</span>' +
         '<span class="dname">' + esc(day.n) + '</span>' +
         (isToday ? '<span class="dtag">今天</span>' : '') + '</div>' +
@@ -6244,9 +6278,10 @@ document.addEventListener('click', function (e) {
 
     case 'setskin':
       store.data.settings = store.data.settings || Object.assign({}, DEFAULT_SETTINGS);
-      store.data.settings.skin = el.dataset.k === 'persona' ? 'persona' : 'minimal';
+      store.data.settings.skin = el.dataset.k || 'minimal';
       store.save(); applyAppearance(); renderKeepScroll();
-      toast(store.data.settings.skin === 'persona' ? '已切到 PERSONA 风格' : '已切回极简模式');
+      const nm = (SKINS.filter(function (x) { return x.k === store.data.settings.skin; })[0] || SKINS[0]).name;
+      toast('已切换到 ' + nm);
       break;
 
     case 'alpha':
@@ -6303,10 +6338,43 @@ document.addEventListener('click', function (e) {
       S.trainTab = el.dataset.k;
       render(); break;
 
+    case 'pickday': {
+      const p = planData();
+      const sp = SPLITS[p.split] || SPLITS.ppl3_a;
+      const i = Number(el.dataset.i);
+      if (!(i >= 0 && i < sp.days.length)) break;
+      if (i === todayDayIndex()) {
+        delete p.pick[todayStr()];
+        store.save(); render(); toast('已恢复按循环排');
+      } else {
+        p.pick[todayStr()] = i;
+        store.save(); render();
+        toast('今天练：' + (sp.days[i] ? sp.days[i].n : 'D' + (i + 1)));
+      }
+      break;
+    }
+
+    case 'pickday': {
+      const p = planData();
+      const sp = SPLITS[p.split] || SPLITS.ppl3_a;
+      const i = Number(el.dataset.i);
+      if (!(i >= 0 && i < sp.days.length)) break;
+      if (i === todayDayIndex()) {
+        delete p.pick[todayStr()];
+        store.save(); render(); toast('已恢复按循环排');
+      } else {
+        p.pick[todayStr()] = i;
+        store.save(); render();
+        toast('今天练：' + (sp.days[i] ? sp.days[i].n : 'D' + (i + 1)));
+      }
+      break;
+    }
+
     case 'setsplit': {
       const p = planData();
       p.split = el.dataset.k;
       p.cycle = 0;
+      p.pick = {};
       store.save(); render(); break;
     }
 
