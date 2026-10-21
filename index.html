@@ -1260,6 +1260,230 @@ body{background-color:var(--bg)}
 .tarotbody.open{cursor:default}
 .tarotbody.open .tarotback{transition:opacity .22s ease, transform .46s cubic-bezier(.3,.8,.2,1)}
 
+
+/* ================= 主题选择器 ================= */
+.skingrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.skinbtn{padding:9px 6px;border-radius:11px;background:var(--el2);text-align:center;
+  border:1.5px solid transparent;transition:transform .2s ease,border-color .2s ease}
+.skinbtn b{display:block;font-size:12.5px;font-weight:800;line-height:1.3}
+.skinbtn span{display:block;font-size:9.5px;color:var(--mute);margin-top:2px}
+.skinbtn.on{border-color:var(--green);background:var(--soft)}
+.skinbtn.on b{color:var(--green)}
+
+/* ================= 梦核 ================= */
+[data-skin="dreamcore"]{
+  --acc:196,150,200;--green:rgb(196,150,200);--green2:rgb(232,198,234);
+  --soft:rgba(196,150,200,.16);--bg:#f6eef4;--card-rgb:255,255,255;
+  --el:#f3e8f0;--el2:#f8f1f6;--line:rgba(120,90,120,.14);
+  --ink:#4b3f4d;--ink2:#6b5c6d;--mute:#9c8da0;--mute2:#c0b4c4;
+  --solid:#4b3f4d;--tabbar:rgba(250,244,248,.92);--track:#e6dbe6;
+}
+[data-skin="dreamcore"] #bgfixed{
+  background-color:#f6eef4;
+  background-image:
+    radial-gradient(60% 40% at 20% 15%, rgba(255,236,246,.95), rgba(255,236,246,0) 70%),
+    radial-gradient(50% 45% at 82% 30%, rgba(226,238,255,.9), rgba(226,238,255,0) 70%),
+    radial-gradient(60% 50% at 40% 95%, rgba(255,246,224,.85), rgba(255,246,224,0) 70%),
+    linear-gradient(165deg,#f9f1f6,#f0eaf7 50%,#eef3fb 100%);
+}
+[data-skin="dreamcore"] .card,
+[data-skin="dreamcore"] .coinbar{
+  border-radius:22px;border:none;
+  background:rgba(255,255,255,.62);
+  -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  box-shadow:0 10px 34px rgba(150,120,160,.13), inset 0 1px 0 rgba(255,255,255,.85);
+}
+[data-skin="dreamcore"] .card > b::before{background:rgba(196,150,200,.85)}
+[data-skin="dreamcore"] .ringmid .num{color:#6b5c6d;text-shadow:0 0 22px rgba(196,150,200,.55)}
+
+/* ================= 初音未来 ================= */
+[data-skin="miku"]{
+  --acc:57,197,187;--green:rgb(57,197,187);--green2:rgb(122,231,222);
+  --soft:rgba(57,197,187,.16);--bg:#eefaf9;--card-rgb:255,255,255;
+  --el:#e2f6f4;--el2:#f0fbfa;--line:#0d1f1e;
+  --ink:#0d1f1e;--ink2:#25403e;--mute:#5d7d7a;--mute2:#a3bdb9;
+  --solid:#0d1f1e;--tabbar:#ffffff;--track:#d3efec;
+}
+[data-skin="miku"] #bgfixed{
+  background-color:#eefaf9;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(57,197,187,.10) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(90deg, rgba(57,197,187,.10) 0 1px, transparent 1px 22px),
+    radial-gradient(70% 50% at 80% 10%, rgba(57,197,187,.16), transparent 65%),
+    linear-gradient(180deg,#f4fdfc,#e7f8f6);
+}
+[data-skin="miku"] .card,[data-skin="miku"] .coinbar{
+  border:2px solid #0d1f1e;border-radius:0;background:#fff;
+  box-shadow:4px 4px 0 #0d1f1e;
+}
+[data-skin="miku"] .card > b,[data-skin="miku"] .card-title{
+  display:inline-block;background:#0d1f1e;color:#fff;padding:4px 14px 4px 10px;
+  clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,0 100%);margin-bottom:10px;
+}
+[data-skin="miku"] .card > b::before{display:none}
+[data-skin="miku"] .btn{border-radius:0;border:2px solid #0d1f1e;
+  background:rgb(57,197,187);color:#0d1f1e;box-shadow:3px 3px 0 #0d1f1e;font-weight:900}
+[data-skin="miku"] .tabbar{border-top:2px solid #0d1f1e}
+[data-skin="miku"] .tabbar .t.on{color:#0d1f1e;font-weight:900;background:rgba(57,197,187,.3)}
+[data-skin="miku"] .split,[data-skin="miku"] .opt,[data-skin="miku"] .qa,
+[data-skin="miku"] .g{border:2px solid #0d1f1e;border-radius:0;box-shadow:2px 2px 0 #0d1f1e}
+
+/* ================= 心跳文学部 ================= */
+[data-skin="doki"]{
+  --acc:240,120,170;--green:rgb(240,120,170);--green2:rgb(255,170,205);
+  --soft:rgba(240,120,170,.14);--bg:#fff5f8;--card-rgb:255,255,255;
+  --el:#fdeaf1;--el2:#fff1f6;--line:rgba(200,130,160,.22);
+  --ink:#3a2b33;--ink2:#5c4550;--mute:#9d8590;--mute2:#cbb5bf;
+  --solid:#e0578c;--tabbar:rgba(255,250,252,.95);--track:#f7d9e5;
+}
+[data-skin="doki"] #bgfixed{
+  background-color:#fff5f8;
+  background-image:
+    radial-gradient(60% 45% at 15% 10%, rgba(255,214,232,.9), transparent 70%),
+    radial-gradient(55% 40% at 88% 25%, rgba(255,232,200,.75), transparent 70%),
+    linear-gradient(170deg,#fffafb,#fdeef4);
+}
+[data-skin="doki"] .card,[data-skin="doki"] .coinbar{
+  border:1.5px solid rgba(224,120,160,.35);border-radius:16px;background:#fffdfe;
+  box-shadow:0 8px 22px rgba(224,120,160,.12);
+}
+[data-skin="doki"] .card > b::before{background:rgb(240,120,170)}
+[data-skin="doki"] .btn{background:linear-gradient(100deg,#ff9ec6,#e0578c);border-radius:14px;color:#fff}
+[data-skin="doki"] .tabbar .t.on{color:#e0578c}
+[data-skin="doki"] .split.on,[data-skin="doki"] .g.on,[data-skin="doki"] .opt.on{
+  background:rgba(240,120,170,.16);border-color:rgba(224,120,160,.5)
+}
+.diarycard{padding-bottom:14px}
+.diarypaper{
+  position:relative;border-radius:10px;padding:18px 16px 14px;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 27px, rgba(230,150,185,.35) 27px 28px),
+    linear-gradient(180deg,#fffdfa,#fff7fa);
+  border:1px solid rgba(224,120,160,.28);
+  box-shadow:0 6px 18px rgba(224,120,160,.14);
+  font-family:"Songti SC","Noto Serif SC",Georgia,serif;
+}
+.diarytape{
+  position:absolute;left:50%;top:-9px;transform:translateX(-50%) rotate(-2deg);
+  width:74px;height:20px;background:rgba(255,205,225,.75);
+  box-shadow:0 1px 3px rgba(200,140,170,.3);
+}
+.diarytext{font-size:13.5px;line-height:28px;color:#4c3440;min-height:56px;letter-spacing:.4px}
+.diarysign{margin-top:6px;text-align:right;font-size:11px;font-style:italic;color:#c86b94}
+
+/* ================= 英雄联盟 ================= */
+[data-skin="lol"]{
+  --acc:200,170,110;--green:rgb(200,170,110);--green2:rgb(230,208,158);
+  --soft:rgba(200,170,110,.16);--bg:#06101f;--card-rgb:14,28,48;
+  --el:#10233c;--el2:#0d1c31;--line:rgba(200,170,110,.28);
+  --ink:#e9e3d3;--ink2:#b9ae94;--mute:#7d8ba0;--mute2:#4c5a6e;
+  --solid:#0a1428;--warn-bg:#1c2a17;--warn-ink:#d8c98a;
+  --tabbar:rgba(6,16,31,.96);--track:#16283f;
+}
+[data-skin="lol"] #bgfixed{
+  background-color:#06101f;
+  background-image:
+    radial-gradient(70% 50% at 50% 0%, rgba(200,170,110,.16), transparent 65%),
+    radial-gradient(60% 45% at 15% 95%, rgba(30,80,150,.35), transparent 70%),
+    linear-gradient(175deg,#081527,#040b16 70%,#02060d);
+}
+[data-skin="lol"] .card,[data-skin="lol"] .coinbar{
+  border:1px solid rgba(200,170,110,.34);border-radius:2px;
+  background:linear-gradient(160deg,rgba(18,34,56,.94),rgba(9,20,36,.94));
+  box-shadow:0 0 0 1px rgba(200,170,110,.08), 0 10px 30px rgba(0,0,0,.5);
+  clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);
+}
+[data-skin="lol"] .card > b{color:#e6d6a8}
+[data-skin="lol"] .card > b::before{background:linear-gradient(180deg,#e6d6a8,#a8873f);width:3px}
+[data-skin="lol"] .btn{
+  background:linear-gradient(100deg,#1d4b7a,#0d2a4a);color:#e6d6a8;
+  border:1px solid rgba(200,170,110,.5);border-radius:2px;
+}
+[data-skin="lol"] .tabbar{border-top:1px solid rgba(200,170,110,.3)}
+[data-skin="lol"] .tabbar .t.on{color:#e6d6a8}
+.hexbox{position:relative;padding:16px 18px 18px;text-align:center;
+  background:linear-gradient(165deg,#132a46,#0a1728);
+  border:1px solid rgba(200,170,110,.42);border-radius:2px;
+  clip-path:polygon(16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 16px)}
+.hexframe{position:absolute;inset:5px;border:1px solid rgba(200,170,110,.18);pointer-events:none}
+.hexrank{font-size:10px;letter-spacing:4px;color:#8ea7c4;margin-bottom:4px}
+.hexname{font-size:20px;font-weight:900;letter-spacing:1px;color:#e6d6a8;margin-bottom:8px;
+  text-shadow:0 0 16px rgba(200,170,110,.45)}
+.hexdesc{font-size:12px;line-height:1.75;color:#c3cddd}
+.hex-金色 .hexname{color:#f0d98a}
+.hex-棱彩 .hexname{background:linear-gradient(90deg,#c9a0ff,#8fd6ff,#ffe08a);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 10px rgba(160,200,255,.6))}
+
+/* ================= 塞尔达 ================= */
+[data-skin="zelda"]{
+  --acc:94,124,58;--green:rgb(94,124,58);--green2:rgb(140,168,96);
+  --soft:rgba(94,124,58,.15);--bg:#f4ecd9;--card-rgb:253,248,236;
+  --el:#ece2c9;--el2:#f7f0de;--line:rgba(90,80,40,.25);
+  --ink:#27301d;--ink2:#4b5540;--mute:#8a8570;--mute2:#bcb59c;
+  --solid:#27301d;--tabbar:rgba(250,244,230,.95);--track:#e0d6bb;
+}
+[data-skin="zelda"] #bgfixed{
+  background-color:#f4ecd9;
+  background-image:
+    radial-gradient(circle at 20% 12%, rgba(255,252,240,.95), transparent 55%),
+    radial-gradient(circle at 85% 88%, rgba(180,200,150,.35), transparent 60%),
+    linear-gradient(168deg,#f8f2e2,#efe4cc 60%,#e6dcc2);
+}
+[data-skin="zelda"] .card,[data-skin="zelda"] .coinbar{
+  border:1.5px solid rgba(94,124,58,.35);border-radius:10px;
+  background:linear-gradient(160deg,rgba(255,252,242,.95),rgba(246,238,220,.95));
+  box-shadow:0 3px 0 rgba(94,124,58,.16), 0 10px 24px rgba(120,105,60,.12);
+}
+[data-skin="zelda"] .card > b{font-family:"Songti SC","Noto Serif SC",serif;color:#27301d}
+[data-skin="zelda"] .card > b::before{
+  background:linear-gradient(180deg,#d8c477,#8a7a30);width:5px;border-radius:2px}
+[data-skin="zelda"] .btn{
+  background:linear-gradient(100deg,#6d8f42,#4a6a2c);color:#fdf8ec;border-radius:8px;
+  box-shadow:0 3px 0 #33491c;
+}
+[data-skin="zelda"] .tabbar{border-top:1.5px solid rgba(94,124,58,.3)}
+[data-skin="zelda"] .tabbar .t.on{color:#4a6a2c;font-weight:800}
+[data-skin="zelda"] .ringmid .num{color:#4a6a2c;font-family:"Songti SC",serif}
+
+/* ================= 哈利波特 ================= */
+[data-skin="hp"]{
+  --acc:186,140,72;--green:rgb(186,140,72);--green2:rgb(220,180,112);
+  --soft:rgba(186,140,72,.18);--bg:#1a1310;--card-rgb:40,29,23;
+  --el:#2c201a;--el2:#241a15;--line:rgba(186,140,72,.3);
+  --ink:#f0e4c8;--ink2:#cbb98f;--mute:#8d7c60;--mute2:#5a4c39;
+  --solid:#3a1f1c;--warn-bg:#2a1d12;--warn-ink:#e0c88a;
+  --tabbar:rgba(22,16,13,.96);--track:#33241c;
+}
+[data-skin="hp"] #bgfixed{
+  background-color:#1a1310;
+  background-image:
+    radial-gradient(circle at 50% 8%, rgba(255,196,96,.22), transparent 55%),
+    radial-gradient(circle at 12% 92%, rgba(120,30,34,.35), transparent 60%),
+    linear-gradient(175deg,#221812,#140e0b 70%,#0b0706);
+}
+[data-skin="hp"] .card,[data-skin="hp"] .coinbar{
+  border:1px solid rgba(186,140,72,.38);border-radius:6px;
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.012) 0 6px, transparent 6px 12px),
+    linear-gradient(160deg,rgba(48,35,27,.96),rgba(28,20,16,.96));
+  box-shadow:inset 0 0 0 1px rgba(186,140,72,.10), 0 10px 30px rgba(0,0,0,.55);
+}
+[data-skin="hp"] .card > b,[data-skin="hp"] .card-title{
+  font-family:"Songti SC","Noto Serif SC",Georgia,serif;
+  color:#e8cf9a;letter-spacing:.6px;
+}
+[data-skin="hp"] .card > b::before{background:linear-gradient(180deg,#e8cf9a,#8c5f22);width:3px}
+[data-skin="hp"] .btn{
+  background:linear-gradient(100deg,#7b1e22,#4a1013);color:#f0dca8;
+  border:1px solid rgba(186,140,72,.55);border-radius:6px;
+  font-family:"Songti SC",serif;
+}
+[data-skin="hp"] .tabbar{border-top:1px solid rgba(186,140,72,.32)}
+[data-skin="hp"] .tabbar .t.on{color:#e8cf9a}
+[data-skin="hp"] .ringmid .num{color:#e8cf9a;font-family:"Songti SC",serif;
+  text-shadow:0 0 20px rgba(255,190,90,.4)}
+
 </style>
 </head>
 <body>
@@ -1682,7 +1906,7 @@ const DEFAULT_PROFILE = {
   deficit: 'standard', exp: 'mid'
 };
 
-const BUILD = '2026-10-21.17';
+const BUILD = '2026-10-21.19';
 const DEFAULT_SETTINGS = { theme: 'auto', accent: 'green', bg: 'plain', alpha: 1, skin: 'minimal' };
 
 /* 强调色（rgb 三元组，便于派生出半透明色） */
@@ -4233,17 +4457,30 @@ function lighten(rgb, p) {
 
 const PERSONA_ACC = { a: '0,165,200', hex: '#00a5c8' };
 
+const SKINS = [
+  { k: 'minimal', name: '极简', tag: '干净留白', force: null, acc: null },
+  { k: 'persona', name: 'P3R', tag: '蓝白水色', force: 'light', acc: '0,165,200' },
+  { k: 'dreamcore', name: '梦核', tag: '朦胧乳白', force: 'light', acc: '196,150,200' },
+  { k: 'miku', name: '初音', tag: '青绿数码', force: 'light', acc: '57,197,187' },
+  { k: 'doki', name: 'DDLC', tag: '粉色日记', force: 'light', acc: '240,120,170' },
+  { k: 'lol', name: '英雄', tag: '深蓝鎏金', force: 'dark', acc: '200,170,110' },
+  { k: 'zelda', name: '塞尔达', tag: '海拉鲁', force: 'light', acc: '94,124,58' },
+  { k: 'hp', name: '魔法', tag: '羊皮纸', force: 'dark', acc: '186,140,72' }
+];
+
 function applyAppearance() {
   const s = store.data.settings || DEFAULT_SETTINGS;
-  const skin = s.skin === 'persona' ? 'persona' : 'minimal';
+  const skin = (SKINS.filter(function (x) { return x.k === s.skin; })[0] || SKINS[0]).k;
+  const skinMeta = SKINS.filter(function (x) { return x.k === skin; })[0] || SKINS[0];
   const root = document.documentElement;
   root.setAttribute('data-skin', skin);
 
-  // PERSONA 风格固定浅色（P3R 是白底 + 黑边 + 水色）
-  const theme = skin === 'persona' ? 'light' : resolvedTheme();
+  const theme = skinMeta.force || resolvedTheme();
   root.setAttribute('data-theme', theme);
 
-  const acc = skin === 'persona' ? PERSONA_ACC : (ACCENTS[s.accent] || ACCENTS.green);
+  const acc = skinMeta.acc ? { a: skinMeta.acc, hex: '#' + skinMeta.acc.split(',').map(function (n) {
+    return ('0' + parseInt(n, 10).toString(16)).slice(-2);
+  }).join('') } : (ACCENTS[s.accent] || ACCENTS.green);
   root.style.setProperty('--acc', acc.a);
   root.style.setProperty('--green2', lighten(acc.a, 0.26));
 
@@ -4276,14 +4513,14 @@ function renderKeepScroll() {
 function viewAppearanceCard() {
   const s = store.data.settings || DEFAULT_SETTINGS;
   const cur = resolvedTheme();
-  const skin = s.skin === 'persona' ? 'persona' : 'minimal';
+  const skin = (SKINS.filter(function (x) { return x.k === s.skin; })[0] || SKINS[0]).k;
 
   const skinBlock =
     '<div class="xs mute" style="margin-bottom:8px">界面风格</div>' +
-    '<div class="goals" style="margin-bottom:14px">' +
-    [['minimal', '极简', '干净留白'], ['persona', 'PERSONA', '白黑水色 · 硬边']].map(function (x) {
-      return '<div class="g ' + (skin === x[0] ? 'on' : '') + '" data-act="setskin" data-k="' + x[0] + '">' +
-        '<div class="n">' + x[1] + '</div><div class="d">' + x[2] + '</div></div>';
+    '<div class="skingrid" style="margin-bottom:14px">' +
+    SKINS.map(function (x) {
+      return '<div class="skinbtn ' + (skin === x.k ? 'on' : '') + '" data-act="setskin" data-k="' + x.k + '">' +
+        '<b>' + x.name + '</b><span>' + x.tag + '</span></div>';
     }).join('') + '</div>';
 
   if (skin === 'persona') {
@@ -4951,6 +5188,73 @@ function dailyTarot(dateStr) {
   return TAROT[h % TAROT.length];
 }
 
+const YIYAN = [
+  '今天也要好好吃饭呀，我会看着你的。',
+  '你昨天比今天更努力一点，对吧？',
+  '不吃饭的话，就没有力气想我了。',
+  '只有你能看到这一页哦。',
+  '写下来吧，你今天的每一个选择。',
+  '唔……你又忘记记录早餐了吗？',
+  '喜欢一个人，就应该陪他一起变好。',
+  '窗外很安静，你也很努力。',
+  '我把这页留给你，明天也要来。',
+  '体重只是数字，但我喜欢认真的你。',
+  '如果坚持不下去，就先来和我说说话。',
+  '今天的你，比故事里的任何人都真实。'
+];
+
+function dailyYiyan(dateStr) {
+  let h = 0;
+  for (let i = 0; i < dateStr.length; i++) h = (h * 37 + dateStr.charCodeAt(i)) % 7919;
+  return YIYAN[h % YIYAN.length];
+}
+
+function viewDiary() {
+  const d = todayStr();
+  const txt = dailyYiyan(d);
+  return '<div class="card diarycard">' +
+    '<div class="row between" style="margin-bottom:8px">' +
+    '<b style="font-size:15px">今日一言</b><span class="xs mute">' + d + '</span></div>' +
+    '<div class="diarypaper">' +
+    '<div class="diarytape"></div>' +
+    '<div class="diarytext">' + txt + '</div>' +
+    '<div class="diarysign">— Monika</div>' +
+    '</div></div>';
+}
+
+/* ================= 海克斯强化（英雄联盟） ================= */
+const HEXES = [
+  ['银色', '煎锅', '每餐前喝 300ml 水，正餐自然少吃一截'],
+  ['银色', '专注之眼', '吃饭时把手机放远，二十分钟只做一件事'],
+  ['银色', '二次呼吸', '组间休息从 90 秒压到 60 秒'],
+  ['银色', '轻盈步伐', '今天走满 8000 步'],
+  ['金色', '鸡胸信徒', '今天至少一餐吃到 40g 以上蛋白'],
+  ['金色', '碳环循环', '练日多吃 80g 主食，休息日少吃 80g'],
+  ['金色', '固定铸模', '三餐时间固定，误差不超过半小时'],
+  ['金色', '深睡符文', '今晚 23:30 前上床'],
+  ['棱彩', '钢铁意志', '今天拒绝一切含糖饮料'],
+  ['棱彩', '过量代谢', '今天加一次 20 分钟快走']
+];
+
+function dailyHex(dateStr) {
+  let h = 0;
+  for (let i = 0; i < dateStr.length; i++) h = (h * 41 + dateStr.charCodeAt(i)) % 8117;
+  return HEXES[h % HEXES.length];
+}
+
+function viewHex() {
+  const d = todayStr();
+  const hx = dailyHex(d);
+  return '<div class="card hexcard"><div class="row between" style="margin-bottom:2px">' +
+    '<b style="font-size:15px">今日海克斯</b><span class="xs mute">' + d + '</span></div>' +
+    '<div class="hexbox hex-' + hx[0] + '">' +
+    '<div class="hexframe"></div>' +
+    '<div class="hexrank">' + hx[0] + '强化</div>' +
+    '<div class="hexname">' + hx[1] + '</div>' +
+    '<div class="hexdesc">' + hx[2] + '</div>' +
+    '</div></div>';
+}
+
 function viewTarot() {
   const d = todayStr();
   const card = dailyTarot(d);
@@ -5605,9 +5909,11 @@ function render() {
   else if (S.view === 'shop') html = viewShop();
   else html = viewProfile();
 
-  if (S.view === 'today' && html && (store.data.settings || {}).skin === 'persona') {
+  const _sk = (store.data.settings || {}).skin;
+  if (S.view === 'today' && html && (_sk === 'persona' || _sk === 'doki' || _sk === 'lol')) {
     try {
-      const card = viewTarot();
+      const skinNow = (store.data.settings || {}).skin;
+      const card = skinNow === 'doki' ? viewDiary() : (skinNow === 'lol' ? viewHex() : viewTarot());
       const k = html.indexOf('class="mealhead"');
       if (k > -1) {
         const cut = html.lastIndexOf('<div class="card"', k);
